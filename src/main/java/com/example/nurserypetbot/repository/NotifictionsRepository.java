@@ -17,4 +17,5 @@ public interface NotifictionsRepository extends JpaRepository<Notification, Long
     @Query(value = "SELECT tasks.chat_id, tasks.message\n"+ " from notification_task as tasks\n"+" where date = ?1",
             nativeQuery = true)
     List<ActualNotification> getMessageForNowDate(LocalDateTime localDateTime);
+
 }
