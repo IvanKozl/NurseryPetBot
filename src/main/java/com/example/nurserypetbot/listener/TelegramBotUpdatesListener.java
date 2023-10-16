@@ -103,7 +103,4 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         nList = notifictionsRepository.getMessageForNowDate(now);
         sendNotificationToChat(nList);
     }
-
-
-
 }
