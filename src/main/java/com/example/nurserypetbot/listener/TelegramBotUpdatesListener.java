@@ -1,5 +1,8 @@
 package com.example.nurserypetbot.listener;
 
+import com.example.nurserypetbot.models.ActualNotification;
+import com.example.nurserypetbot.models.Notification;
+import com.example.nurserypetbot.repository.NotifictionsRepository;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
@@ -9,9 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import pro.sky.telegrambot.models.ActualNotification;
-import pro.sky.telegrambot.models.Notification;
-import pro.sky.telegrambot.repository.NotifictionsRepository;
 
 import javax.annotation.PostConstruct;
 import java.time.DateTimeException;
