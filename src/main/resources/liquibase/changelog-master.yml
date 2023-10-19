@@ -1,3 +1,5 @@
 databaseChangeLog:
   - include:
       file: liquibase/script/bot.sql
+  - include:
+      file: liquibase/script/usersContacts.sql
