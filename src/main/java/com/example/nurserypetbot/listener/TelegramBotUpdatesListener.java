@@ -38,6 +38,12 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         telegramBot.setUpdatesListener(this);
     }
 
+    /**
+     * Первичная <b> кнопка </b> запуска телеграмм-бота
+     *
+     * @param updates обновление пустой страницы - неизменяемый параметр.
+     * @return вернет приветственное сообщение
+     */
     @Override
     public int process(List<Update> updates) {
         updates.forEach(update -> {
