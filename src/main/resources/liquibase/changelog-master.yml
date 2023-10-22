@@ -1,5 +1,7 @@
 databaseChangeLog:
   - include:
-      file: liquibase/script/bot.sql
+      relativeToChangeLogFile: true
+      file: script/bot.sql
   - include:
-      file: liquibase/script/usersContacts.sql
+      relativeToChangeLogFile: true
+      file: script/usersContacts.sql

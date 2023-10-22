@@ -1,12 +1,18 @@
 -- liquibase formatted sql
 
--- changeset2 NurseryCatDogBot
+-- changeset Maria:2
+CREATE TABLE users_contact
+(
+id serial PRIMARY KEY,
+name varchar NOT NULL,
+surname varchar NOT NULL,
+age int NOT NULL,
+phone serial UNIQUE NOT NULL,
+email text UNIQUE NOT NULL,
+users_chat_id integer REFERENCES notification_task(chat_id)
+);
 
-create table users_contact(
-id serial primary key,
-users_contact_information text not null);
 
-select n.chat_id, u.id
-from notification_task n inner join user_contacts u on n.chat_id = u.id;
+
 
 
