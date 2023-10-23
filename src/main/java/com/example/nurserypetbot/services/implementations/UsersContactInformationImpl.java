@@ -25,15 +25,15 @@ public class UsersContactInformationImpl implements UsersContactInformationServi
 
     @Override
     public void addNewUsersInformation(Message message) {
-        Notification notification = new Notification();
         UsersContactInformation usersContactInformation;
         long chatId = message.chat().id();
         SendMessage result;
 
         try {
 
-            usersContactInformation = Parser.tryToParseUsersInformation(notification.getMessage());
-            notification.setChatId(chatId);
+            usersContactInformation = Parser.tryToParseUsersInformation(message.text());
+            usersContactInformation.setChatId(chatId);
+
 
         } catch (Exception ex) {
             telegramBot.execute(new SendMessage(chatId, "Wrong format"));

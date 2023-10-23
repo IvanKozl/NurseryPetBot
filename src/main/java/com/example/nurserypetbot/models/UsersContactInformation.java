@@ -9,6 +9,9 @@ public class UsersContactInformation {
     @Column(name = "id")
     private long id;
 
+    @Column(name = "chat_id")
+    private long chatId;
+
     @Column(name = "name")
     private String name;
 
@@ -31,6 +34,14 @@ public class UsersContactInformation {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public long getChatId() {
+        return chatId;
+    }
+
+    public void setChatId(long chatId) {
+        this.chatId = chatId;
     }
 
     public String getName(){
@@ -84,15 +95,17 @@ public class UsersContactInformation {
         }
        UsersContactInformation usersContactInformation = (UsersContactInformation) o;
         return age == usersContactInformation.age && phoneNumber == usersContactInformation.phoneNumber
+                && chatId == usersContactInformation.chatId
                 && Objects.equals(name, usersContactInformation.name)
                 && Objects.equals(surname, usersContactInformation.surname)
                 && Objects.equals(email, usersContactInformation.email);
     }
     @Override
     public int hashCode() {
-        return Objects.hash(name, surname, age, phoneNumber, email);
+        return Objects.hash(chatId, name, surname, age, phoneNumber, email);
     }
 
-    }
+
+}
 
 
