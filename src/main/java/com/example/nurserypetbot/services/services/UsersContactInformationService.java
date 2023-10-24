@@ -4,4 +4,5 @@ import com.pengrad.telegrambot.model.Message;
 
 public interface UsersContactInformationService {
     void addNewUsersInformation(Message message);
+
 }

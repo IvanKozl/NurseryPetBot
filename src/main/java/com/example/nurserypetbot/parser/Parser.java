@@ -6,14 +6,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Parser {
-    public static UsersContactInformation tryToParseUsersInformation(String text){
+    public static UsersContactInformation tryToParseUsersInformation(String text) {
         Pattern pattern =
                 Pattern.compile("([A-Za-zА-Яа-я]+)(\\s)([A-Za-zА-Яа-я]+)(\\s)(\\d+)(\\s)(\\d{11})(\\s+)([A-Za-z\\d@\\.]+)");
 
         Matcher matcher = pattern.matcher(text);
         UsersContactInformation usersContactInformation = new UsersContactInformation();
 
-        if(matcher.matches()){
+        if (matcher.matches()) {
 
             usersContactInformation.setName(matcher.group(1));
             usersContactInformation.setSurname(matcher.group(3));

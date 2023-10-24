@@ -20,8 +20,6 @@ public class Notification {
     @Column(name = "date_time")
     public LocalDateTime timeAndDate;
 
-
-
     public Notification() {
     }
 

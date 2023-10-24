@@ -39,8 +39,15 @@ public class UsersContactInformationImpl implements UsersContactInformationServi
             return;
         }
 
-        repository.save(usersContactInformation);
-        result = new SendMessage(chatId, String.format("OK"));
+        try {
+            repository.save(usersContactInformation);
+
+        } catch (Exception exception) {
+            telegramBot.execute(new SendMessage(chatId, "This phone number or email address is already in our DB"));
+            return;
+        }
+
+        result = new SendMessage(chatId, String.format("OK, your information successfully added"));
         telegramBot.execute(result);
 
     }
