@@ -1,5 +1,6 @@
 package com.example.nurserypetbot.listener;
 
+import com.example.nurserypetbot.KeyboardUtils;
 import com.example.nurserypetbot.models.ActualNotification;
 import com.example.nurserypetbot.models.Notification;
 import com.example.nurserypetbot.repository.NotifictionsRepository;
@@ -12,7 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import javax.annotation.PostConstruct;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
@@ -33,6 +35,9 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     @Autowired
     private NotifictionsRepository notifictionsRepository;
 
+    @Autowired
+    private KeyboardUtils keyboardUtils;
+
     @PostConstruct
     public void init() {
         telegramBot.setUpdatesListener(this);
@@ -48,11 +53,10 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     public int process(List<Update> updates) {
         updates.forEach(update -> {
             logger.info("Processing update: {}", update);
-            // Process your updates here
-            // Common greetind
+
             if(update.message().text().equals("/start")){
                 long chatId = update.message().chat().id();
-                telegramBot.execute(new SendMessage(chatId, "Привет, странник."));
+                telegramBot.execute(new SendMessage(chatId, "Привет, странник.", keyboardUtils.getKeyboard()));
             }
         });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
