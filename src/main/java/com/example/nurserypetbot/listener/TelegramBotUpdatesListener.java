@@ -54,7 +54,8 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         updates.forEach(update -> {
             logger.info("Processing update: {}", update);
 
-            final boolean matches = update.message().text().matches("([=A-Za-z]+)\\s+([=A-Za-z]+)\\s+(\\d+)\\s+(\\d{11})\\s+([A-Za-z@.]+)");
+            final boolean matches = update.message().text()
+                    .matches("([=A-Za-z]+)\\s+([=A-Za-z]+)\\s+(\\d+)\\s+(\\d{11})\\s+([A-Za-z@.]+)");
             if (update.message().text().startsWith("/start")) {
                 SendMessage message = new SendMessage(update.message().chat().id(),
                         responses.START.getResponseText());
@@ -71,10 +72,9 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                         responses.REASONS.getResponseText());
                 var result = telegramBot.execute(message);
 
-            } else if (update.message().text().startsWith("HELP"))
+            } else if (update.message().text().toUpperCase().startsWith("HELP"))
 
             {
-                update.message().text().toUpperCase();
                 SendMessage message = new SendMessage(update.message().chat().id(),
                         responses.HELP.getResponseText());
                 var result = telegramBot.execute(message);

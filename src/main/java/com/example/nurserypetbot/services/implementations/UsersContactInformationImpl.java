@@ -1,6 +1,5 @@
 package com.example.nurserypetbot.services.implementations;
 
-import com.example.nurserypetbot.models.Notification;
 import com.example.nurserypetbot.models.UsersContactInformation;
 import com.example.nurserypetbot.parser.Parser;
 import com.example.nurserypetbot.repository.UsersContactInformationRepository;

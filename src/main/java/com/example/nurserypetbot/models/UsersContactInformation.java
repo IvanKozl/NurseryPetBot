@@ -27,6 +27,8 @@ public class UsersContactInformation {
     @Column(name = "email")
     private String email;
 
+    public UsersContactInformation(){
+    }
 
     public long getId() {
         return id;
@@ -104,6 +106,7 @@ public class UsersContactInformation {
     public int hashCode() {
         return Objects.hash(chatId, name, surname, age, phoneNumber, email);
     }
+
 
 
 }
