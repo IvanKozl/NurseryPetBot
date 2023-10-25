@@ -28,6 +28,10 @@ public class UsersContactInformation {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "pet")
+    private String pet;
+
+
     public UsersContactInformation() {
     }
 
@@ -87,6 +91,14 @@ public class UsersContactInformation {
         this.email = email;
     }
 
+    public String getPet() {
+        return pet;
+    }
+
+    public void setPet(String pet) {
+        this.pet = pet;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -100,13 +112,15 @@ public class UsersContactInformation {
                 && chatId == usersContactInformation.chatId
                 && Objects.equals(name, usersContactInformation.name)
                 && Objects.equals(surname, usersContactInformation.surname)
-                && Objects.equals(email, usersContactInformation.email);
+                && Objects.equals(email, usersContactInformation.email)
+                && Objects.equals(pet, usersContactInformation.pet);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(chatId, name, surname, age, phoneNumber, email);
+        return Objects.hash(chatId, name, surname, age, phoneNumber, email, pet);
     }
+
 
 }
 

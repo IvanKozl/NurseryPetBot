@@ -10,6 +10,7 @@ surname varchar NOT NULL,
 age int NOT NULL,
 phone bigint UNIQUE NOT NULL,
 email text UNIQUE NOT NULL,
+pet varchar NOT NULL,
 PRIMARY KEY (id)
 );
 

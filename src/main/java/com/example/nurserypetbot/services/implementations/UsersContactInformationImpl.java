@@ -2,7 +2,8 @@ package com.example.nurserypetbot.services.implementations;
 
 import com.example.nurserypetbot.models.UsersContactInformation;
 import com.example.nurserypetbot.parser.Parser;
-import com.example.nurserypetbot.repository.UsersContactInformationRepository;
+import com.example.nurserypetbot.repository.CatUsersContactInformationRepository;
+import com.example.nurserypetbot.repository.DogUsersContactInformationRepository;
 import com.example.nurserypetbot.services.services.UsersContactInformationService;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Message;
@@ -15,11 +16,16 @@ public class UsersContactInformationImpl implements UsersContactInformationServi
 
     private final TelegramBot telegramBot;
 
-    private final UsersContactInformationRepository repository;
+    private final DogUsersContactInformationRepository dogUsersContactInformationRepository;
 
-    public UsersContactInformationImpl(TelegramBot telegramBot, UsersContactInformationRepository repository) {
+    private final CatUsersContactInformationRepository catUsersContactInformationRepository;
+
+    public UsersContactInformationImpl(TelegramBot telegramBot,
+                                       CatUsersContactInformationRepository catUsersContactInformationRepository,
+                                       DogUsersContactInformationRepository dogUsersContactInformationRepository) {
         this.telegramBot = telegramBot;
-        this.repository = repository;
+        this.dogUsersContactInformationRepository = dogUsersContactInformationRepository;
+        this.catUsersContactInformationRepository = catUsersContactInformationRepository;
     }
 
     @Override
@@ -39,17 +45,29 @@ public class UsersContactInformationImpl implements UsersContactInformationServi
             return;
         }
 
-        try {
-            repository.save(usersContactInformation);
+        if (message.text().toUpperCase().startsWith("CAT")) {
+            try {
+                catUsersContactInformationRepository.save(usersContactInformation);
 
-        } catch (Exception exception) {
-            telegramBot.execute(new SendMessage(chatId, "This phone number or email address is already in our DB"));
-            return;
+            } catch (Exception exception) {
+                telegramBot.execute(new SendMessage(chatId, "This phone number or email address is already in our DB"));
+                return;
+            }
+            result = new SendMessage(chatId, String.format("OK, your information successfully added"));
+            telegramBot.execute(result);
         }
+        else if (message.text().toUpperCase().startsWith("DOG")) {
+            try {
+                dogUsersContactInformationRepository.save(usersContactInformation);
 
-        result = new SendMessage(chatId, String.format("OK, your information successfully added"));
-        telegramBot.execute(result);
+            } catch (Exception exception) {
+                telegramBot.execute(new SendMessage(chatId, "This phone number or email address is already in our DB"));
+                return;
+            }
+
+            result = new SendMessage(chatId, String.format("OK, your information successfully added"));
+            telegramBot.execute(result);
+        }
 
     }
 }
-

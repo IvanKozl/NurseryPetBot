@@ -48,7 +48,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
             logger.info("Processing update: {}", update);
 
             final boolean matches = update.message().text()
-                    .matches("([=A-Za-z]+)\\s+([=A-Za-z]+)\\s+(\\d+)\\s+(\\d{11})\\s+([A-Za-z@.]+)");
+                    .matches("(\\w{3})(\\s)([=A-Za-z]+)\\s+([=A-Za-z]+)\\s+(\\d+)\\s+(\\d{11})\\s+([A-Za-z@.]+)");
             if (update.message().text().startsWith("/start")) {
                 SendMessage message = new SendMessage(update.message().chat().id(),
                         responses.START.getResponseText());
@@ -75,12 +75,32 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 SendMessage message = new SendMessage(update.message().chat().id(),
                         responses.HELP.getResponseText());
                 var result = telegramBot.execute(message);
-            } else if (update.message().text().toUpperCase().startsWith("DATA")) {
+            }
+            else if (update.message().text().toUpperCase().startsWith("ADD")) {
+                SendMessage message = new SendMessage(update.message().chat().id(),
+                        responses.ADD.getResponseText());
+                var result = telegramBot.execute(message);
+            }
+                else if (update.message().text().toUpperCase().startsWith("ADVISES")) {
+                    SendMessage message = new SendMessage(update.message().chat().id(),
+                            responses.ADVISES.getResponseText());
+                    var result = telegramBot.execute(message);
+            } else if (update.message().text().toUpperCase().startsWith("DOGHELP")) {
+                SendMessage message = new SendMessage(update.message().chat().id(),
+                        responses.DOGHELP.getResponseText());
+                var result = telegramBot.execute(message);
+            }
+            else if (update.message().text().toUpperCase().startsWith("NUMBER")) {
+                SendMessage message = new SendMessage(update.message().chat().id(),
+                        responses.NUMBER.getResponseText());
+                var result = telegramBot.execute(message);
+            }
+                else if (update.message().text().toUpperCase().startsWith("DATA")) {
                 SendMessage message = new SendMessage(update.message().chat().id(),
                         responses.DATA.getResponseText());
                 var result = telegramBot.execute(message);
             } else if (update.message().text()
-                    .matches("([=A-Za-zА-Яа-я]+)\\s+([=A-Za-zА-Яа-я]+)\\s+(\\d+)\\s+(\\d{11})\\s+([A-Za-z@.]+)")) {
+                    .matches("(\\w{3})(\\s)([=A-Za-zА-Яа-я]+)\\s+([=A-Za-zА-Яа-я]+)\\s+(\\d+)\\s+(\\d{11})\\s+([A-Za-z@.]+)")) {
                 service.addNewUsersInformation(update.message());
 
             }
