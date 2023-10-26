@@ -23,7 +23,7 @@ public class Parser {
             usersContactInformation.setEmail(matcher.group(11));
 
         } else {
-            throw new IllegalArgumentException("Wrong format");
+            throw new IllegalArgumentException("Wrong format, please, try again");
         }
         return usersContactInformation;
     }

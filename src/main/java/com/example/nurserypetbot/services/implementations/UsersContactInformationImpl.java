@@ -28,6 +28,20 @@ public class UsersContactInformationImpl implements UsersContactInformationServi
         this.catUsersContactInformationRepository = catUsersContactInformationRepository;
     }
 
+    /**
+     * Addition new contact users information using {@link Parser}
+     * <br>
+     * method {@link Parser#tryToParseUsersInformation(String)}
+     * <br>
+     * Addition new information is repositories. Depends on pet ->
+     * <br>
+     * {@code dogUsersContactInformationRepository.save(usersContactInformation);}
+     * <br>
+     * {@code catUsersContactInformationRepository.save(usersContactInformation);}
+     * <br>
+     * Trying to catch exception, when user enters not unique information (<u>according to constraint in table</u>)
+     * @param message
+     */
     @Override
     public void addNewUsersInformation(Message message) {
         UsersContactInformation usersContactInformation;

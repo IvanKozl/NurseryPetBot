@@ -31,7 +31,6 @@ public class UsersContactInformation {
     @Column(name = "pet")
     private String pet;
 
-
     public UsersContactInformation() {
     }
 
@@ -120,7 +119,6 @@ public class UsersContactInformation {
     public int hashCode() {
         return Objects.hash(chatId, name, surname, age, phoneNumber, email, pet);
     }
-
 
 }
 
