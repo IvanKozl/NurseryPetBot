@@ -1,8 +1,6 @@
 package com.example.nurserypetbot.listener;
 
 import com.example.nurserypetbot.enums.Responses;
-
-
 import com.example.nurserypetbot.repository.NotifictionsRepository;
 import com.example.nurserypetbot.services.services.UsersContactInformationService;
 import com.pengrad.telegrambot.TelegramBot;
@@ -19,7 +17,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 
 import java.util.List;
-
 
 @Service
 public class TelegramBotUpdatesListener implements UpdatesListener {
