@@ -1,9 +1,12 @@
 package com.example.nurserypetbot.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
+
 public class UsersContactInformation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,9 +32,27 @@ public class UsersContactInformation {
     private String email;
 
     @Column(name = "pet")
-    private String pet;
+    private String petType;
+    @OneToMany(mappedBy = "pet")
+    @JsonIgnore
+    @Enumerated(EnumType.STRING)
+    private Pet pet;
+
+
 
     public UsersContactInformation() {
+    }
+
+    public UsersContactInformation(long id, long chatId, String name, String surname,
+                                   int age, long phoneNumber, String email, String petType) {
+        this.id = id;
+        this.chatId = chatId;
+        this.name = name;
+        this.surname = surname;
+        this.age = age;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.petType = petType;
     }
 
     public long getId() {
@@ -90,11 +111,18 @@ public class UsersContactInformation {
         this.email = email;
     }
 
-    public String getPet() {
-        return pet;
+    public String getPetType() {
+        return petType;
     }
 
     public void setPet(String pet) {
+        this.petType = petType;
+    }
+
+    public Pet getPet(){
+        return pet;
+    }
+    public void setPet(Pet pet){
         this.pet = pet;
     }
 

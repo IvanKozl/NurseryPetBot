@@ -3,6 +3,7 @@ package com.example.nurserypetbot.listener;
 import com.example.nurserypetbot.enums.Responses;
 
 
+import com.example.nurserypetbot.parser.Parser;
 import com.example.nurserypetbot.repository.NotifictionsRepository;
 import com.example.nurserypetbot.services.services.UsersContactInformationService;
 import com.pengrad.telegrambot.TelegramBot;
@@ -26,17 +27,19 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
     private Logger logger = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
 
-    @Autowired
-    private TelegramBot telegramBot;
-
-    @Autowired
-    private NotifictionsRepository notifictionsRepository;
-
-    @Autowired
-    private UsersContactInformationService service;
-
-    @Autowired(required = false)
-    private Responses responses;
+    private final TelegramBot telegramBot;
+    private final UsersContactInformationService service;
+    private final Responses responses;
+    private final Parser parser;
+    public TelegramBotUpdatesListener(TelegramBot telegramBot,
+                                      UsersContactInformationService service,
+                                      Responses responses,
+                                      Parser parser) {
+        this.telegramBot = telegramBot;
+        this.service = service;
+        this.responses = responses;
+        this.parser = parser;
+    }
 
     @PostConstruct
     public void init() {
@@ -67,8 +70,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         updates.forEach(update -> {
             logger.info("Processing update: {}", update);
 
-            final boolean matches = update.message().text()
-                    .matches("(\\w{3})(\\s)([=A-Za-z]+)\\s+([=A-Za-z]+)\\s+(\\d+)\\s+(\\d{11})\\s+([A-Za-z\\d@.]+)");
+
             if (update.message().text().startsWith("/start")) {
                 SendMessage message = new SendMessage(update.message().chat().id(),
                         responses.START.getResponseText());
@@ -116,9 +118,13 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                         responses.DATA.getResponseText());
                 var result = telegramBot.execute(message);
             } else if (update.message().text()
-                    .matches("(\\w{3})(\\s)([=A-Za-zА-Яа-я]+)\\s+([=A-Za-zА-Яа-я]+)\\s+(\\d+)\\s+(\\d{11})\\s+([A-Za-z\\d@.]+)")) {
+                    .matches(parser.getParserString())) {
                 service.addNewUsersInformation(update.message());
-
+            }
+            else {
+                SendMessage message = new SendMessage(update.message().chat().id(),
+                        responses.WRONG.getResponseText());
+                var result = telegramBot.execute(message);
             }
 
         });

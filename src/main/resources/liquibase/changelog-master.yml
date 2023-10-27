@@ -5,3 +5,6 @@ databaseChangeLog:
   - include:
       relativeToChangeLogFile: true
       file: script/usersContacts.sql
+  - include:
+      relativeToChangeLogFile: true
+      file: script/pet.sql

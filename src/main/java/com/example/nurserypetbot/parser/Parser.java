@@ -1,11 +1,15 @@
 package com.example.nurserypetbot.parser;
 
+import com.example.nurserypetbot.enums.Responses;
 import com.example.nurserypetbot.models.UsersContactInformation;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Parser {
+    private Responses responses;
+    public String parserString = ("(\\w{3})(\\s)([A-Za-zА-Яа-я]+)(\\s)([A-Za-zА-Яа-я]+)(\\s)(\\d+)(\\s)(\\d{11})(\\s+)([A-Za-z\\d@\\.]+)");
+
     public static UsersContactInformation tryToParseUsersInformation(String text) {
         Pattern pattern =
                 Pattern.compile("(\\w{3})(\\s)([A-Za-zА-Яа-я]+)(\\s)([A-Za-zА-Яа-я]+)(\\s)(\\d+)(\\s)(\\d{11})(\\s+)([A-Za-z\\d@\\.]+)");
@@ -26,5 +30,13 @@ public class Parser {
             throw new IllegalArgumentException("Wrong format, please, try again");
         }
         return usersContactInformation;
+    }
+
+    public String getParserString() {
+        return parserString;
+    }
+
+    public void setParserString(String parserString) {
+        this.parserString = parserString;
     }
 }
