@@ -10,7 +10,7 @@ name varchar NOT NULL,
 gender varchar NOT NULL,
 age int NOT NULL,
 sterile varchar NOT NULL,
-feature varchar DEFAULT healthy,
-feature_add text DEFAULT healthy,
+feature varchar ,
+feature_add text ,
 PRIMARY KEY (id)
 );

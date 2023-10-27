@@ -3,6 +3,7 @@ package com.example.nurserypetbot.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -33,10 +34,10 @@ public class UsersContactInformation {
 
     @Column(name = "pet")
     private String petType;
+
     @OneToMany(mappedBy = "pet")
     @JsonIgnore
-    @Enumerated(EnumType.STRING)
-    private Pet pet;
+    private List<Pet> pets;
 
 
 
@@ -115,15 +116,15 @@ public class UsersContactInformation {
         return petType;
     }
 
-    public void setPet(String pet) {
+    public void setPetType(String pet) {
         this.petType = petType;
     }
 
-    public Pet getPet(){
-        return pet;
+    public List<Pet> getPets(){
+        return pets;
     }
-    public void setPet(Pet pet){
-        this.pet = pet;
+    public void setPets(List<Pet> pest){
+        this.pets = pets;
     }
 
     @Override
@@ -140,12 +141,12 @@ public class UsersContactInformation {
                 && Objects.equals(name, usersContactInformation.name)
                 && Objects.equals(surname, usersContactInformation.surname)
                 && Objects.equals(email, usersContactInformation.email)
-                && Objects.equals(pet, usersContactInformation.pet);
+                && Objects.equals(petType, usersContactInformation.petType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(chatId, name, surname, age, phoneNumber, email, pet);
+        return Objects.hash(chatId, name, surname, age, phoneNumber, email, petType);
     }
 
 }

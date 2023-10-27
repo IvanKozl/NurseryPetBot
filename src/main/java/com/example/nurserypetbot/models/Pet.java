@@ -1,7 +1,7 @@
 package com.example.nurserypetbot.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.data.annotation.Id;
+
 
 import javax.persistence.*;
 import java.util.List;
@@ -32,7 +32,7 @@ public class Pet {
 
     @ManyToOne
     @JoinColumn(name = "pet")
-    private List<UsersContactInformation> users;
+    private Pet pet;
 
 
 

@@ -4,7 +4,7 @@ import com.example.nurserypetbot.enums.Responses;
 
 
 import com.example.nurserypetbot.parser.Parser;
-import com.example.nurserypetbot.repository.NotifictionsRepository;
+import com.example.nurserypetbot.repository.NotificationsRepository;
 import com.example.nurserypetbot.services.services.UsersContactInformationService;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
@@ -29,6 +29,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
     private final TelegramBot telegramBot;
     private final UsersContactInformationService service;
+    @Autowired(required = false)
     private final Responses responses;
     private final Parser parser;
     public TelegramBotUpdatesListener(TelegramBot telegramBot,
@@ -40,6 +41,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         this.responses = responses;
         this.parser = parser;
     }
+
 
     @PostConstruct
     public void init() {
