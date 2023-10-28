@@ -50,7 +50,7 @@ public class UsersContactInformationImpl implements UsersContactInformationServi
 
         try {
 
-            usersContactInformation = Parser.tryToParseUsersInformation(message.text());
+            usersContactInformation = Parser.tryToParseUsersInformation(message.text().toUpperCase());
             usersContactInformation.setChatId(chatId);
 
 
@@ -64,7 +64,9 @@ public class UsersContactInformationImpl implements UsersContactInformationServi
                 catUsersContactInformationRepository.save(usersContactInformation);
 
             } catch (Exception exception) {
-                telegramBot.execute(new SendMessage(chatId, "This phone number or email address is already in our DB"));
+                telegramBot.execute(new SendMessage(chatId,
+                        "This phone number or email address is already in our DB," +
+                                "or you forget some information :("));
                 return;
             }
             result = new SendMessage(chatId, String.format("OK, your information successfully added"));
@@ -75,7 +77,9 @@ public class UsersContactInformationImpl implements UsersContactInformationServi
                 dogUsersContactInformationRepository.save(usersContactInformation);
 
             } catch (Exception exception) {
-                telegramBot.execute(new SendMessage(chatId, "This phone number or email address is already in our DB"));
+                telegramBot.execute(new SendMessage(chatId,
+                        "This phone number or email address is already in our DB," +
+                                "or you forget some information :("));
                 return;
             }
 

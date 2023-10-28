@@ -29,17 +29,13 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
     private final TelegramBot telegramBot;
     private final UsersContactInformationService service;
-    @Autowired(required = false)
-    private final Responses responses;
-    private final Parser parser;
+
     public TelegramBotUpdatesListener(TelegramBot telegramBot,
-                                      UsersContactInformationService service,
-                                      Responses responses,
-                                      Parser parser) {
+                                      UsersContactInformationService service
+                                      ) {
         this.telegramBot = telegramBot;
         this.service = service;
-        this.responses = responses;
-        this.parser = parser;
+
     }
 
 
@@ -75,57 +71,57 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
             if (update.message().text().startsWith("/start")) {
                 SendMessage message = new SendMessage(update.message().chat().id(),
-                        responses.START.getResponseText());
+                        Responses.START.getResponseText());
                 var result = telegramBot.execute(message);
             } else if (update.message().text().toUpperCase().startsWith("MENU")) {
                 SendMessage message = new SendMessage(update.message().chat().id(),
-                        responses.MENU.getResponseText());
+                        Responses.MENU.getResponseText());
                 var result = telegramBot.execute(message);
             } else if (update.message().text().toUpperCase().startsWith("CAR")) {
                 SendMessage message = new SendMessage(update.message().chat().id(),
-                        responses.CAR.getResponseText());
+                        Responses.CAR.getResponseText());
                 var result = telegramBot.execute(message);
             } else if (update.message().text().toUpperCase().startsWith("SAFETY")) {
                 SendMessage message = new SendMessage(update.message().chat().id(),
-                        responses.SAFETY.getResponseText());
+                        Responses.SAFETY.getResponseText());
                 var result = telegramBot.execute(message);
 
             } else if (update.message().text().toUpperCase().startsWith("REASONS")) {
                 SendMessage message = new SendMessage(update.message().chat().id(),
-                        responses.REASONS.getResponseText());
+                        Responses.REASONS.getResponseText());
                 var result = telegramBot.execute(message);
 
             } else if (update.message().text().toUpperCase().startsWith("HELP")) {
                 SendMessage message = new SendMessage(update.message().chat().id(),
-                        responses.HELP.getResponseText());
+                        Responses.HELP.getResponseText());
                 var result = telegramBot.execute(message);
             } else if (update.message().text().toUpperCase().startsWith("ADD")) {
                 SendMessage message = new SendMessage(update.message().chat().id(),
-                        responses.ADD.getResponseText());
+                        Responses.ADD.getResponseText());
                 var result = telegramBot.execute(message);
             } else if (update.message().text().toUpperCase().startsWith("ADVISES")) {
                 SendMessage message = new SendMessage(update.message().chat().id(),
-                        responses.ADVISES.getResponseText());
+                        Responses.ADVISES.getResponseText());
                 var result = telegramBot.execute(message);
             } else if (update.message().text().toUpperCase().startsWith("DOGHELP")) {
                 SendMessage message = new SendMessage(update.message().chat().id(),
-                        responses.DOGHELP.getResponseText());
+                        Responses.DOGHELP.getResponseText());
                 var result = telegramBot.execute(message);
             } else if (update.message().text().toUpperCase().startsWith("NUMBER")) {
                 SendMessage message = new SendMessage(update.message().chat().id(),
-                        responses.NUMBER.getResponseText());
+                        Responses.NUMBER.getResponseText());
                 var result = telegramBot.execute(message);
             } else if (update.message().text().toUpperCase().startsWith("DATA")) {
                 SendMessage message = new SendMessage(update.message().chat().id(),
-                        responses.DATA.getResponseText());
+                        Responses.DATA.getResponseText());
                 var result = telegramBot.execute(message);
-            } else if (update.message().text()
-                    .matches(parser.getParserString())) {
+            } else if (update.message().text().toUpperCase()
+                    .matches(Parser.getParserString())) {
                 service.addNewUsersInformation(update.message());
             }
             else {
                 SendMessage message = new SendMessage(update.message().chat().id(),
-                        responses.WRONG.getResponseText());
+                        Responses.WRONG.getResponseText());
                 var result = telegramBot.execute(message);
             }
 

@@ -78,6 +78,7 @@ public enum Responses {
 
 
 
+
     private final String responseText;
 
     Responses(String responseText) {

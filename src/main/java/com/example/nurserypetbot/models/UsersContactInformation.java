@@ -1,5 +1,6 @@
 package com.example.nurserypetbot.models;
 
+import com.example.nurserypetbot.enums.PetShelter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -7,7 +8,6 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-
 public class UsersContactInformation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,13 +31,17 @@ public class UsersContactInformation {
 
     @Column(name = "email")
     private String email;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "pet_shelter_type")
+    private PetShelter petShelterType;
 
-    @Column(name = "pet")
-    private String petType;
-
-    @OneToMany(mappedBy = "pet")
+    @OneToMany(mappedBy = "usersContactInformation")
     @JsonIgnore
-    private List<Pet> pets;
+    private List<Cat> cats;
+
+    @OneToMany(mappedBy = "usersContactInformation")
+    @JsonIgnore
+    private List<Dog> dogs;
 
 
 
@@ -45,7 +49,8 @@ public class UsersContactInformation {
     }
 
     public UsersContactInformation(long id, long chatId, String name, String surname,
-                                   int age, long phoneNumber, String email, String petType) {
+                                   int age, long phoneNumber, String email,
+                                   PetShelter petShelterType) {
         this.id = id;
         this.chatId = chatId;
         this.name = name;
@@ -53,7 +58,7 @@ public class UsersContactInformation {
         this.age = age;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.petType = petType;
+        this.petShelterType = petShelterType;
     }
 
     public long getId() {
@@ -112,20 +117,15 @@ public class UsersContactInformation {
         this.email = email;
     }
 
-    public String getPetType() {
-        return petType;
+    public PetShelter getPetType() {
+        return petShelterType;
     }
 
-    public void setPetType(String pet) {
-        this.petType = petType;
+    public void setPetShelterType(PetShelter petShelterType) {
+        this.petShelterType = petShelterType;
     }
 
-    public List<Pet> getPets(){
-        return pets;
-    }
-    public void setPets(List<Pet> pest){
-        this.pets = pets;
-    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -141,14 +141,33 @@ public class UsersContactInformation {
                 && Objects.equals(name, usersContactInformation.name)
                 && Objects.equals(surname, usersContactInformation.surname)
                 && Objects.equals(email, usersContactInformation.email)
-                && Objects.equals(petType, usersContactInformation.petType);
+                && Objects.equals(petShelterType, usersContactInformation.petShelterType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(chatId, name, surname, age, phoneNumber, email, petType);
+        return Objects.hash(chatId, name, surname, age, phoneNumber, email, petShelterType);
     }
 
+    public PetShelter getPetShelterType() {
+        return petShelterType;
+    }
+
+    public List<Cat> getCats() {
+        return cats;
+    }
+
+    public void setCats(List<Cat> cats) {
+        this.cats = cats;
+    }
+
+    public List<Dog> getDogs() {
+        return dogs;
+    }
+
+    public void setDogs(List<Dog> dogs) {
+        this.dogs = dogs;
+    }
 }
 
 

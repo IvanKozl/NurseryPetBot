@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
-@Entity
+@MappedSuperclass
 public class Pet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,8 +31,8 @@ public class Pet {
     private String featureAdd;
 
     @ManyToOne
-    @JoinColumn(name = "pet")
-    private Pet pet;
+    @JoinColumn(name = "user_id")
+    private UsersContactInformation usersContactInformation;
 
 
 
