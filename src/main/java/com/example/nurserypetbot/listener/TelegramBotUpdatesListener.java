@@ -68,7 +68,6 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         updates.forEach(update -> {
             logger.info("Processing update: {}", update);
 
-
             if (update.message().text().startsWith("/start")) {
                 SendMessage message = new SendMessage(update.message().chat().id(),
                         Responses.START.getResponseText());
@@ -115,10 +114,21 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 SendMessage message = new SendMessage(update.message().chat().id(),
                         Responses.DATA.getResponseText());
                 var result = telegramBot.execute(message);
-            } else if (update.message().text().toUpperCase()
+            } else if (update.message().text().toUpperCase().startsWith("DOCUMENTS")) {
+                SendMessage message = new SendMessage(update.message().chat().id(),
+                        Responses.DATA.getResponseText());
+                var result = telegramBot.execute(message);
+            }
+            else if (update.message().text().toUpperCase().startsWith("RULES")) {
+                SendMessage message = new SendMessage(update.message().chat().id(),
+                        Responses.DATA.getResponseText());
+                var result = telegramBot.execute(message);
+            }
+            else if (update.message().text().toUpperCase()
                     .matches(Parser.getParserString())) {
                 service.addNewUsersInformation(update.message());
             }
+
             else {
                 SendMessage message = new SendMessage(update.message().chat().id(),
                         Responses.WRONG.getResponseText());

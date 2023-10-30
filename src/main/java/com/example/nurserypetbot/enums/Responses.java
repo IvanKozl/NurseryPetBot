@@ -73,7 +73,11 @@ public enum Responses {
     WRONG("I have no information for this request :(" +
             "please, try again. \n" +
             "Choose one from MENU"),
-    PET("Cat, dog");
+    PET("Cat, dog"),
+
+    DOCUMENTS ("Для того, что бы взять животное, вы должны прийти в приют для беседы и принести с собой необходимый пакет документов.'"),
+
+    RULES ("Прийти в часы посещения, предупредив волонтеров о приходе. Быть готовым слушать указания сотрудников приюта.");
 
 
 
