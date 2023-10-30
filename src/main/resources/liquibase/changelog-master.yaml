@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - include:
+      relativeToChangeLogFile: true
+      file: script/notification.sql
+  - include:
+      relativeToChangeLogFile: true
+      file: script/usersContacts.sql
+  - include:
+      relativeToChangeLogFile: true
+      file: script/cat.sql
+  - include:
+      relativeToChangeLogFile: true
+      file: script/dog.sql

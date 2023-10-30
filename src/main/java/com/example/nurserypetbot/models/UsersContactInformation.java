@@ -1,6 +1,10 @@
 package com.example.nurserypetbot.models;
 
+import com.example.nurserypetbot.enums.PetShelter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -27,11 +31,34 @@ public class UsersContactInformation {
 
     @Column(name = "email")
     private String email;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "pet_shelter_type")
+    private PetShelter petShelterType;
 
-    @Column(name = "pet")
-    private String pet;
+    @OneToMany(mappedBy = "usersContactInformation")
+    @JsonIgnore
+    private List<Cat> cats;
+
+    @OneToMany(mappedBy = "usersContactInformation")
+    @JsonIgnore
+    private List<Dog> dogs;
+
+
 
     public UsersContactInformation() {
+    }
+
+    public UsersContactInformation(long id, long chatId, String name, String surname,
+                                   int age, long phoneNumber, String email,
+                                   PetShelter petShelterType) {
+        this.id = id;
+        this.chatId = chatId;
+        this.name = name;
+        this.surname = surname;
+        this.age = age;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.petShelterType = petShelterType;
     }
 
     public long getId() {
@@ -90,13 +117,15 @@ public class UsersContactInformation {
         this.email = email;
     }
 
-    public String getPet() {
-        return pet;
+    public PetShelter getPetType() {
+        return petShelterType;
     }
 
-    public void setPet(String pet) {
-        this.pet = pet;
+    public void setPetShelterType(PetShelter petShelterType) {
+        this.petShelterType = petShelterType;
     }
+
+
 
     @Override
     public boolean equals(Object o) {
@@ -112,14 +141,33 @@ public class UsersContactInformation {
                 && Objects.equals(name, usersContactInformation.name)
                 && Objects.equals(surname, usersContactInformation.surname)
                 && Objects.equals(email, usersContactInformation.email)
-                && Objects.equals(pet, usersContactInformation.pet);
+                && Objects.equals(petShelterType, usersContactInformation.petShelterType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(chatId, name, surname, age, phoneNumber, email, pet);
+        return Objects.hash(chatId, name, surname, age, phoneNumber, email, petShelterType);
     }
 
+    public PetShelter getPetShelterType() {
+        return petShelterType;
+    }
+
+    public List<Cat> getCats() {
+        return cats;
+    }
+
+    public void setCats(List<Cat> cats) {
+        this.cats = cats;
+    }
+
+    public List<Dog> getDogs() {
+        return dogs;
+    }
+
+    public void setDogs(List<Dog> dogs) {
+        this.dogs = dogs;
+    }
 }
 
 
