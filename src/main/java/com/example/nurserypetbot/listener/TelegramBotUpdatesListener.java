@@ -3,8 +3,7 @@ package com.example.nurserypetbot.listener;
 import com.example.nurserypetbot.enums.Responses;
 
 
-import com.example.nurserypetbot.parser.Parser;
-import com.example.nurserypetbot.repository.NotificationsRepository;
+import com.example.nurserypetbot.parser.ParserUserContactInfo;
 import com.example.nurserypetbot.services.services.UsersContactInformationService;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
@@ -57,6 +56,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
      * <br> {@link Responses#DOGHELP}
      * <br> {@link Responses#NUMBER}
      * <br> {@link Responses#DATA}
+     * <br> {@link Responses#REPORT}
      * <br> When user want bot to copy his/her contact information,bot uses
      * <br> {@link UsersContactInformationService#addNewUsersInformation(Message)}
      *
@@ -67,6 +67,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     public int process(List<Update> updates) {
         updates.forEach(update -> {
             logger.info("Processing update: {}", update);
+
 
             if (update.message().text().startsWith("/start")) {
                 SendMessage message = new SendMessage(update.message().chat().id(),
@@ -114,6 +115,13 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 SendMessage message = new SendMessage(update.message().chat().id(),
                         Responses.DATA.getResponseText());
                 var result = telegramBot.execute(message);
+            } else if (update.message().text().toUpperCase().startsWith("REPORT")) {
+                SendMessage message = new SendMessage(update.message().chat().id(),
+                        Responses.REPORT.getResponseText());
+                var result = telegramBot.execute(message);
+            }
+            else if (update.message().text().toUpperCase()
+                    .matches(ParserUserContactInfo.getParserString())) {
             } else if (update.message().text().toUpperCase().startsWith("DOCUMENTS")) {
                 SendMessage message = new SendMessage(update.message().chat().id(),
                         Responses.DATA.getResponseText());
@@ -125,7 +133,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 var result = telegramBot.execute(message);
             }
             else if (update.message().text().toUpperCase()
-                    .matches(Parser.getParserString())) {
+                    .matches(ParserUserContactInfo.getParserString())) {
                 service.addNewUsersInformation(update.message());
             }
 

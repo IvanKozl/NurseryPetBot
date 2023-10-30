@@ -1,7 +1,7 @@
 package com.example.nurserypetbot.services.implementations;
 
 import com.example.nurserypetbot.models.UsersContactInformation;
-import com.example.nurserypetbot.parser.Parser;
+import com.example.nurserypetbot.parser.ParserUserContactInfo;
 import com.example.nurserypetbot.repository.CatUsersContactInformationRepository;
 import com.example.nurserypetbot.repository.DogUsersContactInformationRepository;
 import com.example.nurserypetbot.services.services.UsersContactInformationService;
@@ -29,9 +29,9 @@ public class UsersContactInformationImpl implements UsersContactInformationServi
     }
 
     /**
-     * Addition new contact users information using {@link Parser}
+     * Addition new contact users information using {@link ParserUserContactInfo}
      * <br>
-     * method {@link Parser#tryToParseUsersInformation(String)}
+     * method {@link ParserUserContactInfo#tryToParseUsersInformation(String)}
      * <br>
      * Addition new information is repositories. Depends on pet ->
      * <br>
@@ -50,7 +50,7 @@ public class UsersContactInformationImpl implements UsersContactInformationServi
 
         try {
 
-            usersContactInformation = Parser.tryToParseUsersInformation(message.text().toUpperCase());
+            usersContactInformation = ParserUserContactInfo.tryToParseUsersInformation(message.text().toUpperCase());
             usersContactInformation.setChatId(chatId);
 
 
