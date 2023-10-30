@@ -1,10 +1,7 @@
 package com.example.nurserypetbot.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Objects;
 @MappedSuperclass
 public class Pet {
@@ -26,10 +23,8 @@ public class Pet {
     private String sterile;
     @Column(name = "feature")
     private String feature;
-
     @Column(name = "feature_add")
     private String featureAdd;
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UsersContactInformation usersContactInformation;

@@ -23,7 +23,7 @@ public class DogServiceImpl implements DogService {
             throw new DogException("We have already got this dog in our DB, please," +
                     "check the information");
         }
-        Dog savedDog= dogRepository.save(dog);
+        Dog savedDog = dogRepository.save(dog);
         return savedDog;
     }
 

@@ -75,7 +75,6 @@ public class UsersContactInformationImpl implements UsersContactInformationServi
         else if (message.text().toUpperCase().startsWith("DOG")) {
             try {
                 dogUsersContactInformationRepository.save(usersContactInformation);
-
             } catch (Exception exception) {
                 telegramBot.execute(new SendMessage(chatId,
                         "This phone number or email address is already in our DB," +

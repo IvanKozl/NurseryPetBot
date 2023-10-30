@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 public class CatController {
     public final CatService catService;
 
-
     public CatController(CatService catService) {
         this.catService = catService;
     }
