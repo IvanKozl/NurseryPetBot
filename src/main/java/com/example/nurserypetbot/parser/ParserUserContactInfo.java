@@ -7,8 +7,8 @@ import com.example.nurserypetbot.models.UsersContactInformation;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Parser {
-    private Responses responses;
+public class ParserUserContactInfo {
+
 
     public static String parserString = ("(\\w+)(\\s)([A-Za-zА-Яа-я]+)(\\s)([A-Za-zА-Яа-я]+)(\\s)(\\d+)(\\s)(\\d{11})(\\s+)([A-Za-z\\d@\\.]+)");
 

@@ -34,7 +34,6 @@ public class DogServiceImpl implements DogService {
         if (dog.isEmpty()) {
             throw new DogException("Dog not found");
         }
-
         return dog.get();
     }
 
