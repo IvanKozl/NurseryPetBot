@@ -94,6 +94,16 @@ public class UsersContactInformationImpl implements UsersContactInformationServi
 
     }
 
+    /**
+     * Addition user's report using {@link ParserReport}
+     * <br>
+     * method {@link ParserReport#tryToParseReport(String)}
+     * <br>
+     * Addition report information in repository
+     * <br>
+     * {@code reportRepository.save(report);}
+     * @param message
+     */
     @Override
     public void addReport(Message message) {
         Report report;

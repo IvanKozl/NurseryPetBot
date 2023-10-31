@@ -58,6 +58,9 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
      * <br> {@link Responses#NUMBER}
      * <br> {@link Responses#DATA}
      * <br> {@link Responses#REPORT}
+     * <br> {@link Responses#DOCUMENTS}
+     * <br> {@link Responses#RULES}
+     * <br> {@link Responses#DAY}
      * <br> When user want bot to copy his/her contact information,bot uses
      * <br> {@link UsersContactInformationService#addNewUsersInformation(Message)}
      *
