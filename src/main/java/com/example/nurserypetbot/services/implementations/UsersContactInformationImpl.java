@@ -1,9 +1,12 @@
 package com.example.nurserypetbot.services.implementations;
 
+import com.example.nurserypetbot.models.Report;
 import com.example.nurserypetbot.models.UsersContactInformation;
+import com.example.nurserypetbot.parser.ParserReport;
 import com.example.nurserypetbot.parser.ParserUserContactInfo;
 import com.example.nurserypetbot.repository.CatUsersContactInformationRepository;
 import com.example.nurserypetbot.repository.DogUsersContactInformationRepository;
+import com.example.nurserypetbot.repository.ReportRepository;
 import com.example.nurserypetbot.services.services.UsersContactInformationService;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Message;
@@ -19,13 +22,15 @@ public class UsersContactInformationImpl implements UsersContactInformationServi
     private final DogUsersContactInformationRepository dogUsersContactInformationRepository;
 
     private final CatUsersContactInformationRepository catUsersContactInformationRepository;
+    private final ReportRepository reportRepository;
 
     public UsersContactInformationImpl(TelegramBot telegramBot,
                                        CatUsersContactInformationRepository catUsersContactInformationRepository,
-                                       DogUsersContactInformationRepository dogUsersContactInformationRepository) {
+                                       DogUsersContactInformationRepository dogUsersContactInformationRepository, ReportRepository reportRepository) {
         this.telegramBot = telegramBot;
         this.dogUsersContactInformationRepository = dogUsersContactInformationRepository;
         this.catUsersContactInformationRepository = catUsersContactInformationRepository;
+        this.reportRepository = reportRepository;
     }
 
     /**
@@ -86,6 +91,36 @@ public class UsersContactInformationImpl implements UsersContactInformationServi
             result = new SendMessage(chatId, String.format("OK, your information successfully added"));
             telegramBot.execute(result);
         }
+
+    }
+
+    /**
+     * Addition user's report using {@link ParserReport}
+     * <br>
+     * method {@link ParserReport#tryToParseReport(String)}
+     * <br>
+     * Addition report information in repository
+     * <br>
+     * {@code reportRepository.save(report);}
+     * @param message
+     */
+    @Override
+    public void addReport(Message message) {
+        Report report;
+        long chatId = message.chat().id();
+        SendMessage result;
+
+        try{
+            report = ParserReport.tryToParseReport(message.text().toLowerCase());
+            report.setChatId(chatId);
+        } catch (Exception ex){
+            telegramBot.execute(new SendMessage(chatId, "Wrong format of report, please," +
+                    "find the example in MENU in DAY"));
+            return;
+        }
+        reportRepository.save(report);
+        result = new SendMessage(chatId, String.format("OK, your report successfully added"));
+        telegramBot.execute(result);
 
     }
 }

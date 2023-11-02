@@ -1,8 +1,10 @@
 package com.example.nurserypetbot.listener;
 
 import com.example.nurserypetbot.enums.Responses;
+
+
+import com.example.nurserypetbot.parser.ParserReport;
 import com.example.nurserypetbot.parser.ParserUserContactInfo;
-import com.example.nurserypetbot.repository.NotifictionsRepository;
 import com.example.nurserypetbot.services.services.UsersContactInformationService;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 
 import java.util.List;
+
 
 @Service
 public class TelegramBotUpdatesListener implements UpdatesListener {
@@ -55,6 +58,9 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
      * <br> {@link Responses#NUMBER}
      * <br> {@link Responses#DATA}
      * <br> {@link Responses#REPORT}
+     * <br> {@link Responses#DOCUMENTS}
+     * <br> {@link Responses#RULES}
+     * <br> {@link Responses#DAY}
      * <br> When user want bot to copy his/her contact information,bot uses
      * <br> {@link UsersContactInformationService#addNewUsersInformation(Message)}
      *
@@ -118,24 +124,27 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                         Responses.REPORT.getResponseText());
                 var result = telegramBot.execute(message);
             }
-            else if (update.message().text().toUpperCase()
-                    .matches(ParserUserContactInfo.getParserString())) {
-            } else if (update.message().text().toUpperCase().startsWith("DOCUMENTS")) {
+            else if (update.message().text().toUpperCase().startsWith("DOCUMENTS")) {
                 SendMessage message = new SendMessage(update.message().chat().id(),
-                        Responses.DATA.getResponseText());
+                        Responses.DOCUMENTS.getResponseText());
                 var result = telegramBot.execute(message);
             }
             else if (update.message().text().toUpperCase().startsWith("RULES")) {
                 SendMessage message = new SendMessage(update.message().chat().id(),
-                        Responses.DATA.getResponseText());
+                        Responses.RULES.getResponseText());
+                var result = telegramBot.execute(message);
+            }
+            else if (update.message().text().toUpperCase().startsWith("DAY")) {
+                SendMessage message = new SendMessage(update.message().chat().id(),
+                        Responses.DAY.getResponseText());
                 var result = telegramBot.execute(message);
             }
             else if (update.message().text().toUpperCase()
-                    .matches(ParserUserContactInfo.getParserString())) {
+                    .matches(ParserUserContactInfo.getParserInfoString())) {
                 service.addNewUsersInformation(update.message());
-            }
-
-            else {
+            } else if (update.message().text().toLowerCase().matches(ParserReport.getParserReportString())) {
+                service.addReport(update.message());
+            } else {
                 SendMessage message = new SendMessage(update.message().chat().id(),
                         Responses.WRONG.getResponseText());
                 var result = telegramBot.execute(message);

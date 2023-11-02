@@ -11,3 +11,6 @@ databaseChangeLog:
   - include:
       relativeToChangeLogFile: true
       file: script/dog.sql
+  - include:
+      relativeToChangeLogFile: true
+      file: script/report.sql

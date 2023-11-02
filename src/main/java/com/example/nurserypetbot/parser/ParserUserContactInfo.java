@@ -10,11 +10,11 @@ import java.util.regex.Pattern;
 public class ParserUserContactInfo {
 
 
-    public static String parserString = ("(\\w+)(\\s)([A-Za-zА-Яа-я]+)(\\s)([A-Za-zА-Яа-я]+)(\\s)(\\d+)(\\s)(\\d{11})(\\s+)([A-Za-z\\d@\\.]+)");
+    public static String parserInfoString = ("(\\w+)(\\s)([A-Za-zА-Яа-я]+)(\\s)([A-Za-zА-Яа-я]+)(\\s)(\\d+)(\\s)(\\d{11})(\\s+)([A-Za-z\\d@\\.]+)");
 
     public static UsersContactInformation tryToParseUsersInformation(String text) {
         Pattern pattern =
-                Pattern.compile(parserString);
+                Pattern.compile(parserInfoString);
 
         Matcher matcher = pattern.matcher(text);
         UsersContactInformation usersContactInformation = new UsersContactInformation();
@@ -34,11 +34,11 @@ public class ParserUserContactInfo {
         return usersContactInformation;
     }
 
-    public static String getParserString() {
-        return parserString;
+    public static String getParserInfoString() {
+        return parserInfoString;
     }
 
-    public void setParserString(String parserString) {
-        this.parserString = parserString;
+    public void setParserInfoString(String parserInfoString) {
+        this.parserInfoString = parserInfoString;
     }
 }
