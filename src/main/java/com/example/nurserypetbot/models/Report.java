@@ -1,6 +1,7 @@
 package com.example.nurserypetbot.models;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Objects;
 @Entity
 @Table(name = "report")
@@ -13,17 +14,23 @@ public class Report {
     private long chatId;
     @Column(name = "food")
     private String food;
+
     @Column(name = "feel")
     private String feel;
     @Column(name = "behavior")
     private String behavior;
 
-    public Report(long id, long chatId, String food, String feel, String behavior) {
+    @Column(name = "date_time")
+    private LocalDateTime dateTime;
+
+    public Report(long id, long chatId, String food, String feel, String behavior,
+                  LocalDateTime dateTime) {
         this.id = id;
         this.chatId = chatId;
         this.food = food;
         this.feel = feel;
         this.behavior = behavior;
+        this.dateTime = dateTime;
     }
     public Report(){
 
@@ -69,6 +76,13 @@ public class Report {
     public void setBehavior(String behavior) {
         this.behavior = behavior;
     }
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -82,11 +96,14 @@ public class Report {
         return chatId == report.chatId
                 && Objects.equals(food, report.food)
                 && Objects.equals(feel, report.feel)
-                && Objects.equals(behavior, report.behavior);
+                && Objects.equals(behavior, report.behavior)
+                && Objects.equals(dateTime, report.dateTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(chatId, food, feel, behavior);
+        return Objects.hash(chatId, food, feel, behavior, dateTime);
     }
+
+
 }

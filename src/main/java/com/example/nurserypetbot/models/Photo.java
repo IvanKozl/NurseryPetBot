@@ -13,8 +13,13 @@ public class Photo {
     private String mediaType;
     private byte[] data;
 
+
+
     @OneToOne
-    private Report report;
+    private Cat cat;
+
+    @OneToOne
+    private Dog dog;
 
     public Photo(){
 
@@ -60,11 +65,20 @@ public class Photo {
         this.data = data;
     }
 
-    public Report getReport() {
-        return report;
+    public Cat getCat() {
+        return cat;
     }
 
-    public void setReport(Report report) {
-        this.report = report;
+    public void setCat(Cat cat) {
+        this.cat = cat;
     }
+
+    public Dog getDog() {
+        return dog;
+    }
+
+    public void setDog(Dog dog) {
+        this.dog = dog;
+    }
+
 }

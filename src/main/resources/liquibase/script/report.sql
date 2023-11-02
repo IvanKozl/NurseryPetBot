@@ -8,5 +8,6 @@ chat_id bigint,
 food text NOT NULL,
 feel text NOT NULL,
 behavior text NOT NULL,
+date_time timestamp without time zone not null,
 user_id bigint REFERENCES nurserycatdogbot.users_contact_information (id)
 );
