@@ -13,12 +13,7 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SendPhoto;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -26,7 +21,6 @@ import java.util.List;
 
 @Service
 public class UsersContactInformationImpl implements UsersContactInformationService {
-    Responses responses;
 
     private final TelegramBot telegramBot;
 
