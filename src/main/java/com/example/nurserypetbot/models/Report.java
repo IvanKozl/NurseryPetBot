@@ -7,7 +7,7 @@ import java.util.Objects;
 @Table(name = "report")
 public class Report {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private long id;
     @Column(name = "chat_id")
@@ -22,6 +22,10 @@ public class Report {
 
     @Column(name = "date_time")
     private LocalDateTime dateTime;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UsersContactInformation usersContactInformation;
 
     public Report(long id, long chatId, String food, String feel, String behavior,
                   LocalDateTime dateTime) {
