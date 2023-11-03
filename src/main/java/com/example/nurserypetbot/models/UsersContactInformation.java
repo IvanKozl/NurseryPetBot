@@ -34,11 +34,9 @@ public class UsersContactInformation {
     @Enumerated(EnumType.STRING)
     @Column(name = "pet_shelter_type")
     private PetShelter petShelterType;
-
     @OneToMany(mappedBy = "usersContactInformation")
     @JsonIgnore
     private List<Cat> cats;
-
     @OneToMany(mappedBy = "usersContactInformation")
     @JsonIgnore
     private List<Dog> dogs;

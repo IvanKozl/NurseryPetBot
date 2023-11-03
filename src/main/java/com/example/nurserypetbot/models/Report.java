@@ -5,6 +5,7 @@ import com.example.nurserypetbot.services.implementations.UsersContactInformatio
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
+
 @Entity
 @Table(name = "report")
 public class Report {
@@ -26,8 +27,16 @@ public class Report {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UsersContactInformationImpl usersContactInformation;
-//    @Embedded
-//    Photo photo;
+    @Embedded
+    Photo photo;
+
+    public Photo getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(Photo photo) {
+        this.photo = photo;
+    }
 
     public UsersContactInformationImpl getUsersContactInformation() {
         return usersContactInformation;

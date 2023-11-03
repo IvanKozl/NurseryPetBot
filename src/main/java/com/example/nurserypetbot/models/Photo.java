@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 
+@Embeddable
 @Entity
 @Table(name = "photo")
 public class Photo {
@@ -13,22 +14,26 @@ public class Photo {
     private Long id;
     @Column(name = "filePath")
     private String filePath;
+    @Column(name = "fileSize")
     private long fileSize;
+    @Column(name = "mediaType")
     private String mediaType;
+    @Column(name = "filePath")
     private byte[] data;
-    @OneToOne
-    private Report report;
+//    @OneToOne
+//    @JoinColumn(name = "report_id")
+//    private Report report;
 
     public Photo(){
     }
 
-    public Photo(Long id, String filePath, long fileSize, String mediaType, byte[] data, Report report) {
+    public Photo(Long id, String filePath, long fileSize, String mediaType, byte[] data) {
         this.id = id;
         this.filePath = filePath;
         this.fileSize = fileSize;
         this.mediaType = mediaType;
         this.data = data;
-        this.report = report;
+//        this.report = report;
     }
 
     public Long getId() {
@@ -76,12 +81,12 @@ public class Photo {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Photo photo = (Photo) o;
-        return fileSize == photo.fileSize && Objects.equals(filePath, photo.filePath) && Objects.equals(mediaType, photo.mediaType) && Arrays.equals(data, photo.data) && Objects.equals(report, photo.report);
+        return fileSize == photo.fileSize && Objects.equals(filePath, photo.filePath) && Objects.equals(mediaType, photo.mediaType) && Arrays.equals(data, photo.data) ;
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(filePath, fileSize, mediaType, report);
+        int result = Objects.hash(filePath, fileSize, mediaType);
         result = 31 * result + Arrays.hashCode(data);
         return result;
     }
@@ -94,7 +99,7 @@ public class Photo {
                 ", fileSize=" + fileSize +
                 ", mediaType='" + mediaType + '\'' +
                 ", data=" + Arrays.toString(data) +
-                ", report=" + report +
+                ", report="  +
                 '}';
     }
 }

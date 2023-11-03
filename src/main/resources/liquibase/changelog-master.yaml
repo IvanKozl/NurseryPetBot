@@ -1,9 +1,6 @@
 databaseChangeLog:
   - include:
       relativeToChangeLogFile: true
-      file: script/notification.sql
-  - include:
-      relativeToChangeLogFile: true
       file: script/usersContacts.sql
   - include:
       relativeToChangeLogFile: true
@@ -14,3 +11,6 @@ databaseChangeLog:
   - include:
       relativeToChangeLogFile: true
       file: script/report.sql
+  - include:
+      relativeToChangeLogFile: true
+      file: script/photo.sql
