@@ -1,5 +1,7 @@
 package com.example.nurserypetbot.models;
 
+import com.example.nurserypetbot.services.implementations.UsersContactInformationImpl;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -19,9 +21,21 @@ public class Report {
     private String feel;
     @Column(name = "behavior")
     private String behavior;
-
     @Column(name = "date_time")
     private LocalDateTime dateTime;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UsersContactInformationImpl usersContactInformation;
+//    @Embedded
+//    Photo photo;
+
+    public UsersContactInformationImpl getUsersContactInformation() {
+        return usersContactInformation;
+    }
+
+    public void setUsersContactInformation(UsersContactInformationImpl usersContactInformation) {
+        this.usersContactInformation = usersContactInformation;
+    }
 
     public Report(long id, long chatId, String food, String feel, String behavior,
                   LocalDateTime dateTime) {

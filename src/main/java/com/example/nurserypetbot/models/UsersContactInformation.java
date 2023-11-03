@@ -42,8 +42,17 @@ public class UsersContactInformation {
     @OneToMany(mappedBy = "usersContactInformation")
     @JsonIgnore
     private List<Dog> dogs;
+    @OneToMany(mappedBy = "usersContactInformation")
+    @JsonIgnore
+    private List<Report> reports;
 
+    public List<Report> getReports() {
+        return reports;
+    }
 
+    public void setReports(List<Report> reports) {
+        this.reports = reports;
+    }
 
     public UsersContactInformation() {
     }

@@ -2,155 +2,73 @@ package com.example.nurserypetbot.listener;
 
 import com.example.nurserypetbot.enums.Responses;
 
-
-import com.example.nurserypetbot.parser.ParserReport;
-import com.example.nurserypetbot.parser.ParserUserContactInfo;
+import com.example.nurserypetbot.services.implementations.UsersContactInformationImpl;
 import com.example.nurserypetbot.services.services.UsersContactInformationService;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
-
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
+
 import com.pengrad.telegrambot.request.SendMessage;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 
 import java.util.List;
 
-
 @Service
 public class TelegramBotUpdatesListener implements UpdatesListener {
 
     private Logger logger = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
+    private TelegramBot telegramBot;
 
-    private final TelegramBot telegramBot;
-    private final UsersContactInformationService service;
+    private UsersContactInformationService service;
 
-    public TelegramBotUpdatesListener(TelegramBot telegramBot,
-                                      UsersContactInformationService service
-                                      ) {
+
+    public TelegramBotUpdatesListener(TelegramBot telegramBot, UsersContactInformationService service) {
         this.telegramBot = telegramBot;
         this.service = service;
 
     }
-
 
     @PostConstruct
     public void init() {
         telegramBot.setUpdatesListener(this);
     }
 
-    /**
-     * Executing new message depends on users choose using {@link Responses}
-     * <br> {@link Responses#START}
-     * <br> {@link Responses#MENU}
-     * <br> {@link Responses#CAR}
-     * <br> {@link Responses#SAFETY}
-     * <br> {@link Responses#REASONS}
-     * <br> {@link Responses#HELP}
-     * <br> {@link Responses#ADD}
-     * <br> {@link Responses#ADVISES}
-     * <br> {@link Responses#DOGHELP}
-     * <br> {@link Responses#NUMBER}
-     * <br> {@link Responses#DATA}
-     * <br> {@link Responses#REPORT}
-     * <br> {@link Responses#DOCUMENTS}
-     * <br> {@link Responses#RULES}
-     * <br> {@link Responses#DAY}
-     * <br> When user want bot to copy his/her contact information,bot uses
-     * <br> {@link UsersContactInformationService#addNewUsersInformation(Message)}
-     *
+     /**Принимает входящее сообщения из чата <br> -> поиск enum-а который ему соотвествует<br>
+     * -> вывод ответного сообщения/фото (при выборе enum-а {@link Responses#SENDINFONEWCUSTOMER}
+      * предусмотрен запись данных нового пользователя в БД {@link com.example.nurserypetbot.models.UsersContactInformation})<br>
+      * Вывод сообщений происходит с помощью метода {@link UsersContactInformationImpl#sendResponse(long, String)},<br>
+      * Запись данных о новом пользователе методом {@link UsersContactInformationImpl#addNewUsersInformation(Message)}.
+      *
+     * @throws IllegalArgumentException в случае неправильной команды или несоответствия паттерну набора данных нового пользователя
      * @param updates
-     * @return
+     * @return int
      */
     @Override
     public int process(List<Update> updates) {
         updates.forEach(update -> {
+            final boolean matches = update.message().text().matches("(\\w+)(\\s)([A-Za-zА-Яа-я]+)(\\s)([A-Za-zА-Яа-я]+)(\\s)(\\d+)(\\s)(\\d{11})(\\s+)([A-Za-z\\d@\\.]+)");
             logger.info("Processing update: {}", update);
-
-
-            if (update.message().text().startsWith("/start")) {
-                SendMessage message = new SendMessage(update.message().chat().id(),
-                        Responses.START.getResponseText());
-                var result = telegramBot.execute(message);
-            } else if (update.message().text().toUpperCase().startsWith("MENU")) {
-                SendMessage message = new SendMessage(update.message().chat().id(),
-                        Responses.MENU.getResponseText());
-                var result = telegramBot.execute(message);
-            } else if (update.message().text().toUpperCase().startsWith("CAR")) {
-                SendMessage message = new SendMessage(update.message().chat().id(),
-                        Responses.CAR.getResponseText());
-                var result = telegramBot.execute(message);
-            } else if (update.message().text().toUpperCase().startsWith("SAFETY")) {
-                SendMessage message = new SendMessage(update.message().chat().id(),
-                        Responses.SAFETY.getResponseText());
-                var result = telegramBot.execute(message);
-
-            } else if (update.message().text().toUpperCase().startsWith("REASONS")) {
-                SendMessage message = new SendMessage(update.message().chat().id(),
-                        Responses.REASONS.getResponseText());
-                var result = telegramBot.execute(message);
-
-            } else if (update.message().text().toUpperCase().startsWith("HELP")) {
-                SendMessage message = new SendMessage(update.message().chat().id(),
-                        Responses.HELP.getResponseText());
-                var result = telegramBot.execute(message);
-            } else if (update.message().text().toUpperCase().startsWith("ADD")) {
-                SendMessage message = new SendMessage(update.message().chat().id(),
-                        Responses.ADD.getResponseText());
-                var result = telegramBot.execute(message);
-            } else if (update.message().text().toUpperCase().startsWith("ADVISES")) {
-                SendMessage message = new SendMessage(update.message().chat().id(),
-                        Responses.ADVISES.getResponseText());
-                var result = telegramBot.execute(message);
-            } else if (update.message().text().toUpperCase().startsWith("DOGHELP")) {
-                SendMessage message = new SendMessage(update.message().chat().id(),
-                        Responses.DOGHELP.getResponseText());
-                var result = telegramBot.execute(message);
-            } else if (update.message().text().toUpperCase().startsWith("NUMBER")) {
-                SendMessage message = new SendMessage(update.message().chat().id(),
-                        Responses.NUMBER.getResponseText());
-                var result = telegramBot.execute(message);
-            } else if (update.message().text().toUpperCase().startsWith("DATA")) {
-                SendMessage message = new SendMessage(update.message().chat().id(),
-                        Responses.DATA.getResponseText());
-                var result = telegramBot.execute(message);
-            } else if (update.message().text().toUpperCase().startsWith("REPORT")) {
-                SendMessage message = new SendMessage(update.message().chat().id(),
-                        Responses.REPORT.getResponseText());
-                var result = telegramBot.execute(message);
-            }
-            else if (update.message().text().toUpperCase().startsWith("DOCUMENTS")) {
-                SendMessage message = new SendMessage(update.message().chat().id(),
-                        Responses.DOCUMENTS.getResponseText());
-                var result = telegramBot.execute(message);
-            }
-            else if (update.message().text().toUpperCase().startsWith("RULES")) {
-                SendMessage message = new SendMessage(update.message().chat().id(),
-                        Responses.RULES.getResponseText());
-                var result = telegramBot.execute(message);
-            }
-            else if (update.message().text().toUpperCase().startsWith("DAY")) {
-                SendMessage message = new SendMessage(update.message().chat().id(),
-                        Responses.DAY.getResponseText());
-                var result = telegramBot.execute(message);
-            }
-            else if (update.message().text().toUpperCase()
-                    .matches(ParserUserContactInfo.getParserInfoString())) {
-                service.addNewUsersInformation(update.message());
-            } else if (update.message().text().toLowerCase().matches(ParserReport.getParserReportString())) {
-                service.addReport(update.message());
+            if (matches) {
+                    service.addNewUsersInformation(update.message());
             } else {
-                SendMessage message = new SendMessage(update.message().chat().id(),
-                        Responses.WRONG.getResponseText());
-                var result = telegramBot.execute(message);
-            }
+                    try {
 
+                        service.sendResponse(update.message().chat().id(), update.message().text());
+
+                    } catch (Exception e) {
+                        SendMessage result = new SendMessage(update.message().chat().id(), "wrong argument wrong!!!");
+                        telegramBot.execute(result);
+                    }
+            }
         });
+
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
 }
