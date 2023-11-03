@@ -1,5 +1,9 @@
 //package com.example.nurserypetbot.services.implementations;
 //
+//import com.example.nurserypetbot.models.Photo;
+//import com.example.nurserypetbot.models.UsersContactInformation;
+//import com.example.nurserypetbot.repository.CatUsersContactInformationRepository;
+//import com.example.nurserypetbot.repository.PhotoRepository;
 //import com.example.nurserypetbot.services.services.PhotoService;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
@@ -11,70 +15,70 @@
 //import java.io.*;
 //import java.nio.file.Files;
 //import java.nio.file.Path;
-//import java.util.List;
 //import java.util.Optional;
+//
 //
 //import static java.nio.file.StandardOpenOption.CREATE_NEW;
 //@Service
 //public class PhotoServiceImpl implements PhotoService {
-//    private final Logger logger = LoggerFactory.getLogger(AvatarServiceImpl.class);
-//    private final String avatarsDir;
-//    private final StudentService studentService;
-//    private final AvatarRepository avatarRepository;
-//    public AvatarServiceImpl(StudentService studentService
-//            , AvatarRepository avatarRepository
-//            , @Value("${path.to.avatars.folder}") String avatarsDir) {
-//        this.avatarsDir = avatarsDir;
-//        this.studentService = studentService;
-//        this.avatarRepository = avatarRepository;
+//    private final Logger logger = LoggerFactory.getLogger(PhotoServiceImpl.class);
+//    private final String photosDir;
+//    private final UsersContactInformationImpl usersContactInformation;
+//    private final PhotoRepository photoRepository;
+//    public PhotoServiceImpl(UsersContactInformationImpl usersContactInformation
+//            , PhotoRepository photoRepository
+//            , @Value("${path.to.photos.folder}") String photosDir) {
+//        this.photosDir = photosDir;
+//        this.usersContactInformation = usersContactInformation;
+//        this.photoRepository = photoRepository;
 //    }
 //    @Override
-//    public void uploadAvatar(Long studentId, MultipartFile avatarFile) throws IOException {
+//    public void uploadPhoto(Long userId, MultipartFile photoFile) throws IOException {
 //
-//        logger.info( "Был вызван метод uploadAvatar с данными - id студента" + studentId
-//                + ". Данные аватара " + avatarFile.getOriginalFilename() + " " + avatarFile.getSize() );
+//        logger.info( "Был вызван метод uploadPhoto с данными - id нового владельца" + userId
+//                + ". Данные фото отчета " + photoFile.getOriginalFilename() + " " + photoFile.getSize() );
 //
-//        Student student = studentService.findStudent(studentId);
-//        Path filePath = Path.of(avatarsDir, student.getName() + ".avatar");
+//        Optional<UsersContactInformation> usersContactInformation = CatUsersContactInformationRepository.findById(userId);
+//        Path filePath = Path.of(photosDir, usersContactInformation.get().getSurname() + ".photoReport");
 //        Files.createDirectories(filePath.getParent());
 //        Files.deleteIfExists(filePath);
 //        try (
-//                InputStream is = avatarFile.getInputStream();
+//                InputStream is = photoFile.getInputStream();
 //                BufferedInputStream bis = new BufferedInputStream(is, 1024);
 //                OutputStream os = Files.newOutputStream(filePath, CREATE_NEW);
 //                BufferedOutputStream bos = new BufferedOutputStream(os, 1024);
 //        ) {
 //            bis.transferTo(bos);
 //        }
-//        Avatar avatar = avatarRepository.findByStudent_id(studentId).orElse(new Avatar());
-//        avatar.setStudent(student);
-//        avatar.setFilePath(filePath.toString());
-//        avatar.setFileSize(avatarFile.getSize());
-//        avatar.setMediaType(avatarFile.getContentType());
-//        avatar.setData(avatarFile.getBytes());
-//        avatarRepository.save(avatar);
-//        logger.info("Метод uploadAvatar сохраняет в БД аватар студента " + avatar);
+//        Photo photo = photoRepository.findByStudent_id(userId).orElse(new Photo());
+//        photo.setStudent(student);
+//        photo.setFilePath(filePath.toString());
+//        photo.setFileSize(photoFile.getSize());
+//        photo.setMediaType(photoFile.getContentType());
+//        photo.setData(photoFile.getBytes());
+//        photoRepository.save(photo);
+//        logger.info("Метод uploadPhoto сохраняет в БД аватар студента " + photo);
 //    }
 //    @Override
-//    public Avatar readFromDB(long id) {
+//    public Photo readFromDB(long id) {
 //        logger.info( "Был вызван метод readFromDB с данными - id аватарки " + id);
 //
-//        Optional<Avatar> avatar = avatarRepository.findById(id);
+//        Optional<Photo> photo = photoRepository.findById(id);
 //
-//        Avatar avatarEntity = avatar.orElseThrow(() -> new AvatarNotFoundException("Тhe avatar is missing"));
+//        Photo photoEntity = photo.orElseThrow(() -> new PhotoNotFoundException("Тhe photo is missing"));
 //
-//        logger.info("Метод вернул аватар студента " +  avatarEntity);
+//        logger.info("Метод вернул аватар студента " +  photoEntity);
 //
-//        return avatarEntity;
+//        return photoEntity;
 //    }
 //
 //    @Override
-//    public List<Avatar> getPage(int size, int pageNumb) {
+//    public List<Photo> getPage(int size, int pageNumb) {
 //        logger.info( "Был вызван метод getPage с количеством элементов на странице " + size + " и номером страницы " + pageNumb);
 //        PageRequest page = PageRequest.of(pageNumb, size);
-//        List<Avatar> avatars = avatarRepository.findAll(page).getContent();
-//        logger.info("Метод вернул список аватаров " + avatars);
-//        return avatars;
+//        List<Photo> photos = photoRepository.findAll(page).getContent();
+//        logger.info("Метод вернул список аватаров " + photos);
+//        return photos;
 //    }
 //
 //}

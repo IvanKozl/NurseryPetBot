@@ -11,7 +11,8 @@ import java.util.Objects;
 public class Photo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id")
+    private long id;
     @Column(name = "filePath")
     private String filePath;
     @Column(name = "fileSize")
@@ -27,7 +28,7 @@ public class Photo {
     public Photo(){
     }
 
-    public Photo(Long id, String filePath, long fileSize, String mediaType, byte[] data) {
+    public Photo(long id, String filePath, long fileSize, String mediaType, byte[] data) {
         this.id = id;
         this.filePath = filePath;
         this.fileSize = fileSize;
@@ -36,11 +37,11 @@ public class Photo {
 //        this.report = report;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

@@ -38,6 +38,9 @@ public class ParserUserContactInfo {
         return parserInfoString;
     }
 
+    public ParserUserContactInfo() {
+    }
+
     public void setParserInfoString(String parserInfoString) {
         this.parserInfoString = parserInfoString;
     }
