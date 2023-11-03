@@ -17,7 +17,6 @@ public class Report {
     private long chatId;
     @Column(name = "food")
     private String food;
-
     @Column(name = "feel")
     private String feel;
     @Column(name = "behavior")
@@ -27,16 +26,8 @@ public class Report {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UsersContactInformationImpl usersContactInformation;
-    @Embedded
-    Photo photo;
 
-    public Photo getPhoto() {
-        return photo;
-    }
 
-    public void setPhoto(Photo photo) {
-        this.photo = photo;
-    }
 
     public UsersContactInformationImpl getUsersContactInformation() {
         return usersContactInformation;

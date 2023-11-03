@@ -1,13 +1,16 @@
 package com.example.nurserypetbot.listener;
 
 import com.example.nurserypetbot.enums.Responses;
+import com.example.nurserypetbot.models.Photo;
 import com.example.nurserypetbot.parser.ParserReport;
 import com.example.nurserypetbot.parser.ParserUserContactInfo;
+import com.example.nurserypetbot.repository.PhotoRepository;
 import com.example.nurserypetbot.services.implementations.UsersContactInformationImpl;
 import com.example.nurserypetbot.services.services.UsersContactInformationService;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Message;
+import com.pengrad.telegrambot.model.PhotoSize;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.slf4j.Logger;
@@ -23,12 +26,14 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private Logger logger = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
     private TelegramBot telegramBot;
     private UsersContactInformationService service;
+    private PhotoRepository photoRepository;
 
 
-    public TelegramBotUpdatesListener(TelegramBot telegramBot, UsersContactInformationService service) {
+    public TelegramBotUpdatesListener(TelegramBot telegramBot, UsersContactInformationService service
+            ,PhotoRepository photoRepository) {
         this.telegramBot = telegramBot;
         this.service = service;
-
+        this.photoRepository = photoRepository;
     }
 
     @PostConstruct
@@ -53,10 +58,21 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
 
             logger.info("Processing update: {}", update);
+            
             if (update.message().text().matches(ParserUserContactInfo.getParserInfoString())) {
                 service.addNewUsersInformation(update.message());
             } else if (update.message().text().matches(ParserReport.getParserReportString())) {
                 service.addReport(update.message());
+            } else if (update.message().photo().getClass().equals(PhotoSize[].class)  ) {
+                PhotoSize[] photoSizes = update.message().photo();
+//                PhotoSize biggestPhoto = photoSizes[0];
+//                for (PhotoSize photo : photoSizes) {
+//                    if (photo.width() > biggestPhoto.width()) {
+//                        biggestPhoto = photo;
+//                    }
+//                }
+//                String fileId = biggestPhoto.fileId();
+
             } else {
 
                 try {

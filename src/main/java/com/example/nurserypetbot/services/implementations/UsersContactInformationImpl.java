@@ -13,7 +13,12 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SendPhoto;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -223,6 +228,26 @@ public class UsersContactInformationImpl implements UsersContactInformationServi
 //                .build();
 //        rawDataRepo.save(rawData);
 //    }
+
+//private ResponseEntity<String> getFilePath(String fileId) {
+//    var restTemplate = new RestTemplate();
+//    var headers = new HttpHeaders();
+//    var request = new HttpEntity<>(headers);
+//
+//    return restTemplate.exchange(
+//            fileInfoUri,
+//            HttpMethod.GET,
+//            request,
+//            String.class,
+//            token, fileId
+//    );
+//}
+//private AppPhoto buildTransientAppPhoto(PhotoSize telegramPhoto, BinaryContent persistentBinaryContent) {
+//    return AppPhoto.builder()
+//            .telegramFileId(telegramPhoto.getFileId())
+//            .binaryContent(persistentBinaryContent)
+//            .fileSize(telegramPhoto.getFileSize())
+//            .build();
 
 
 

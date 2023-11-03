@@ -5,13 +5,11 @@ import java.util.Arrays;
 import java.util.Objects;
 
 
-@Embeddable
 @Entity
 @Table(name = "photo")
 public class Photo {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @GeneratedValue
     private long id;
     @Column(name = "filePath")
     private String filePath;
@@ -21,28 +19,32 @@ public class Photo {
     private String mediaType;
     @Column(name = "filePath")
     private byte[] data;
-//    @OneToOne
-//    @JoinColumn(name = "report_id")
-//    private Report report;
+    @OneToOne
+    Report report;
 
     public Photo(){
     }
 
-    public Photo(long id, String filePath, long fileSize, String mediaType, byte[] data) {
+
+    public Report getReport() {
+        return report;
+    }
+
+    public void setReport(Report report) {
+        this.report = report;
+    }
+
+    public Photo(long id, String filePath, long fileSize, String mediaType, byte[] data, Report report) {
         this.id = id;
         this.filePath = filePath;
         this.fileSize = fileSize;
         this.mediaType = mediaType;
         this.data = data;
-//        this.report = report;
+        this.report = report;
     }
 
     public long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getFilePath() {
@@ -95,7 +97,7 @@ public class Photo {
     @Override
     public String toString() {
         return "Photo{" +
-                "id=" + id +
+                "id="  +
                 ", filePath='" + filePath + '\'' +
                 ", fileSize=" + fileSize +
                 ", mediaType='" + mediaType + '\'' +
