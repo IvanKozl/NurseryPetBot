@@ -1,12 +1,9 @@
 package com.example.nurserypetbot.models;
-
 import com.example.nurserypetbot.enums.PetShelter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-
 import javax.persistence.*;
 import java.util.List;
-import java.util.Objects;
 
 @Getter
 @Setter
@@ -20,7 +17,7 @@ public class UsersContactInformation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
 
     @Column(name = "chat_id")
     private long chatId;
@@ -39,19 +36,22 @@ public class UsersContactInformation {
 
     @Column(name = "email")
     private String email;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "pet_shelter_type")
     private PetShelter petShelterType;
-//    @OneToMany(mappedBy = "usersContactInformation")
-//    @JsonIgnore
-//    private List<Cat> cats;
-//    @OneToMany(mappedBy = "usersContactInformation")
-//    @JsonIgnore
-//    private List<Dog> dogs;
-//    @OneToMany()
-//    @JsonIgnore
-//    private List<Report> reports;
 
+    @OneToMany(mappedBy = "usersContactInformation")
+    @JsonIgnore
+    private List<Cat> cats;
+
+    @OneToMany(mappedBy = "usersContactInformation")
+    @JsonIgnore
+    private List<Dog> dogs;
+
+    @OneToMany(mappedBy = "usersContactInformation")
+    @JsonIgnore
+    private List<Report> reports;
 }
 
 

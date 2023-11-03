@@ -17,7 +17,7 @@ import javax.persistence.*;
 @Table(name = "photo")
 public class Photo {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
     @Column(name = "file_path")
@@ -28,6 +28,8 @@ public class Photo {
     private String mediaType;
     @Column(name = "data")
     private byte[] data;
+    @OneToOne
+    private Report report;
 
 }
 

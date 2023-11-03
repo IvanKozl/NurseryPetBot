@@ -1,12 +1,9 @@
 package com.example.nurserypetbot.listener;
 
 import com.example.nurserypetbot.enums.Responses;
-import com.example.nurserypetbot.models.Photo;
 import com.example.nurserypetbot.parser.ParserReport;
 import com.example.nurserypetbot.parser.ParserUserContactInfo;
-import com.example.nurserypetbot.repository.PhotoRepository;
-import com.example.nurserypetbot.services.implementations.UsersContactInformationImpl;
-import com.example.nurserypetbot.services.services.UsersContactInformationService;
+import com.example.nurserypetbot.services.implementations.UsersContactInformationServiceImpl;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Message;
@@ -25,15 +22,13 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
     private Logger logger = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
     private TelegramBot telegramBot;
-    private UsersContactInformationService service;
-    private PhotoRepository photoRepository;
+    private UsersContactInformationServiceImpl service;
 
 
-    public TelegramBotUpdatesListener(TelegramBot telegramBot, UsersContactInformationService service
-            ,PhotoRepository photoRepository) {
+
+    public TelegramBotUpdatesListener(TelegramBot telegramBot, UsersContactInformationServiceImpl service) {
         this.telegramBot = telegramBot;
         this.service = service;
-        this.photoRepository = photoRepository;
     }
 
     @PostConstruct
@@ -45,8 +40,8 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
      * Принимает входящее сообщения из чата <br> -> поиск enum-а который ему соотвествует<br>
      * -> вывод ответного сообщения/фото (при выборе enum-а {@link Responses#SENDINFONEWCUSTOMER}
      * предусмотрен запись данных нового пользователя в БД {@link com.example.nurserypetbot.models.UsersContactInformation})<br>
-     * Вывод сообщений происходит с помощью метода {@link UsersContactInformationImpl#sendResponse(long, String)},<br>
-     * Запись данных о новом пользователе методом {@link UsersContactInformationImpl#addNewUsersInformation(Message)}.
+     * Вывод сообщений происходит с помощью метода {@link UsersContactInformationServiceImpl#sendResponse(long, String)},<br>
+     * Запись данных о новом пользователе методом {@link UsersContactInformationServiceImpl#addNewUsersInformation(Message)}.
      *
      * @param updates
      * @return int
@@ -64,7 +59,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
             } else if (update.message().text().matches(ParserReport.getParserReportString())) {
                 service.addReport(update.message());
             } else if (update.message().photo().getClass().equals(PhotoSize[].class)  ) {
-                PhotoSize[] photoSizes = update.message().photo();
+//                PhotoSize[] photoSizes = update.message().photo();
 //                PhotoSize biggestPhoto = photoSizes[0];
 //                for (PhotoSize photo : photoSizes) {
 //                    if (photo.width() > biggestPhoto.width()) {
@@ -72,6 +67,8 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 //                    }
 //                }
 //                String fileId = biggestPhoto.fileId();
+//
+//
 
             } else {
 

@@ -12,6 +12,6 @@ age int NOT NULL,
 sterile varchar NOT NULL,
 feature varchar ,
 feature_add text,
---user_id bigint REFERENCES nurserycatdogbot.users_contact_information (id),
+user_id bigint REFERENCES users_contact_information (id),
 PRIMARY KEY (id)
 );

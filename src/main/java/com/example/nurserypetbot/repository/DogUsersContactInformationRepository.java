@@ -9,9 +9,8 @@ import java.util.Optional;
 
 public interface DogUsersContactInformationRepository
         extends JpaRepository <UsersContactInformation, Long> {
-    Optional<UsersContactInformation>findByChat_id(Long chat_id);
-    @NotNull
-    Optional<UsersContactInformation>findById(@NotNull Long id);
-    Optional<UsersContactInformation>findByPhone(Long phoneNumber);
+
+    Optional<UsersContactInformation>findById( Long id);
+//    Optional<UsersContactInformation>findByPhone(Long phoneNumber);
 
 }

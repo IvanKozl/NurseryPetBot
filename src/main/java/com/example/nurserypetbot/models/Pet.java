@@ -16,7 +16,7 @@ public class Pet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
     @Column(name = "chat_id")
     private long chatId;
     @Column(name = "type")
@@ -33,11 +33,11 @@ public class Pet {
     private String feature;
     @Column(name = "feature_add")
     private String featureAdd;
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    private UsersContactInformation usersContactInformation;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UsersContactInformation usersContactInformation;
 
-//
+
 //
 //    public Pet(long id, long chatId, String type, String name, String gender,
 //                int age, String sterile, String feature, String featureAdd) {

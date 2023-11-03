@@ -13,14 +13,16 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SendPhoto;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.EnumSet;
 import java.util.List;
 
 
 @Service
-public class UsersContactInformationImpl implements UsersContactInformationService {
+public class UsersContactInformationServiceImpl implements UsersContactInformationService {
 
     private final TelegramBot telegramBot;
 
@@ -29,10 +31,10 @@ public class UsersContactInformationImpl implements UsersContactInformationServi
     private final CatUsersContactInformationRepository catUsersContactInformationRepository;
     private final ReportRepository reportRepository;
 
-    public UsersContactInformationImpl(TelegramBot telegramBot,
-                                       CatUsersContactInformationRepository catUsersContactInformationRepository,
-                                       DogUsersContactInformationRepository dogUsersContactInformationRepository,
-                                       ReportRepository reportRepository) {
+    public UsersContactInformationServiceImpl(TelegramBot telegramBot,
+                                              CatUsersContactInformationRepository catUsersContactInformationRepository,
+                                              DogUsersContactInformationRepository dogUsersContactInformationRepository,
+                                              ReportRepository reportRepository) {
         this.telegramBot = telegramBot;
         this.dogUsersContactInformationRepository = dogUsersContactInformationRepository;
         this.catUsersContactInformationRepository = catUsersContactInformationRepository;
@@ -181,20 +183,20 @@ public class UsersContactInformationImpl implements UsersContactInformationServi
 //        }
 //    }
 //
-//    public AppPhoto processPhoto(Message telegramMessage) {
-//        var photoSizeCount = telegramMessage.getPhoto().size();
-//        var photoIndex = photoSizeCount > 1 ? telegramMessage.getPhoto().size() - 1 : 0;
-//        var telegramPhoto = telegramMessage.getPhoto().get(photoIndex);
-//        var fileId = telegramPhoto.getFileId();
-//        var response = getFilePath(fileId);
-//        if (response.getStatusCode() == HttpStatus.OK) {
-//            var persistentBinaryContent = getPersistentBinaryContent(response);
-//            var transientAppPhoto = buildTransientAppPhoto(telegramPhoto, persistentBinaryContent);
-//            return appPhotoDAO.save(transientAppPhoto);
-//        } else {
-//            throw new UploadFileException("Bad response from telegram service: " + response);
-//        }
-//    }
+    public AppPhoto processPhoto(Message telegramMessage) {
+        var photoSizeCount = telegramMessage.photo().size();
+        var photoIndex = photoSizeCount > 1 ? telegramMessage.getPhoto().size() - 1 : 0;
+        var telegramPhoto = telegramMessage.getPhoto().get(photoIndex);
+        var fileId = telegramPhoto.getFileId();
+        var response = getFilePath(fileId);
+        if (response.getStatusCode() == HttpStatus.OK) {
+            var persistentBinaryContent = getPersistentBinaryContent(response);
+            var transientAppPhoto = buildTransientAppPhoto(telegramPhoto, persistentBinaryContent);
+            return appPhotoDAO.save(transientAppPhoto);
+        } else {
+            throw new UploadFileException("Bad response from telegram service: " + response);
+        }
+    }
 //    private BinaryContent getPersistentBinaryContent(ResponseEntity<String> response) {
 //        var filePath = getFilePath(response);
 //        var fileInByte = downloadFile(filePath);
@@ -223,10 +225,10 @@ public class UsersContactInformationImpl implements UsersContactInformationServi
 //        rawDataRepo.save(rawData);
 //    }
 
-//private ResponseEntity<String> getFilePath(String fileId) {
-//    var restTemplate = new RestTemplate();
-//    var headers = new HttpHeaders();
-//    var request = new HttpEntity<>(headers);
+private ResponseEntity<String> getFilePath(String fileId) {
+    var restTemplate = new RestTemplate();
+    var headers = new HttpHeaders();
+    var request = new HttpEntity<>(headers);
 //
 //    return restTemplate.exchange(
 //            fileInfoUri,

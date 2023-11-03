@@ -1,11 +1,10 @@
 package com.example.nurserypetbot.models;
 
-import com.example.nurserypetbot.services.implementations.UsersContactInformationImpl;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Objects;
+
 @Getter
 @Setter
 @EqualsAndHashCode(exclude = "id")
@@ -16,9 +15,9 @@ import java.util.Objects;
 @Table(name = "report")
 public class Report {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
     @Column(name = "chat_id")
     private long chatId;
     @Column(name = "food")
@@ -29,9 +28,9 @@ public class Report {
     private String behavior;
     @Column(name = "date_time")
     private LocalDateTime dateTime;
-//    @ManyToOne
-//    @JoinColumn(name = "user_number")
-//    private UsersContactInformationImpl usersContactInformation;
+    @ManyToOne
+    @JoinColumn(name = "user_number")
+    private UsersContactInformation usersContactInformation;
 
 
 //    public UsersContactInformationImpl getUsersContactInformation() {

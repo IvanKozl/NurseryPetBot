@@ -8,5 +8,5 @@ file_path VARCHAR,
 file_size bigint NOT NULL,
 media_type VARCHAR,
 data BYTEA,
---report_id bigint REFERENCES nurserycatdogbot.report (id),
+report_id bigint REFERENCES report (id),
 PRIMARY KEY (id));
