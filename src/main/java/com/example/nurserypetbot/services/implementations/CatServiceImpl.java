@@ -1,9 +1,7 @@
 package com.example.nurserypetbot.services.implementations;
 
 import com.example.nurserypetbot.exceptions.CatException;
-import com.example.nurserypetbot.exceptions.DogException;
 import com.example.nurserypetbot.models.Cat;
-import com.example.nurserypetbot.models.Dog;
 import com.example.nurserypetbot.repository.CatRepository;
 import com.example.nurserypetbot.services.services.CatService;
 import org.springframework.stereotype.Service;
