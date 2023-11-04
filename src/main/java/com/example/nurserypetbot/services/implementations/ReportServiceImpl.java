@@ -5,9 +5,11 @@ import com.example.nurserypetbot.models.UsersContactInformation;
 import com.example.nurserypetbot.parser.ParserReport;
 import com.example.nurserypetbot.repository.ReportRepository;
 import com.example.nurserypetbot.services.services.ReportService;
+import com.example.nurserypetbot.services.services.UsersContactInformationService;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.request.SendMessage;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,11 +17,14 @@ import java.time.LocalDateTime;
 public class ReportServiceImpl implements ReportService {
     private final ReportRepository reportRepository;
     private final TelegramBot telegramBot;
+    private final UsersContactInformationService usersContactInformationService;
 
-    public ReportServiceImpl(ReportRepository reportRepository, TelegramBot telegramBot) {
+    public ReportServiceImpl(ReportRepository reportRepository, TelegramBot telegramBot,
+                             UsersContactInformationService usersContactInformationService) {
         this.reportRepository = reportRepository;
 
         this.telegramBot = telegramBot;
+        this.usersContactInformationService = usersContactInformationService;
     }
     /**
      * Addition user's report using {@link ParserReport}
@@ -58,13 +63,30 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public LocalDateTime createTrailPeriod(long userId) {
-        Report report = new Report();
-        UsersContactInformation usersContactInformation = new UsersContactInformation();
+    public void createTrailPeriod(long userId) {
 
-        var firstReport = report.getDateTime();
-        var trailPeriod = firstReport.plusDays(30);
-        usersContactInformation.setTrailPeriod(trailPeriod);
-        return trailPeriod;
+        var user = usersContactInformationService.read(userId);
+        user.setTrailPeriod(LocalDateTime.now().plusDays(30));
+        usersContactInformationService.update(user);
     }
+    @Scheduled(cron = "0 00 10 * * *")
+    public void sendRemember() {
+        var users = usersContactInformationService.getAllUsersWithActualTrailPeriod();
+        for(var user : users){
+            SendMessage message = new SendMessage(user.getChatId(), "Not forget to send a report");
+            telegramBot.execute(message);
+        }
+        }
+    @Scheduled(cron = "0 00 21 * * *")
+    public void checkDailyReport(){
+        var users = usersContactInformationService.getAllUsersWithActualTrailPeriod();
+        for(var user : users){
+            SendMessage message = new SendMessage(user.getChatId(), "You forgot to send a report, " +
+                    "unfortunately, our volunteer will be forced to extend your trail period :(");
+            telegramBot.execute(message);
+        }
+        }
 }
+
+
+
