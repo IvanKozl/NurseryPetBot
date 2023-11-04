@@ -4,6 +4,7 @@ import com.example.nurserypetbot.enums.PetShelter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -42,6 +43,13 @@ public class UsersContactInformation {
     @OneToMany(mappedBy = "usersContactInformation")
     @JsonIgnore
     private List<Dog> dogs;
+
+    @OneToMany(mappedBy = "usersContactInformation")
+    @JsonIgnore
+    private List<Report> reports;
+
+    @Column(name = "trail_period")
+    private LocalDateTime trailPeriod;
 
 
 
@@ -167,6 +175,22 @@ public class UsersContactInformation {
 
     public void setDogs(List<Dog> dogs) {
         this.dogs = dogs;
+    }
+
+    public List<Report> getReports() {
+        return reports;
+    }
+
+    public void setReports(List<Report> reports) {
+        this.reports = reports;
+    }
+
+    public LocalDateTime getTrailPeriod() {
+        return trailPeriod;
+    }
+
+    public void setTrailPeriod(LocalDateTime trailPeriod) {
+        this.trailPeriod = trailPeriod;
     }
 }
 

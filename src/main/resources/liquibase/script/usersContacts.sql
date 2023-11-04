@@ -11,5 +11,6 @@ age int NOT NULL,
 phone bigint UNIQUE NOT NULL,
 email text UNIQUE NOT NULL,
 pet_shelter_type varchar NOT NULL,
+trail_period timestamp without time zone,
 CONSTRAINT "userContactsId" PRIMARY KEY (id)
 );
