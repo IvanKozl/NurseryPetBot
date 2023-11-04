@@ -8,4 +8,5 @@ import java.util.Optional;
 
 public interface CatRepository extends JpaRepository<Cat, Long> {
     Optional<Cat> findByNameAndAge(String name, int age);
+    Optional<Cat> findById(long id);
 }

@@ -4,6 +4,7 @@ import com.example.nurserypetbot.enums.Responses;
 import com.example.nurserypetbot.parser.ParserReport;
 import com.example.nurserypetbot.parser.ParserUserContactInfo;
 import com.example.nurserypetbot.services.implementations.UsersContactInformationServiceImpl;
+import com.example.nurserypetbot.services.services.UsersContactInformationService;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Message;
@@ -12,21 +13,25 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+
+import static liquibase.repackaged.net.sf.jsqlparser.parser.feature.Feature.update;
 
 @Service
 public class TelegramBotUpdatesListener implements UpdatesListener {
 
     private Logger logger = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
     private TelegramBot telegramBot;
-    private UsersContactInformationServiceImpl service;
+    private UsersContactInformationService service;
 
 
 
-    public TelegramBotUpdatesListener(TelegramBot telegramBot, UsersContactInformationServiceImpl service) {
+    public TelegramBotUpdatesListener(TelegramBot telegramBot, UsersContactInformationService service) {
         this.telegramBot = telegramBot;
         this.service = service;
     }
@@ -51,37 +56,26 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     public int process(List<Update> updates) {
         updates.forEach(update -> {
 
+//
 
             logger.info("Processing update: {}", update);
             
             if (update.message().text().matches(ParserUserContactInfo.getParserInfoString())) {
                 service.addNewUsersInformation(update.message());
             } else if (update.message().text().matches(ParserReport.getParserReportString())) {
-                service.addReport(update.message());
-            } else if (update.message().photo().getClass().equals(PhotoSize[].class)  ) {
-//                PhotoSize[] photoSizes = update.message().photo();
-//                PhotoSize biggestPhoto = photoSizes[0];
-//                for (PhotoSize photo : photoSizes) {
-//                    if (photo.width() > biggestPhoto.width()) {
-//                        biggestPhoto = photo;
-//                    }
-//                }
-//                String fileId = biggestPhoto.fileId();
-//
-//
-
-            } else {
-
+                service.addReport(update.message());}
+//             else if (update.message().getClass().equals(PhotoSize[].class) ) {
+//                service.processPhoto(update.message());
+//            }
+            else {
                 try {
                     service.sendResponse(update.message().chat().id(), update.message().text());
                 } catch (Exception e) {
                     SendMessage result = new SendMessage(update.message().chat().id(), "wrong argument wrong!!!");
                     telegramBot.execute(result);
                 }
-
             }
         });
-
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
 }

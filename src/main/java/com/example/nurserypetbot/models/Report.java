@@ -28,6 +28,10 @@ public class Report {
     private String behavior;
     @Column(name = "date_time")
     private LocalDateTime dateTime;
+    @Column(name = "foto_check")
+    private boolean fotoCheck;
+    @Column(name = "report_check")
+    private boolean reportCheck;
     @ManyToOne
     @JoinColumn(name = "user_number")
     private UsersContactInformation usersContactInformation;

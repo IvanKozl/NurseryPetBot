@@ -13,5 +13,5 @@ public interface CatUsersContactInformationRepository
 
 
    Optional<UsersContactInformation>findById(Long id);
-//   Optional<UsersContactInformation>findByPhone(Long phoneNumber);
+   Optional<UsersContactInformation>findByPhone(Long phoneNumber);
 }

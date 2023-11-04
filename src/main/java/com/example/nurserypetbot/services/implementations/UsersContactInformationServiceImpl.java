@@ -1,22 +1,27 @@
 package com.example.nurserypetbot.services.implementations;
 
 import com.example.nurserypetbot.enums.Responses;
+import com.example.nurserypetbot.models.Photo;
 import com.example.nurserypetbot.models.Report;
 import com.example.nurserypetbot.models.UsersContactInformation;
 import com.example.nurserypetbot.parser.ParserReport;
 import com.example.nurserypetbot.parser.ParserUserContactInfo;
 import com.example.nurserypetbot.repository.CatUsersContactInformationRepository;
 import com.example.nurserypetbot.repository.DogUsersContactInformationRepository;
+import com.example.nurserypetbot.repository.PhotoRepository;
 import com.example.nurserypetbot.repository.ReportRepository;
 import com.example.nurserypetbot.services.services.UsersContactInformationService;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Message;
+import com.pengrad.telegrambot.model.PhotoSize;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SendPhoto;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -30,15 +35,17 @@ public class UsersContactInformationServiceImpl implements UsersContactInformati
 
     private final CatUsersContactInformationRepository catUsersContactInformationRepository;
     private final ReportRepository reportRepository;
+    private final PhotoRepository photoRepository;
 
     public UsersContactInformationServiceImpl(TelegramBot telegramBot,
                                               CatUsersContactInformationRepository catUsersContactInformationRepository,
                                               DogUsersContactInformationRepository dogUsersContactInformationRepository,
-                                              ReportRepository reportRepository) {
+                                              ReportRepository reportRepository, PhotoRepository photoRepository) {
         this.telegramBot = telegramBot;
         this.dogUsersContactInformationRepository = dogUsersContactInformationRepository;
         this.catUsersContactInformationRepository = catUsersContactInformationRepository;
         this.reportRepository = reportRepository;
+        this.photoRepository = photoRepository;
     }
 
     /**
@@ -163,6 +170,40 @@ public class UsersContactInformationServiceImpl implements UsersContactInformati
         }
     }
 
+    public void processPhoto(Message message) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        PhotoSize[] photoSizes = message.photo();
+        PhotoSize biggestPhoto = photoSizes[0];
+        for (PhotoSize photo : photoSizes) {
+            if (photo.width() > biggestPhoto.width()) {
+                biggestPhoto = photo;
+            }
+        }
+        String fileId = biggestPhoto.fileId();
+        String fileUniqId = biggestPhoto.fileUniqueId();
+        telegramBot.execute(new SendMessage(message.chat().id(), fileUniqId));
+        telegramBot.execute(new SendMessage(message.chat().id(), fileId));
+        if (message.text().isEmpty()) {
+
+        }
+//
+//        if (!fileId.isEmpty() && !fileUniqId.isEmpty()) {
+//            try {
+//                Report report = reportRepository.findByDate(dateFormat.parse(message.date().toString())).orElse(new Report());
+//            } catch (Exception e) {
+//                е
+//            }
+//            report.setFotoCheck(true);
+//            reportRepository.save(report);
+//            if (!(report.getBehavior().isEmpty()) && !(report.getFood().isEmpty()) && !(report.getFeel().isEmpty())) {
+//                report.setReportCheck(true);
+//                reportRepository.save(report);
+//            }
+//        } else {
+//            throw new IllegalArgumentException("Фото НЕ отправлено!!!");
+//        }
+    }
 
 //    @Override
 //    public void processPhotoMessage(Update update) {
@@ -182,35 +223,132 @@ public class UsersContactInformationServiceImpl implements UsersContactInformati
 //            sendAnswer(error, chatId);
 //        }
 //    }
+    //
+//    @Value("${service.file_info.uri}")
+//    private String fileInfoUri;
 //
-    public AppPhoto processPhoto(Message telegramMessage) {
-        var photoSizeCount = telegramMessage.photo().size();
-        var photoIndex = photoSizeCount > 1 ? telegramMessage.getPhoto().size() - 1 : 0;
-        var telegramPhoto = telegramMessage.getPhoto().get(photoIndex);
-        var fileId = telegramPhoto.getFileId();
-        var response = getFilePath(fileId);
-        if (response.getStatusCode() == HttpStatus.OK) {
-            var persistentBinaryContent = getPersistentBinaryContent(response);
-            var transientAppPhoto = buildTransientAppPhoto(telegramPhoto, persistentBinaryContent);
-            return appPhotoDAO.save(transientAppPhoto);
-        } else {
-            throw new UploadFileException("Bad response from telegram service: " + response);
-        }
-    }
-//    private BinaryContent getPersistentBinaryContent(ResponseEntity<String> response) {
-//        var filePath = getFilePath(response);
-//        var fileInByte = downloadFile(filePath);
-//        var transientBinaryContent = BinaryContent.builder()
-//                .fileAsArrayOfBytes(fileInByte)
-//                .build();
-//        return binaryContentDAO.save(transientBinaryContent);
-//    }
-//    private String getFilePath(ResponseEntity<String> response) {
-//        var jsonObject = new JSONObject(response.getBody());
-//        return String.valueOf(jsonObject
-//                .getJSONObject("result")
-//                .getString("file_path"));
-//    }
+//    @Value("${service.file_storage.uri}")
+//    private String fileStorageUri;
+//    token:
+//    service:
+//    file_info:
+//    uri: https://api.telegram.org/bot{token}/getFile?file_id={fileId}
+//    file_storage:
+
+//    uri: https://api.telegram.org/file/bot{token}/{filePath}
+
+
+//        var photoSizeCount = telegramMessage.photo().size();
+//        var photoIndex = photoSizeCount > 1 ? telegramMessage.getPhoto().size() - 1 : 0;
+//        var telegramPhoto = telegramMessage.getPhoto().get(photoIndex);
+//        var fileId = telegramPhoto.getFileId();
+
+//    @Value("${service.file_info.uri}")
+//    private String fileInfoUri;
+//
+//    @Value("${service.file_storage.uri}")
+//    private String fileStorageUri;
+//    token:
+//    service:
+//    file_info:
+//    uri: https://api.telegram.org/bot{token}/getFile?file_id={fileId}
+//    file_storage:
+//    uri: https://api.telegram.org/file/bot{token}/{filePath}
+//
+//        PhotoSize[] photoSizes = message.photo();
+//        PhotoSize biggestPhoto = photoSizes[0];
+//        for (PhotoSize photo : photoSizes) {
+//            if (photo.width() > biggestPhoto.width()) {
+//                biggestPhoto = photo;
+//            }
+//        }
+//        String fileId = biggestPhoto.fileId();
+//        ------------------------------------------------------------------
+//        public void uploadAvatar (Long reportid, MultipartFile photoFile) throws IOException {
+//
+//            Report report = reportService.findReport(reportId);//
+//            Path filePath = Path.of(photosDir, photo.getName() + ".photo");//формируем путь куда сохраняем
+//            Files.createDirectories(filePath.getParent());//создаем директорию под файл
+//            Files.deleteIfExists(filePath);//удаляем если в директории что то есть
+//
+//            try (
+//                    InputStream is = photoFile.getInputStream(); // превращаем загружаемый файл (мультьпарт!!) в входящий поток
+//                    BufferedInputStream bis = new BufferedInputStream(is, 1024); // поток превращаем в буферный поток с
+////                  с указанием размера. В обоих случаях кидаем в переменную
+//                    OutputStream os = Files.newOutputStream(filePath, CREATE_NEW); // создаем исходящий поток в filePath и создаем
+////                    новый файл
+//                    BufferedOutputStream bos = new BufferedOutputStream(os, 1024); // исходящий поток превращаем в буферный
+////                    исходящий с регулировкой размера
+//            ) {
+//                bis.transferTo(bos); // буферный входящий отправляем буферный исходящий,
+//            }
+//
+//            //Если найти byte[] от фотки, то затем тупо используем код ниже
+//            Photo photo = photoRepository.findByReport_id(report_Id).orElse(new Photo());// создаем новый или находим существующий
+////        файл
+//            photo.setReport(report);// цепляем репорт к фото, но в базе будет только айди репорта
+//            photo.setFilePath(filePath.toString()); //ясно
+//            photo.setFileSize(photoFile.getSize()); //ясно
+//            photo.setMediaType(photoFile.getContentType());//
+//            photo.setData(photoFile.getBytes());
+//            photoRepository.save(photo);
+//            logger.info("Метод uploadPhoto сохраняет в БД аватар студента " + photo);
+//        }
+//        ---------------------------------------------------------------------
+//
+//                var response = getFilePath(fileId);//достаем путь к фотку сохраненной?
+//        if (response.getStatusCode() == HttpStatus.OK) {
+//            byte[] persistentBinaryContent = getPersistentBinaryContent(response);
+//            var transientAppPhoto = buildTransientAppPhoto(telegramPhoto, persistentBinaryContent);//сделать вариацию с массивом байтов в параметре
+//            return PhotoRepository.save(transientAppPhoto);
+//        } else {
+//            throw new UploadFileException("Bad response from telegram service: " + response);
+//        }
+//
+//        private byte[] getPersistentBinaryContent (ResponseEntity < String > response) {
+//            var filePath = getFilePath(response);
+//            var fileInByte = downloadFile(filePath);
+//            var transientBinaryContent = BinaryContent.builder()
+//                    .fileAsArrayOfBytes(fileInByte)
+//                    .build();
+//            return binaryContentDAO.save(transientBinaryContent);
+//        }
+//        private ResponseEntity<String> getFilePath (String fileId){
+//            var restTemplate = new RestTemplate();
+//            var headers = new HttpHeaders();
+//            var request = new HttpEntity<>(headers);
+//
+//            return restTemplate.exchange(
+//                    fileInfoUri,
+//                    HttpMethod.GET,
+//                    request,
+//                    String.class,
+//                    token, fileId
+//            );
+//        }
+//        private String getFilePath (ResponseEntity < String > response) {
+//            var jsonObject = new JSONObject(response.getBody());
+//            return String.valueOf(jsonObject
+//                    .getJSONObject("result")
+//                    .getString("file_path"));
+//        }
+//        private byte[] downloadFile(String filePath) {
+//            var fullUri = fileStorageUri.replace("{token}", token)  // создаем строку для ЮРЛ, по которому находится подгруженное фото
+//                    .replace("{filePath}", filePath);               // предварительно заменяя "заглушки" токена и пути к файлу на актуальные значения
+//            URL urlObj = null;
+//            try {
+//                urlObj = new URL(fullUri);                                 //строка становится ЮРЛ официально
+//            } catch (MalformedURLException e) {
+//                throw new UploadFileException(e);
+//            }
+//
+//            //TODO подумать над оптимизацией
+//            try (InputStream is = urlObj.openStream()) {                    // создает поток к ЮРЛ, возвращает поток байтов
+//                return is.readAllBytes();                                   // поток байтов возвращается в виде массива
+//            } catch (IOException e) {
+//                throw new UploadFileException(urlObj.toExternalForm(), e);// выбрасывает ошибку с 2-мя параметрами в виде строки (созданный из ЮРЛ) и собственно ошибки
+//            }
+//        }
 //    private AppPhoto buildTransientAppPhoto(PhotoSize telegramPhoto, BinaryContent persistentBinaryContent) {
 //        return AppPhoto.builder()
 //                .telegramFileId(telegramPhoto.getFileId())
@@ -224,29 +362,14 @@ public class UsersContactInformationServiceImpl implements UsersContactInformati
 //                .build();
 //        rawDataRepo.save(rawData);
 //    }
-
-private ResponseEntity<String> getFilePath(String fileId) {
-    var restTemplate = new RestTemplate();
-    var headers = new HttpHeaders();
-    var request = new HttpEntity<>(headers);
-//
-//    return restTemplate.exchange(
-//            fileInfoUri,
-//            HttpMethod.GET,
-//            request,
-//            String.class,
-//            token, fileId
-//    );
-//}
-//private AppPhoto buildTransientAppPhoto(PhotoSize telegramPhoto, BinaryContent persistentBinaryContent) {
-//    return AppPhoto.builder()
-//            .telegramFileId(telegramPhoto.getFileId())
-//            .binaryContent(persistentBinaryContent)
-//            .fileSize(telegramPhoto.getFileSize())
-//            .build();
-
-
-
+//        private AppPhoto buildTransientAppPhoto (PhotoSize telegramPhoto, BinaryContent persistentBinaryContent){
+//            return AppPhoto.builder()
+//                    .telegramFileId(telegramPhoto.getFileId())
+//                    .binaryContent(persistentBinaryContent)
+//                    .fileSize(telegramPhoto.getFileSize())
+//                    .build();
+//        }
     }
+
 
 
