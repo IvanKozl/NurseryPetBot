@@ -44,12 +44,13 @@ public class UsersContactInformation {
     @JsonIgnore
     private List<Dog> dogs;
 
-    @OneToMany(mappedBy = "userContactInformation")
+    @OneToMany(mappedBy = "usersContactInformation")
     @JsonIgnore
     private List<Report> reports;
 
     @Column(name = "trail_period")
     private LocalDateTime trailPeriod;
+
 
 
     public UsersContactInformation() {

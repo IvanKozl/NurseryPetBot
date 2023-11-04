@@ -5,6 +5,7 @@ import com.example.nurserypetbot.enums.Responses;
 
 import com.example.nurserypetbot.parser.ParserReport;
 import com.example.nurserypetbot.parser.ParserUserContactInfo;
+import com.example.nurserypetbot.services.services.ReportService;
 import com.example.nurserypetbot.services.services.UsersContactInformationService;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
@@ -14,7 +15,6 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -29,13 +29,14 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
     private final TelegramBot telegramBot;
     private final UsersContactInformationService service;
+    private final ReportService reportService;
 
     public TelegramBotUpdatesListener(TelegramBot telegramBot,
-                                      UsersContactInformationService service
-                                      ) {
+                                      UsersContactInformationService service,
+                                      ReportService reportService) {
         this.telegramBot = telegramBot;
         this.service = service;
-
+        this.reportService = reportService;
     }
 
 
@@ -123,34 +124,30 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 SendMessage message = new SendMessage(update.message().chat().id(),
                         Responses.REPORT.getResponseText());
                 var result = telegramBot.execute(message);
-            }
-            else if (update.message().text().toUpperCase().startsWith("DOCUMENTS")) {
+            } else if (update.message().text().toUpperCase().startsWith("DOCUMENTS")) {
                 SendMessage message = new SendMessage(update.message().chat().id(),
                         Responses.DOCUMENTS.getResponseText());
                 var result = telegramBot.execute(message);
-            }
-            else if (update.message().text().toUpperCase().startsWith("RULES")) {
+            } else if (update.message().text().toUpperCase().startsWith("RULES")) {
                 SendMessage message = new SendMessage(update.message().chat().id(),
                         Responses.RULES.getResponseText());
                 var result = telegramBot.execute(message);
-            }
-            else if (update.message().text().toUpperCase().startsWith("DAY")) {
+            } else if (update.message().text().toUpperCase().startsWith("DAY")) {
                 SendMessage message = new SendMessage(update.message().chat().id(),
                         Responses.DAY.getResponseText());
                 var result = telegramBot.execute(message);
-            }
-            else if (update.message().text().toUpperCase()
+            } else if (update.message().text().toUpperCase()
                     .matches(ParserUserContactInfo.getParserInfoString())) {
                 service.addNewUsersInformation(update.message());
             } else if (update.message().text().toLowerCase().matches(ParserReport.getParserReportString())) {
-                service.addReport(update.message());
+                reportService.addReport(update.message());
             } else {
                 SendMessage message = new SendMessage(update.message().chat().id(),
                         Responses.WRONG.getResponseText());
                 var result = telegramBot.execute(message);
             }
-
         });
-        return UpdatesListener.CONFIRMED_UPDATES_ALL;
+            return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
 }
+

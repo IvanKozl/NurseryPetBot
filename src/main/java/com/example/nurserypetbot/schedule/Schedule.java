@@ -36,7 +36,7 @@ public class Schedule {
 
     @Scheduled(cron = "0 00 21 * * *")
     public void checkDailyReport(){
-       var day = repository.findReportForEachUserByDay(usersContactInformation.getId(), LocalDateTime.now());
+       var day = repository.findAllByUsersContactInformationAndDateTime(usersContactInformation.getId(), LocalDateTime.now());
        if(day.isEmpty()){
            var response = new SendMessage(usersContactInformation.getChatId(), "You forgot to send report");
            telegramBot.execute(response);

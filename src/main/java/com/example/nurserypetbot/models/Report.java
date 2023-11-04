@@ -24,7 +24,7 @@ public class Report {
     private LocalDateTime dateTime;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "users_id")
     private UsersContactInformation usersContactInformation;
 
     public Report(long id, long chatId, String food, String feel, String behavior,

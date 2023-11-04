@@ -60,7 +60,7 @@ public class UsersContactInformationImpl implements UsersContactInformationServi
 
 
         } catch (Exception ex) {
-            telegramBot.execute(new SendMessage(chatId, "Wrong format"));
+            telegramBot.execute(new SendMessage(chatId, "Wrong format of data"));
             return;
         }
 
@@ -94,33 +94,5 @@ public class UsersContactInformationImpl implements UsersContactInformationServi
 
     }
 
-    /**
-     * Addition user's report using {@link ParserReport}
-     * <br>
-     * method {@link ParserReport#tryToParseReport(String)}
-     * <br>
-     * Addition report information in repository
-     * <br>
-     * {@code reportRepository.save(report);}
-     * @param message
-     */
-    @Override
-    public void addReport(Message message) {
-        Report report;
-        long chatId = message.chat().id();
-        SendMessage result;
 
-        try{
-            report = ParserReport.tryToParseReport(message.text().toLowerCase());
-            report.setChatId(chatId);
-        } catch (Exception ex){
-            telegramBot.execute(new SendMessage(chatId, "Wrong format of report, please," +
-                    "find the example in MENU in DAY"));
-            return;
-        }
-        reportRepository.save(report);
-        result = new SendMessage(chatId, String.format("OK, your report successfully added"));
-        telegramBot.execute(result);
-
-    }
 }

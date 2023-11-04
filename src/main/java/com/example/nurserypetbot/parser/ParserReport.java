@@ -3,17 +3,20 @@ package com.example.nurserypetbot.parser;
 import com.example.nurserypetbot.enums.PetShelter;
 import com.example.nurserypetbot.models.Report;
 
+import java.time.LocalDateTime;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ParserReport {
 
 
-    public static String parserReportString = ("([рацион]+\\s.+)(\\s)([самочувствие]+\\s.+)(\\s)([поведение]+\\s.+)");
+    public static String parserReportString =
+            ("([рацион]+\\s.+)(\\s)([самочувствие]+\\s.+)(\\s)([поведение]+(\\s).+)");
 
     public static Report tryToParseReport(String text) {
         Pattern pattern =
-                Pattern.compile("([рацион]+\\s.+)(\\s)([самочувствие]+\\s.+)(\\s)([поведение]+\\s.+)");
+                Pattern.compile
+                        ("([рацион]+\\s.+)(\\s)([самочувствие]+\\s.+)(\\s)([поведение]+(\\s).+)");
 
         Matcher matcher = pattern.matcher(text);
         Report report = new Report();
@@ -21,6 +24,7 @@ public class ParserReport {
             report.setFood(matcher.group(1));
             report.setFeel(matcher.group(3));
             report.setBehavior(matcher.group(5));
+            report.setDateTime(LocalDateTime.now());
 
 
         } else {
