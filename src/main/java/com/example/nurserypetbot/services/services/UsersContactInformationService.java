@@ -6,4 +6,5 @@ public interface UsersContactInformationService {
     void addNewUsersInformation(Message message);
     void addReport(Message message);
     void sendResponse(long chatId, String string);
+    void processPhoto(Message message);
 }

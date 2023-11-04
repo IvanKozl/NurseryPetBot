@@ -3,7 +3,9 @@ package com.example.nurserypetbot.models;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -27,7 +29,7 @@ public class Report {
     @Column(name = "behavior")
     private String behavior;
     @Column(name = "date_time")
-    private LocalDateTime dateTime;
+    private LocalDate dateTime;
     @Column(name = "foto_check")
     private boolean fotoCheck;
     @Column(name = "report_check")

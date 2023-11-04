@@ -1,6 +1,7 @@
 package com.example.nurserypetbot.services.implementations;
 
 import com.example.nurserypetbot.enums.Responses;
+import com.example.nurserypetbot.listener.TelegramBotUpdatesListener;
 import com.example.nurserypetbot.models.Photo;
 import com.example.nurserypetbot.models.Report;
 import com.example.nurserypetbot.models.UsersContactInformation;
@@ -16,25 +17,31 @@ import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.PhotoSize;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SendPhoto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
 public class UsersContactInformationServiceImpl implements UsersContactInformationService {
 
     private final TelegramBot telegramBot;
+    private Logger logger = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
 
     private final DogUsersContactInformationRepository dogUsersContactInformationRepository;
 
     private final CatUsersContactInformationRepository catUsersContactInformationRepository;
-    private final ReportRepository reportRepository;
+    private final ReportRepository
+            reportRepository;
     private final PhotoRepository photoRepository;
 
     public UsersContactInformationServiceImpl(TelegramBot telegramBot,
@@ -86,7 +93,7 @@ public class UsersContactInformationServiceImpl implements UsersContactInformati
             } catch (Exception exception) {
                 telegramBot.execute(new SendMessage(chatId,
                         "This phone number or email address is already in our DB," +
-                                "or you forget some information :("));
+                                "or you forget some information :(" ));
                 return;
             }
             result = new SendMessage(chatId, String.format("OK, your information successfully added"));
@@ -170,39 +177,46 @@ public class UsersContactInformationServiceImpl implements UsersContactInformati
         }
     }
 
+    /**Принимает информацию о
+     *
+     * @param message
+     */
+    @Override
     public void processPhoto(Message message) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        LocalDate currentDate = LocalDate.now();
+        PhotoSize biggestPhoto = message.photo()[0];
 
-        PhotoSize[] photoSizes = message.photo();
-        PhotoSize biggestPhoto = photoSizes[0];
-        for (PhotoSize photo : photoSizes) {
-            if (photo.width() > biggestPhoto.width()) {
-                biggestPhoto = photo;
-            }
-        }
+//        PhotoSize[] photoSizes = message.photo();
+//        for (PhotoSize photo : photoSizes) {
+//            if (photo.width() > biggestPhoto.width()) {
+//                biggestPhoto = photo;
+//            }
+//        }
+        LocalDateTime time = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
+        Optional<UsersContactInformation> catOwner = catUsersContactInformationRepository.findByChatId(message.chat().id());
+        Optional<UsersContactInformation> dogOwner = dogUsersContactInformationRepository.findByChatId(message.chat().id());
+
         String fileId = biggestPhoto.fileId();
         String fileUniqId = biggestPhoto.fileUniqueId();
-        telegramBot.execute(new SendMessage(message.chat().id(), fileUniqId));
-        telegramBot.execute(new SendMessage(message.chat().id(), fileId));
-        if (message.text().isEmpty()) {
 
+        if (!fileId.isEmpty() && !fileUniqId.isEmpty()) {
+
+            Report report = reportRepository.findByDateTime(currentDate).orElse(new Report());
+//            if(reportRepository.findByDateTime())
+                report.setFotoCheck(true);
+//            report.setUsersContactInformation();
+//            report.setChatId(message.chat().id());
+            reportRepository.save(report);
+            telegramBot.execute(new SendMessage(message.chat().id(), "Фото добавлено к отчету!"));
+            logger.info( "Создали репорт, проставили true в фотоЧек в БД");
+            if (!(report.getBehavior()==null) && !(report.getFood()==null) && !(report.getFeel()==null)) {
+                report.setReportCheck(true);
+                reportRepository.save(report);
+                logger.info( "Проверили добавление текстового отчета, проставили true в репортЧек в БД");
+            }
+        } else {
+            throw new IllegalArgumentException("Фото НЕ отправлено!!!");
         }
-//
-//        if (!fileId.isEmpty() && !fileUniqId.isEmpty()) {
-//            try {
-//                Report report = reportRepository.findByDate(dateFormat.parse(message.date().toString())).orElse(new Report());
-//            } catch (Exception e) {
-//                е
-//            }
-//            report.setFotoCheck(true);
-//            reportRepository.save(report);
-//            if (!(report.getBehavior().isEmpty()) && !(report.getFood().isEmpty()) && !(report.getFeel().isEmpty())) {
-//                report.setReportCheck(true);
-//                reportRepository.save(report);
-//            }
-//        } else {
-//            throw new IllegalArgumentException("Фото НЕ отправлено!!!");
-//        }
     }
 
 //    @Override
