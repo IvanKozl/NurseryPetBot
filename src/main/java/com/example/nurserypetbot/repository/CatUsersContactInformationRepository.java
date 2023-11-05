@@ -1,6 +1,5 @@
 package com.example.nurserypetbot.repository;
 
-import com.example.nurserypetbot.models.Pet;
 import com.example.nurserypetbot.models.UsersContactInformation;
 import org.springframework.data.jpa.repository.JpaRepository;
 

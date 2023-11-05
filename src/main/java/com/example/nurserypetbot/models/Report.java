@@ -1,8 +1,11 @@
 package com.example.nurserypetbot.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
+
 @Entity
 @Table(name = "report")
 public class Report {
@@ -25,6 +28,7 @@ public class Report {
 
     @ManyToOne
     @JoinColumn(name = "users_id")
+    @JsonIgnore
     private UsersContactInformation usersContactInformation;
 
     public Report(long id, long chatId, String food, String feel, String behavior,
@@ -36,7 +40,8 @@ public class Report {
         this.behavior = behavior;
         this.dateTime = dateTime;
     }
-    public Report(){
+
+    public Report() {
 
     }
 
@@ -80,12 +85,21 @@ public class Report {
     public void setBehavior(String behavior) {
         this.behavior = behavior;
     }
+
     public LocalDateTime getDateTime() {
         return dateTime;
     }
 
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public UsersContactInformation getUsersContactInformation() {
+        return usersContactInformation;
+    }
+
+    public void setUsersContactInformation(UsersContactInformation usersContactInformation) {
+        this.usersContactInformation = usersContactInformation;
     }
 
     @Override

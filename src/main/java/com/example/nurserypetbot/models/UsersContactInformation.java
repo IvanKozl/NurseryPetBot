@@ -52,7 +52,6 @@ public class UsersContactInformation {
     private LocalDateTime trailPeriod;
 
 
-
     public UsersContactInformation() {
     }
 
@@ -132,7 +131,6 @@ public class UsersContactInformation {
     public void setPetShelterType(PetShelter petShelterType) {
         this.petShelterType = petShelterType;
     }
-
 
 
     @Override

@@ -13,6 +13,7 @@ public class DogController {
     public DogController(DogService dogService) {
         this.dogService = dogService;
     }
+
     @PostMapping
     public Dog create(@RequestBody Dog dog) {
         return dogService.create(dog);

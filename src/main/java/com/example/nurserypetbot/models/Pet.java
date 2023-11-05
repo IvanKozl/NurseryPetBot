@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
+
 @MappedSuperclass
 public class Pet {
     @Id
@@ -35,9 +36,8 @@ public class Pet {
     private UsersContactInformation usersContactInformation;
 
 
-
     public Pet(long id, long chatId, String type, String name, String gender,
-                int age, String sterile, String feature, String featureAdd) {
+               int age, String sterile, String feature, String featureAdd) {
         this.id = id;
         this.chatId = chatId;
         this.type = type;
@@ -48,7 +48,8 @@ public class Pet {
         this.feature = feature;
         this.featureAdd = featureAdd;
     }
-    public Pet(){
+
+    public Pet() {
     }
 
     public long getId() {
@@ -58,16 +59,19 @@ public class Pet {
     public void setId(long id) {
         this.id = id;
     }
-    public long getChatId(){
+
+    public long getChatId() {
         return chatId;
     }
-    public void setChatId(long chatId){
+
+    public void setChatId(long chatId) {
         this.chatId = chatId;
     }
 
     public String getType() {
         return type;
     }
+
     public void setType(String type) {
         this.type = type;
     }

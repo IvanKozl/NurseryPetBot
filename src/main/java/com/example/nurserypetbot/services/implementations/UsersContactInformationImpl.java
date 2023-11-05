@@ -49,6 +49,7 @@ public class UsersContactInformationImpl implements UsersContactInformationServi
      * {@code catUsersContactInformationRepository.save(usersContactInformation);}
      * <br>
      * Trying to catch exception, when user enters not unique information (<u>according to constraint in table</u>)
+     *
      * @param message
      */
     @Override
@@ -80,8 +81,7 @@ public class UsersContactInformationImpl implements UsersContactInformationServi
             }
             result = new SendMessage(chatId, String.format("OK, your information successfully added"));
             telegramBot.execute(result);
-        }
-        else if (message.text().toUpperCase().startsWith("DOG")) {
+        } else if (message.text().toUpperCase().startsWith("DOG")) {
             try {
                 dogUsersContactInformationRepository.save(usersContactInformation);
 
@@ -98,21 +98,51 @@ public class UsersContactInformationImpl implements UsersContactInformationServi
 
     }
 
+    /**
+     * Reading user's contact information using method
+     * {@link UserContactInformationRepository#findById(Object)}
+     *
+     * @param user_id
+     * @return
+     */
     @Override
     public UsersContactInformation read(long user_id) {
         return userContactInformationRepository.findById(user_id).orElseThrow();
 
     }
 
+    /**
+     * Reading user's contact information using method
+     * {@link UserContactInformationRepository#findByChatId(long)}
+     *
+     * @param chatId
+     * @return
+     */
+    @Override
+    public UsersContactInformation readByChatId(long chatId) {
+        return userContactInformationRepository.findByChatId(chatId).orElseThrow();
+    }
+
+    /**
+     * Updating user's contact information
+     *
+     * @param usersContactInformation
+     * @return
+     */
     @Override
     public UsersContactInformation update(UsersContactInformation usersContactInformation) {
         return userContactInformationRepository.save(usersContactInformation);
 
     }
 
+    /**
+     * Finding users with actual trial period
+     *
+     * @return
+     */
     @Override
     public List<UsersContactInformation> getAllUsersWithActualTrailPeriod() {
-       var result =  userContactInformationRepository.findAll();
+        var result = userContactInformationRepository.findAll();
         return result.stream().filter(u -> u.getTrailPeriod() != null).collect(Collectors.toList());
     }
 

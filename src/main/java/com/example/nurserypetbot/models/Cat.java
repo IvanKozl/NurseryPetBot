@@ -11,10 +11,11 @@ import javax.persistence.Table;
 public class Cat extends Pet {
 
     public Cat(long id, long chatId, String type, String name, String gender,
-               int age, String sterile, String feature, String featureAdd){
-       super(id,chatId,type,name,gender,age,sterile,feature,featureAdd);
+               int age, String sterile, String feature, String featureAdd) {
+        super(id, chatId, type, name, gender, age, sterile, feature, featureAdd);
     }
-    public Cat(){
+
+    public Cat() {
 
     }
 }

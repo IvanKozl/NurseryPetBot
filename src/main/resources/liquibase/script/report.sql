@@ -11,3 +11,8 @@ behavior text NOT NULL,
 date_time timestamp without time zone NOT NULL,
 users_id bigint REFERENCES nurserycatdogbot.users_contact_information (id)
 );
+
+ -- changeset Maria:51
+ Alter table nurserycatdogbot.report
+ add constraint report_pk primary key (id)
+;
