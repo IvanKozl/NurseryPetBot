@@ -5,6 +5,7 @@ import com.example.nurserypetbot.models.Pet;
 import com.example.nurserypetbot.models.UsersContactInformation;
 import com.example.nurserypetbot.services.services.CatService;
 import org.springframework.web.bind.annotation.*;
+
 @RestController
 @RequestMapping(path = "/cat")
 public class CatController {
@@ -14,6 +15,7 @@ public class CatController {
     public CatController(CatService catService) {
         this.catService = catService;
     }
+
     @PostMapping
     public Cat create(@RequestBody Cat cat) {
         return catService.create(cat);

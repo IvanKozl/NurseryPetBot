@@ -14,14 +14,13 @@ public class Photo {
     private byte[] data;
 
 
-
     @OneToOne
     private Cat cat;
 
     @OneToOne
     private Dog dog;
 
-    public Photo(){
+    public Photo() {
 
     }
 

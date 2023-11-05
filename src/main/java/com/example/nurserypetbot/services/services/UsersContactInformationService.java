@@ -7,7 +7,11 @@ import java.util.List;
 
 public interface UsersContactInformationService {
     void addNewUsersInformation(Message message);
+
     UsersContactInformation read(long user_id);
+
+    UsersContactInformation readByChatId(long chatId);
+
     UsersContactInformation update(UsersContactInformation usersContactInformation);
 
     List<UsersContactInformation> getAllUsersWithActualTrailPeriod();

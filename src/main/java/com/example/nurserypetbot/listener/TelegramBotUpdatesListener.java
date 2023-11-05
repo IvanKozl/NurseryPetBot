@@ -147,7 +147,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 var result = telegramBot.execute(message);
             }
         });
-            return UpdatesListener.CONFIRMED_UPDATES_ALL;
+        return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
 }
 

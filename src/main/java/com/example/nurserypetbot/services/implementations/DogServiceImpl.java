@@ -1,14 +1,14 @@
 package com.example.nurserypetbot.services.implementations;
 
-import com.example.nurserypetbot.exceptions.CatException;
+
 import com.example.nurserypetbot.exceptions.DogException;
-import com.example.nurserypetbot.models.Cat;
 import com.example.nurserypetbot.models.Dog;
 import com.example.nurserypetbot.repository.DogRepository;
 import com.example.nurserypetbot.services.services.DogService;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+
 @Service
 public class DogServiceImpl implements DogService {
     private final DogRepository dogRepository;
@@ -19,11 +19,11 @@ public class DogServiceImpl implements DogService {
 
     @Override
     public Dog create(Dog dog) {
-        if(dogRepository.findByNameAndAge(dog.getName(), dog.getAge()).isPresent()){
+        if (dogRepository.findByNameAndAge(dog.getName(), dog.getAge()).isPresent()) {
             throw new DogException("We have already got this dog in our DB, please," +
                     "check the information");
         }
-        Dog savedDog= dogRepository.save(dog);
+        Dog savedDog = dogRepository.save(dog);
         return savedDog;
     }
 

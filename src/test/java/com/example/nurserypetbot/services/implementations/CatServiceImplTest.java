@@ -1,16 +1,16 @@
 package com.example.nurserypetbot.services.implementations;
 
-import com.example.nurserypetbot.exceptions.CatException;
 import com.example.nurserypetbot.models.Cat;
 import com.example.nurserypetbot.repository.CatRepository;
-import com.example.nurserypetbot.services.services.CatService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.verify;
@@ -23,12 +23,10 @@ public class CatServiceImplTest {
     private CatServiceImpl catService;
 
     @Mock
-    private CatException catException;
-
-    @Mock
     private CatRepository catRepository;
 
-    Cat cat = new Cat(1,2,"kiitti","kat","rft",2,"sterile","yes","god");
+    Cat cat = new Cat(1, 2, "kiitti", "kat", "rft", 2, "sterile", "yes", "god");
+
     @Test
     public void createCat_whenCatNotExists_expectSavedCat() {
         when(catRepository.findByNameAndAge(cat.getName(), cat.getAge())).thenReturn(Optional.empty());

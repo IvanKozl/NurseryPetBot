@@ -1,17 +1,15 @@
 package com.example.nurserypetbot.services.implementations;
 
-import com.example.nurserypetbot.exceptions.DogException;
 import com.example.nurserypetbot.models.Dog;
 import com.example.nurserypetbot.repository.DogRepository;
-import com.example.nurserypetbot.services.services.DogService;
-import liquibase.pro.packaged.D;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
@@ -23,12 +21,10 @@ public class DogServiceImplTest {
     private DogServiceImpl dogService;
 
     @Mock
-    private DogException dogException;
-
-    @Mock
     private DogRepository dogRepository;
 
-    Dog dog = new Dog(1,2,"Doggy","dog","man",2,"sterile","yes","god");
+    Dog dog = new Dog(1, 2, "Doggy", "dog", "man", 2, "sterile", "yes", "god");
+
     @Test
     public void createDog_whenDogNotExists_expectSavedDog() {
         when(dogRepository.findByNameAndAge(dog.getName(), dog.getAge())).thenReturn(Optional.empty());
