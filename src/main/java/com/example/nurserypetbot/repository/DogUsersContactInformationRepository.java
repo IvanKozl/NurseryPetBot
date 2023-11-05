@@ -11,8 +11,5 @@ import java.util.Optional;
 public interface DogUsersContactInformationRepository
         extends JpaRepository <UsersContactInformation, Long> {
 
-    Optional<UsersContactInformation>findById( long id);
 
-    //    Optional<UsersContactInformation>findByPhone(Long phoneNumber);
-    Optional<UsersContactInformation> findByChatId(long chatId);
 }

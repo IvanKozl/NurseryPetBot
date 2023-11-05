@@ -1,8 +1,7 @@
 package com.example.nurserypetbot.controllers;
 
-import com.example.nurserypetbot.models.Cat;
 import com.example.nurserypetbot.models.Dog;
-import com.example.nurserypetbot.services.services.DogService;
+import com.example.nurserypetbot.services.interfaces.DogService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

@@ -1,27 +1,23 @@
 package com.example.nurserypetbot.listener;
 
 import com.example.nurserypetbot.enums.Responses;
-import com.example.nurserypetbot.parser.ParserReport;
 import com.example.nurserypetbot.parser.ParserUserContactInfo;
+import com.example.nurserypetbot.services.implementations.PhotoServiceImpl;
 import com.example.nurserypetbot.services.implementations.UsersContactInformationServiceImpl;
-import com.example.nurserypetbot.services.services.UsersContactInformationService;
+import com.example.nurserypetbot.services.interfaces.PhotoService;
+import com.example.nurserypetbot.services.interfaces.ReportService;
+import com.example.nurserypetbot.services.interfaces.UsersContactInformationService;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Message;
-import com.pengrad.telegrambot.model.PhotoSize;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import org.aspectj.bridge.IMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
-
-import static liquibase.repackaged.net.sf.jsqlparser.parser.feature.Feature.update;
 
 @Service
 public class TelegramBotUpdatesListener implements UpdatesListener {
@@ -29,12 +25,15 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private Logger logger = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
     private TelegramBot telegramBot;
     private UsersContactInformationService service;
+    private ReportService reportService;
+    private PhotoService photoService;
 
 
-
-    public TelegramBotUpdatesListener(TelegramBot telegramBot, UsersContactInformationService service) {
+    public TelegramBotUpdatesListener(TelegramBot telegramBot, UsersContactInformationService service, ReportService reportService, PhotoService photoService) {
         this.telegramBot = telegramBot;
         this.service = service;
+        this.reportService = reportService;
+        this.photoService = photoService;
     }
 
     @PostConstruct
@@ -62,8 +61,10 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
             if( update.message().text() != null) {
                 if (update.message().text().matches(ParserUserContactInfo.getParserInfoString())) {
                     service.addNewUsersInformation(update.message());
-                } else if (update.message().text().matches(ParserReport.getParserReportString())) {
-                    service.addReport(update.message());
+                    logger.info( "Добавили инфо потенциального владельца");
+                }  else if (update.message().text().toLowerCase().matches("([рацион]+\\s.+)(\\s)([самочувствие]+\\s.+)(\\s)([поведение]+(\\s).+)") ) {
+                    reportService.addReport(update.message());
+                    logger.info( "Отчет сохранен  в БД");
                 } else {
                     try {
                         service.sendResponse(update.message().chat().id(), update.message().text());
@@ -72,10 +73,13 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                         telegramBot.execute(result);
                     }
                 }
+            }
 
-            } else if (update.message().photo() != null && update.message().photo().length > 0) {
+            if (update.message().photo() != null && update.message().photo().length > 0) {
                 try {
-                    service.processPhoto(update.message());
+                    photoService.processPhoto(update.message());
+                    logger.info( "ФОТО ДОБАВЛЕНО");
+
                 } catch (Exception e) {
                     SendMessage result = new SendMessage(update.message().chat().id(), "Фото не добавлено!!!");
                     telegramBot.execute(result);

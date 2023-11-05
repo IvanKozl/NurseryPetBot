@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface UsersContactInformationRepository extends JpaRepository<UsersContactInformation,Long> {
     Optional<UsersContactInformation> findById(long userId);
-
+    Optional<UsersContactInformation> findByChatId(long chatId);
     List<UsersContactInformation> findAll();
 }

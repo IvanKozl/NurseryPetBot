@@ -12,8 +12,4 @@ public interface CatUsersContactInformationRepository
         extends JpaRepository<UsersContactInformation, Long> {
 
 
-   Optional<UsersContactInformation>findById(long id);
-   List<UsersContactInformation> findAll();
-   Optional<UsersContactInformation> findByChatId(long chatId);
-//   Optional<UsersContactInformation>findByPhone(long phoneNumber);
 }

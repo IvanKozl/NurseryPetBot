@@ -42,9 +42,8 @@ public class UsersContactInformation {
     @Column(name = "trial_period")
     private LocalDate trialPeriod;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "pet_shelter_type")
-    private PetShelter petShelterType;
+    private String petShelterType;
 
     @OneToMany(mappedBy = "usersContactInformation")
     @JsonIgnore

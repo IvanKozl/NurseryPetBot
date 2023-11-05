@@ -1,6 +1,5 @@
-package com.example.nurserypetbot.services.services;
+package com.example.nurserypetbot.services.interfaces;
 
-import com.example.nurserypetbot.models.Cat;
 import com.example.nurserypetbot.models.Dog;
 
 public interface DogService {
