@@ -1,5 +1,6 @@
 package com.example.nurserypetbot.models;
 
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -7,22 +8,18 @@ import java.util.Objects;
 @Entity
 @Table(name = "notification_task")
 public class Notification {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private long id;
 
     @Column(name = "chat_id")
-    @Id
-    @GeneratedValue
     private Long chatId;
 
     @Column(name = "message")
     public String message;
-    @Column(name = "message_time")
+    @Column(name = "date_time")
     public LocalDateTime timeAndDate;
-
-    public Notification(Long chatId, String message, LocalDateTime timeAndDate) {
-        this.chatId = chatId;
-        this.message = message;
-        this.timeAndDate = timeAndDate;
-    }
 
     public Notification() {
     }
@@ -71,5 +68,13 @@ public class Notification {
     @Override
     public int hashCode() {
         return Objects.hash(chatId, message, timeAndDate);
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }
