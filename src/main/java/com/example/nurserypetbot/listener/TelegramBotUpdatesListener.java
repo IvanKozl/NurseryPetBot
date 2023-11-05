@@ -63,12 +63,8 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 if (update.message().text().matches(ParserUserContactInfo.getParserInfoString())) {
                     service.addNewUsersInformation(update.message());
                 } else if (update.message().text().matches(ParserReport.getParserReportString())) {
-                    service.addReport(update.message()); }
-//                } else if (update.message().photo() != null && update.message().photo().length > 0)  {
-//                     service.processPhoto (update.message());
-//
-//                }
-                else {
+                    service.addReport(update.message());
+                } else {
                     try {
                         service.sendResponse(update.message().chat().id(), update.message().text());
                     } catch (Exception e) {
@@ -78,7 +74,12 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 }
 
             } else if (update.message().photo() != null && update.message().photo().length > 0) {
-                service.processPhoto (update.message());
+                try {
+                    service.processPhoto(update.message());
+                } catch (Exception e) {
+                    SendMessage result = new SendMessage(update.message().chat().id(), "Фото не добавлено!!!");
+                    telegramBot.execute(result);
+                }
             }
 
         });

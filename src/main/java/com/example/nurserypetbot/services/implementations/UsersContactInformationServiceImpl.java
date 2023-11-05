@@ -2,15 +2,11 @@ package com.example.nurserypetbot.services.implementations;
 
 import com.example.nurserypetbot.enums.Responses;
 import com.example.nurserypetbot.listener.TelegramBotUpdatesListener;
-import com.example.nurserypetbot.models.Photo;
 import com.example.nurserypetbot.models.Report;
 import com.example.nurserypetbot.models.UsersContactInformation;
 import com.example.nurserypetbot.parser.ParserReport;
 import com.example.nurserypetbot.parser.ParserUserContactInfo;
-import com.example.nurserypetbot.repository.CatUsersContactInformationRepository;
-import com.example.nurserypetbot.repository.DogUsersContactInformationRepository;
-import com.example.nurserypetbot.repository.PhotoRepository;
-import com.example.nurserypetbot.repository.ReportRepository;
+import com.example.nurserypetbot.repository.*;
 import com.example.nurserypetbot.services.services.UsersContactInformationService;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Message;
@@ -19,16 +15,13 @@ import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SendPhoto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -36,6 +29,7 @@ public class UsersContactInformationServiceImpl implements UsersContactInformati
 
     private final TelegramBot telegramBot;
     private Logger logger = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
+    private final UsersContactInformationRepository userContactInformationRepository;
 
     private final DogUsersContactInformationRepository dogUsersContactInformationRepository;
 
@@ -45,10 +39,11 @@ public class UsersContactInformationServiceImpl implements UsersContactInformati
     private final PhotoRepository photoRepository;
 
     public UsersContactInformationServiceImpl(TelegramBot telegramBot,
-                                              CatUsersContactInformationRepository catUsersContactInformationRepository,
+                                              UsersContactInformationRepository userContactInformationRepository, CatUsersContactInformationRepository catUsersContactInformationRepository,
                                               DogUsersContactInformationRepository dogUsersContactInformationRepository,
                                               ReportRepository reportRepository, PhotoRepository photoRepository) {
         this.telegramBot = telegramBot;
+        this.userContactInformationRepository = userContactInformationRepository;
         this.dogUsersContactInformationRepository = dogUsersContactInformationRepository;
         this.catUsersContactInformationRepository = catUsersContactInformationRepository;
         this.reportRepository = reportRepository;
@@ -127,9 +122,11 @@ public class UsersContactInformationServiceImpl implements UsersContactInformati
      */
     @Override
     public void addReport(Message message) {
-        Report report;
+
         long chatId = message.chat().id();
         SendMessage result;
+        UsersContactInformation ownerUnderTrial = new UsersContactInformation();
+        Report report;
 
         try{
             report = ParserReport.tryToParseReport(message.text().toLowerCase());
@@ -139,6 +136,15 @@ public class UsersContactInformationServiceImpl implements UsersContactInformati
                     "find the example in MENU in DAY"));
             return;
         }
+//        // ТУТУ нужен отдельный метод
+//        List<UsersContactInformation> newOwnerList = getAllUsersWithActualTrialPeriod();
+//        for (var newOwner : newOwnerList) {
+//            if (newOwner.getChatId() == message.chat().id()) {
+//                ownerUnderTrial = newOwner;
+//            }
+//        }
+
+        report.setUsersContactInformation(ownerUnderTrial);
         reportRepository.save(report);
         result = new SendMessage(chatId, String.format("OK, your report successfully added"));
         telegramBot.execute(result);
@@ -177,38 +183,42 @@ public class UsersContactInformationServiceImpl implements UsersContactInformati
         }
     }
 
-    /**Принимает информацию о
+    /** Проверяет наличие фото в входящем сообщении и добавляет фото к отчету.
+     * Создает новый обьект отчета, если текст ранее не добавлялся
+     * через метод {@link UsersContactInformationServiceImpl#addReport(Message)},
+     * в противном случае проставляет недостающие поля ().
      *
      * @param message
      */
     @Override
     public void processPhoto(Message message) {
         LocalDate currentDate = LocalDate.now();
-        PhotoSize biggestPhoto = message.photo()[0];
+//        LocalDateTime time = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
 
-//        PhotoSize[] photoSizes = message.photo();
-//        for (PhotoSize photo : photoSizes) {
-//            if (photo.width() > biggestPhoto.width()) {
-//                biggestPhoto = photo;
-//            }
-//        }
-        LocalDateTime time = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
-        Optional<UsersContactInformation> catOwner = catUsersContactInformationRepository.findByChatId(message.chat().id());
-        Optional<UsersContactInformation> dogOwner = dogUsersContactInformationRepository.findByChatId(message.chat().id());
+        UsersContactInformation ownerUnderTrial = new UsersContactInformation();
 
-        String fileId = biggestPhoto.fileId();
-        String fileUniqId = biggestPhoto.fileUniqueId();
+        PhotoSize firstIncPhoto = message.photo()[0];
+        String fileId = firstIncPhoto.fileId();
+        String fileUniqId = firstIncPhoto.fileUniqueId();
+
+        //ТУТУ нужен отдельный метод
+
+        List<UsersContactInformation> newOwnerList = getAllUsersWithActualTrialPeriod();
+        for (var newOwner : newOwnerList) {
+            if (newOwner.getChatId() == message.chat().id()) {
+                ownerUnderTrial = newOwner;
+            }
+        }
 
         if (!fileId.isEmpty() && !fileUniqId.isEmpty()) {
 
             Report report = reportRepository.findByDateTime(currentDate).orElse(new Report());
-//            if(reportRepository.findByDateTime())
-                report.setFotoCheck(true);
-//            report.setUsersContactInformation();
-//            report.setChatId(message.chat().id());
+            report.setFotoCheck(true);
+            report.setUsersContactInformation(ownerUnderTrial);
             reportRepository.save(report);
-            telegramBot.execute(new SendMessage(message.chat().id(), "Фото добавлено к отчету!"));
-            logger.info( "Создали репорт, проставили true в фотоЧек в БД");
+            telegramBot.execute(new SendMessage(message.chat().id(), "Фото добавлено к отчету! \n" +
+                    "Теперь добавьте текстовую часть отчета."));
+            logger.info( "Создали репорт, проставили \"истина\" в фотоЧек в БД");
             if (!(report.getBehavior()==null) && !(report.getFood()==null) && !(report.getFeel()==null)) {
                 report.setReportCheck(true);
                 reportRepository.save(report);
@@ -218,7 +228,33 @@ public class UsersContactInformationServiceImpl implements UsersContactInformati
             throw new IllegalArgumentException("Фото НЕ отправлено!!!");
         }
     }
+    @Override
+    public UsersContactInformation read(long user_id) {
+        return userContactInformationRepository.findById(user_id).orElseThrow();
+    }
 
+    @Override
+    public UsersContactInformation update(UsersContactInformation usersContactInformation) {
+        return userContactInformationRepository.save(usersContactInformation);
+
+    }
+    @Override
+    public List<UsersContactInformation> getAllUsersWithActualTrialPeriod() {
+        var result = userContactInformationRepository.findAll();
+        return result.stream().filter(u -> u.getTrialPeriod() != null)
+                .collect(Collectors.toList());
+    }
+
+//  Update update = response.updates().get(0);
+//PhotoSize[] photoSizes = update.message().photo();
+//PhotoSize biggestPhoto = photoSizes[0];
+//for (PhotoSize photo : photoSizes) {
+//    if (photo.width() > biggestPhoto.width()) {
+//        biggestPhoto = photo;
+//    }
+//}
+//String fileId = biggestPhoto.fileId();
+//    ________________________________________________
 //    @Override
 //    public void processPhotoMessage(Update update) {
 //        saveRawData(update);

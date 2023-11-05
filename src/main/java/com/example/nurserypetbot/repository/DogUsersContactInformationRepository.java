@@ -14,6 +14,5 @@ public interface DogUsersContactInformationRepository
     Optional<UsersContactInformation>findById( long id);
 
     //    Optional<UsersContactInformation>findByPhone(Long phoneNumber);
-    List<UsersContactInformation> findAll();
     Optional<UsersContactInformation> findByChatId(long chatId);
 }

@@ -3,6 +3,7 @@ import com.example.nurserypetbot.enums.PetShelter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class UsersContactInformation {
     private String email;
 
     @Column(name = "trial_period")
-    private LocalDateTime trialPeriod;
+    private LocalDate trialPeriod;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "pet_shelter_type")
