@@ -12,6 +12,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Service
 public class ReportServiceImpl implements ReportService {
@@ -67,12 +68,12 @@ public class ReportServiceImpl implements ReportService {
      * @param
      */
     @Override
-    @Scheduled(cron = "0 0/1 * * * *")
+    @Scheduled(cron = "0 0 21 * * *")
     public void checkDailyReport(){
         var users = usersContactInformationService.getAllUsersWithActualTrialPeriod();
         for(var user : users){
-                Report report = reportRepository.getByUserContactInformationId(user.getId()).orElseThrow();
-            if(!report.isReportCheck()) {
+                Optional <Report> report = reportRepository.getByUsersContactInformationId(user.getId());
+            if(report.isEmpty()) {
                 SendMessage message = new SendMessage(user.getChatId(), "Don't forget to send you report, " +
                         "Otherwise, our volunteer will be forced to extend or even cancel your trial period :(");
                 telegramBot.execute(message);

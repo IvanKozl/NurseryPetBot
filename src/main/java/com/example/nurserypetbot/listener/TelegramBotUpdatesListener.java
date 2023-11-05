@@ -1,10 +1,8 @@
 package com.example.nurserypetbot.listener;
-
 import com.example.nurserypetbot.enums.Responses;
 import com.example.nurserypetbot.parser.ParserUserContactInfo;
 import com.example.nurserypetbot.services.implementations.PhotoServiceImpl;
 import com.example.nurserypetbot.services.implementations.UsersContactInformationServiceImpl;
-import com.example.nurserypetbot.services.interfaces.PhotoService;
 import com.example.nurserypetbot.services.interfaces.ReportService;
 import com.example.nurserypetbot.services.interfaces.UsersContactInformationService;
 import com.pengrad.telegrambot.TelegramBot;
@@ -15,7 +13,6 @@ import com.pengrad.telegrambot.request.SendMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.PostConstruct;
 import java.util.List;
 
@@ -26,10 +23,10 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private TelegramBot telegramBot;
     private UsersContactInformationService service;
     private ReportService reportService;
-    private PhotoService photoService;
+    private PhotoServiceImpl photoService;
 
 
-    public TelegramBotUpdatesListener(TelegramBot telegramBot, UsersContactInformationService service, ReportService reportService, PhotoService photoService) {
+    public TelegramBotUpdatesListener(TelegramBot telegramBot, UsersContactInformationService service, ReportService reportService, PhotoServiceImpl photoService) {
         this.telegramBot = telegramBot;
         this.service = service;
         this.reportService = reportService;
@@ -69,7 +66,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                     try {
                         service.sendResponse(update.message().chat().id(), update.message().text());
                     } catch (Exception e) {
-                        SendMessage result = new SendMessage(update.message().chat().id(), "wrong argument wrong!!!");
+                        SendMessage result = new SendMessage(update.message().chat().id(), "Неправильная команда, повторите!!!");
                         telegramBot.execute(result);
                     }
                 }

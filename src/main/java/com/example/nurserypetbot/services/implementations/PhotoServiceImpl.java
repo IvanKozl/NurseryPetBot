@@ -46,13 +46,14 @@ public class PhotoServiceImpl implements PhotoService {
         Report report = reportRepository.findByDateTimeAndChatId(currentDate, message.chat().id()).orElse(new Report());
         report.setChatId(message.chat().id());
 
-        UsersContactInformation ownerUnderTrial = usersContactInformationRepository.findByChatId(message.chat().id()).orElseThrow();
-//        List<UsersContactInformation> newOwnerList = usersContactInformationService.getAllUsersWithActualTrialPeriod();
-//        for (var newOwner : newOwnerList) {
-//            if (newOwner.getChatId() == message.chat().id()) {
-//                ownerUnderTrial = newOwner;
-//            }
-//        }
+
+        List<UsersContactInformation> newOwnerList = usersContactInformationService.getAllUsersWithActualTrialPeriod();
+        UsersContactInformation ownerUnderTrial = new UsersContactInformation();
+        for (var newOwner : newOwnerList) {
+            if (newOwner.getChatId() == message.chat().id()) {
+                ownerUnderTrial = newOwner;
+            }
+        }
         PhotoSize firstIncPhoto = message.photo()[0];
         String fileId = firstIncPhoto.fileId();
         String fileUniqId = firstIncPhoto.fileUniqueId();

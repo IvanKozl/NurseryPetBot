@@ -30,8 +30,7 @@ public class UsersContactInformationServiceImpl implements UsersContactInformati
     private final DogUsersContactInformationRepository dogUsersContactInformationRepository;
 
     private final CatUsersContactInformationRepository catUsersContactInformationRepository;
-    private final ReportRepository
-            reportRepository;
+    private final ReportRepository reportRepository;
     private final PhotoRepository photoRepository;
 
     public UsersContactInformationServiceImpl(TelegramBot telegramBot,
