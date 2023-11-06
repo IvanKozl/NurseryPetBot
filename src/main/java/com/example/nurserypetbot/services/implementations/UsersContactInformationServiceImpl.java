@@ -144,6 +144,7 @@ public class UsersContactInformationServiceImpl implements UsersContactInformati
     /**
      * Reading user's contact information using method
      * {@link UsersContactInformationRepository#findById(Object)}
+     *
      * @param user_id
      * @return UsersContactInformation
      */
@@ -155,6 +156,7 @@ public class UsersContactInformationServiceImpl implements UsersContactInformati
     /**
      * Reading user's contact information using method
      * {@link UsersContactInformationRepository#findByChatId(long)}
+     *
      * @param chatId
      * @return UsersContactInformation
      */
@@ -165,6 +167,7 @@ public class UsersContactInformationServiceImpl implements UsersContactInformati
 
     /**
      * Updating user's contact information
+     *
      * @param usersContactInformation
      * @return UsersContactInformation
      */
@@ -175,6 +178,7 @@ public class UsersContactInformationServiceImpl implements UsersContactInformati
 
     /**
      * Finding users with actual trial period
+     *
      * @return List<UsersContactInformation>
      */
     @Override

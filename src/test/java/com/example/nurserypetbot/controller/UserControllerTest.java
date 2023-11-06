@@ -17,6 +17,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -49,11 +50,10 @@ public class UserControllerTest {
     @Test
     void readAllReportsOfUser__returnListOfReports() {
         UsersContactInformation usersContactInformation =
-                new UsersContactInformation(0L, 2L, "Ivan", "Ivanov",
-                        18, 89097796609L, "abc12334@mail.ru", PetShelter.CAT);
+                new UsersContactInformation(0L, 2L, "Ivan", "Ivanov", 18, 89097796609L, "abc12334@mail.ru",LocalDate.now(), "CAT");
         Report report =
                 new Report(0L, 2L,
-                        "food good", "feel well", "behavior perfect", LocalDateTime.now());
+                        "food good", "feel well", "behavior perfect", LocalDate.now());
 
 
         var savedUser = userContactInformationRepository.save(usersContactInformation);
@@ -71,14 +71,13 @@ public class UserControllerTest {
     }
 
     @Test
-    void setTrailPeriodForUser__returnUpdatedUserInformation() {
+    void setTrialPeriodForUser__returnUpdatedUserInformation() {
         UsersContactInformation usersContactInformation =
-                new UsersContactInformation(0L, 2L, "Ivan", "Ivanov",
-                        18, 89234090909L, "abw123@mail.ru", PetShelter.CAT);
+                new UsersContactInformation(0L, 2L, "Serg", "Ivanov", 18, 89234090909L, "abw123@mail.ru",LocalDate.now(), "CAT");
 
         userContactInformationRepository.save(usersContactInformation);
 
-        usersContactInformation.setTrailPeriod(LocalDateTime.now().plusDays(30));
+        usersContactInformation.setTrialPeriod(LocalDate.now().plusDays(30));
 
         var savedUser = userContactInformationRepository.save(usersContactInformation);
         ResponseEntity<UsersContactInformation> response =
@@ -90,18 +89,19 @@ public class UserControllerTest {
     }
 
     @Test
-    void extendTrailPeriod__returnUpdatedInformation() {
+    void extendTrialPeriod__returnUpdatedInformation() {
         UsersContactInformation usersContactInformation =
-                new UsersContactInformation(0L, 2L, "Ivan", "Ivanov",
-                        18, 89099456769L, "abc23@mail.ru", PetShelter.CAT);
+                new UsersContactInformation(0L, 2L, "Merg", "Ivanov", 18, 890956769L, "abc23@mail.ru", LocalDate.now(),"CAT");
 
         userContactInformationRepository.save(usersContactInformation);
 
-        usersContactInformation.setTrailPeriod(LocalDateTime.now().plusDays(30));
+        usersContactInformation.setTrialPeriod(LocalDate.now().plusDays(30));
 
         userContactInformationRepository.save(usersContactInformation);
 
-        usersContactInformation.setTrailPeriod(usersContactInformation.getTrailPeriod().plusDays(14));
+        usersContactInformation.setTrialPeriod(usersContactInformation.getTrialPeriod().plusDays(14));
+
+        userContactInformationRepository.save(usersContactInformation);
 
         ResponseEntity<UsersContactInformation> response =
                 restTemplate.exchange(url + port + "/user/extend/" + usersContactInformation.getId(),

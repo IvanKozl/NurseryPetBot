@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 @Component
 public class ParserReport {
     public ReportRepository reportRepository;
@@ -16,7 +17,7 @@ public class ParserReport {
         this.reportRepository = reportRepository;
     }
 
-    public  Report tryToParseReport(Message message) {
+    public Report tryToParseReport(Message message) {
 
         LocalDate currentDate = LocalDate.now();
         Report report = reportRepository.findByDateTimeAndChatId(currentDate, message.chat().id()).orElse(new Report());
@@ -35,14 +36,14 @@ public class ParserReport {
                 report.setReportCheck(true);
             }
         } else {
-                throw new IllegalArgumentException("Wrong format, please, try again." +
-                        "If you have some problems, please, find MENU and instructions ");
-            }
-            return report;
+            throw new IllegalArgumentException("Wrong format, please, try again." +
+                    "If you have some problems, please, find MENU and instructions ");
         }
-
-
+        return report;
     }
+
+
+}
 
 
 

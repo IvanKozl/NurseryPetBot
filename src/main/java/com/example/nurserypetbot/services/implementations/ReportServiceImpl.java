@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @Service
 public class ReportServiceImpl implements ReportService {
-    private  final ParserReport parserReport;
+    private final ParserReport parserReport;
     private final ReportRepository reportRepository;
     private final TelegramBot telegramBot;
     private final UsersContactInformationService usersContactInformationService;
@@ -28,6 +28,7 @@ public class ReportServiceImpl implements ReportService {
         this.telegramBot = telegramBot;
         this.usersContactInformationService = usersContactInformationService;
     }
+
     /**
      * Addition user's report using {@link ParserReport}
      * <br>
@@ -36,6 +37,7 @@ public class ReportServiceImpl implements ReportService {
      * Addition report information in repository
      * <br>
      * {@code reportRepository.save(report);}
+     *
      * @param message
      */
     @Override
@@ -43,10 +45,10 @@ public class ReportServiceImpl implements ReportService {
 
         Report report;
 
-        try{
+        try {
             report = parserReport.tryToParseReport(message);
             report.setChatId(message.chat().id());
-        } catch (Exception ex){
+        } catch (Exception ex) {
             telegramBot.execute(new SendMessage(message.chat().id(), "Неправильный формат отчета, пожалуйста повторите \n" +
                     "Образец заполнения находится в соседнем пункте меню"));
             return;
@@ -57,8 +59,10 @@ public class ReportServiceImpl implements ReportService {
         reportRepository.save(parserReport.tryToParseReport(message));
         telegramBot.execute(new SendMessage(message.chat().id(), String.format("OK, текстовый отчет добавлен. Если фото уже добавлено, значит вы сдали отчет.")));
     }
+
     /**
      * Find date and time of report using {@link LocalDate}
+     *
      * @param id
      * @return
      */
@@ -68,8 +72,10 @@ public class ReportServiceImpl implements ReportService {
         LocalDate dateTime = report.getDateTime();
         return dateTime;
     }
+
     /**
      * Create trial period for user using
+     *
      * @param userId
      */
     @Override
@@ -78,19 +84,21 @@ public class ReportServiceImpl implements ReportService {
         user.setTrialPeriod(LocalDate.now().plusDays(30));
         usersContactInformationService.update(user);
     }
+
     /**
      * Отправляет предупреждение всем владельцам животного c испытательным сроком,
      * <br>
      * если до 21.00 ежедневный отчет был не отправлен
+     *
      * @param
      */
     @Override
     @Scheduled(cron = "0 0 21 * * *")
-    public void checkDailyReport(){
+    public void checkDailyReport() {
         var users = usersContactInformationService.getAllUsersWithActualTrialPeriod();
-        for(var user : users){
-                Optional <Report> report = reportRepository.getByUsersContactInformationId(user.getId());
-            if(report.isEmpty()) {
+        for (var user : users) {
+            Optional<Report> report = reportRepository.getByUsersContactInformationId(user.getId());
+            if (report.isEmpty()) {
                 SendMessage message = new SendMessage(user.getChatId(), "Don't forget to send you report, " +
                         "Otherwise, our volunteer will be forced to extend or even cancel your trial period :(");
                 telegramBot.execute(message);

@@ -10,9 +10,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @OpenAPIDefinition
 public class NurseryPetBotApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(NurseryPetBotApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(NurseryPetBotApplication.class, args);
+    }
 
 
 }
