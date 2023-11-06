@@ -1,16 +1,13 @@
 package com.example.nurserypetbot.controllers;
 
 import com.example.nurserypetbot.models.Cat;
-import com.example.nurserypetbot.models.Pet;
-import com.example.nurserypetbot.models.UsersContactInformation;
-import com.example.nurserypetbot.services.services.CatService;
+import com.example.nurserypetbot.services.interfaces.CatService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/cat")
 public class CatController {
     public final CatService catService;
-
 
     public CatController(CatService catService) {
         this.catService = catService;

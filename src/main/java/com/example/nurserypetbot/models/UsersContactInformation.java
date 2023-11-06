@@ -1,19 +1,23 @@
 package com.example.nurserypetbot.models;
-
-import com.example.nurserypetbot.enums.PetShelter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import lombok.*;
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 
+@Getter
+@Setter
+@EqualsAndHashCode(exclude = "id")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "users_contact_information")
 @Entity
 public class UsersContactInformation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
 
     @Column(name = "chat_id")
     private long chatId;
@@ -32,9 +36,12 @@ public class UsersContactInformation {
 
     @Column(name = "email")
     private String email;
-    @Enumerated(EnumType.STRING)
+
+    @Column(name = "trial_period")
+    private LocalDate trialPeriod;
+
     @Column(name = "pet_shelter_type")
-    private PetShelter petShelterType;
+    private String petShelterType;
 
     @OneToMany(mappedBy = "usersContactInformation")
     @JsonIgnore
@@ -48,16 +55,7 @@ public class UsersContactInformation {
     @JsonIgnore
     private List<Report> reports;
 
-    @Column(name = "trail_period")
-    private LocalDateTime trailPeriod;
-
-
-    public UsersContactInformation() {
-    }
-
-    public UsersContactInformation(long id, long chatId, String name, String surname,
-                                   int age, long phoneNumber, String email,
-                                   PetShelter petShelterType) {
+    public UsersContactInformation(Long id, long chatId, String name, String surname, int age, long phoneNumber, String email, LocalDate trialPeriod, String petShelterType) {
         this.id = id;
         this.chatId = chatId;
         this.name = name;
@@ -65,130 +63,8 @@ public class UsersContactInformation {
         this.age = age;
         this.phoneNumber = phoneNumber;
         this.email = email;
+        this.trialPeriod = trialPeriod;
         this.petShelterType = petShelterType;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public long getChatId() {
-        return chatId;
-    }
-
-    public void setChatId(long chatId) {
-        this.chatId = chatId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public long getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public long getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(long phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public PetShelter getPetType() {
-        return petShelterType;
-    }
-
-    public void setPetShelterType(PetShelter petShelterType) {
-        this.petShelterType = petShelterType;
-    }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        UsersContactInformation usersContactInformation = (UsersContactInformation) o;
-        return age == usersContactInformation.age && phoneNumber == usersContactInformation.phoneNumber
-                && chatId == usersContactInformation.chatId
-                && Objects.equals(name, usersContactInformation.name)
-                && Objects.equals(surname, usersContactInformation.surname)
-                && Objects.equals(email, usersContactInformation.email)
-                && Objects.equals(petShelterType, usersContactInformation.petShelterType);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(chatId, name, surname, age, phoneNumber, email, petShelterType);
-    }
-
-    public PetShelter getPetShelterType() {
-        return petShelterType;
-    }
-
-    public List<Cat> getCats() {
-        return cats;
-    }
-
-    public void setCats(List<Cat> cats) {
-        this.cats = cats;
-    }
-
-    public List<Dog> getDogs() {
-        return dogs;
-    }
-
-    public void setDogs(List<Dog> dogs) {
-        this.dogs = dogs;
-    }
-
-    public List<Report> getReports() {
-        return reports;
-    }
-
-    public void setReports(List<Report> reports) {
-        this.reports = reports;
-    }
-
-    public LocalDateTime getTrailPeriod() {
-        return trailPeriod;
-    }
-
-    public void setTrailPeriod(LocalDateTime trailPeriod) {
-        this.trailPeriod = trailPeriod;
     }
 }
 
