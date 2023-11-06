@@ -4,7 +4,7 @@ package com.example.nurserypetbot.models;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Objects;
+
 @Getter
 @Setter
 @EqualsAndHashCode(exclude = "id")
@@ -36,6 +36,18 @@ public class Pet {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UsersContactInformation usersContactInformation;
+
+    public Pet(Long id, long chatId, String type, String name, String gender, int age, String sterile, String feature, String featureAdd) {
+        this.id = id;
+        this.chatId = chatId;
+        this.type = type;
+        this.name = name;
+        this.gender = gender;
+        this.age = age;
+        this.sterile = sterile;
+        this.feature = feature;
+        this.featureAdd = featureAdd;
+    }
 
 
 //

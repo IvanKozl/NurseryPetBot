@@ -45,24 +45,41 @@ public class ReportServiceImpl implements ReportService {
 
         try{
             report = parserReport.tryToParseReport(message);
+            report.setChatId(message.chat().id());
         } catch (Exception ex){
             telegramBot.execute(new SendMessage(message.chat().id(), "Неправильный формат отчета, пожалуйста повторите \n" +
                     "Образец заполнения находится в соседнем пункте меню"));
             return;
         }
+        var user = usersContactInformationService.readByChatId(message.chat().id());
+        report.setUsersContactInformation(user);
 
-        reportRepository.save(report);
+        reportRepository.save(parserReport.tryToParseReport(message));
         telegramBot.execute(new SendMessage(message.chat().id(), String.format("OK, текстовый отчет добавлен. Если фото уже добавлено, значит вы сдали отчет.")));
     }
-
+    /**
+     * Find date and time of report using {@link LocalDate}
+     * @param id
+     * @return
+     */
     @Override
-    public void createTrailPeriod(long userId) {
+    public LocalDate findDateAndTimeOfReport(long id) {
+        Report report = new Report();
+        LocalDate dateTime = report.getDateTime();
+        return dateTime;
+    }
+    /**
+     * Create trial period for user using
+     * @param userId
+     */
+    @Override
+    public void createTrialPeriod(long userId) {
         var user = usersContactInformationService.read(userId);
         user.setTrialPeriod(LocalDate.now().plusDays(30));
         usersContactInformationService.update(user);
     }
     /**
-     * Отправляет предупреждение всем владельцам испытательного срока,
+     * Отправляет предупреждение всем владельцам животного c испытательным сроком,
      * <br>
      * если до 21.00 ежедневный отчет был не отправлен
      * @param

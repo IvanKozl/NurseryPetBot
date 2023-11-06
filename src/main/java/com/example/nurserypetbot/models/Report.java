@@ -1,5 +1,6 @@
 package com.example.nurserypetbot.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -36,9 +37,17 @@ public class Report {
     private boolean reportCheck;
     @ManyToOne
     @JoinColumn(name = "user_number")
+    @JsonIgnore
     private UsersContactInformation usersContactInformation;
 
-
+    public Report (Long id, long chatId, String food, String feel, String behavior, LocalDate dateTime) {
+        this.id = id;
+        this.chatId = chatId;
+        this.food = food;
+        this.feel = feel;
+        this.behavior = behavior;
+        this.dateTime = dateTime;
+    }
 //    public UsersContactInformationImpl getUsersContactInformation() {
 //        return usersContactInformation;
 //    }

@@ -13,3 +13,9 @@ foto_check BOOLEAN,
 report_check BOOLEAN,
 user_number bigint REFERENCES nurserycatdogbot1.users_contact_information (id),
 PRIMARY KEY (id));
+
+
+-- -- changeset Maria:51
+-- Alter table nurserycatdogbot1.report
+-- add constraint report_pk primary key (id)
+--;

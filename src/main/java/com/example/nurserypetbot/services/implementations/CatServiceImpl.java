@@ -7,6 +7,7 @@ import com.example.nurserypetbot.services.interfaces.CatService;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+
 @Service
 public class CatServiceImpl implements CatService {
     private final CatRepository catRepository;
@@ -17,7 +18,7 @@ public class CatServiceImpl implements CatService {
 
     @Override
     public Cat create(Cat cat) {
-        if(catRepository.findByNameAndAge(cat.getName(), cat.getAge()).isPresent()){
+        if (catRepository.findByNameAndAge(cat.getName(), cat.getAge()).isPresent()) {
             throw new CatException("We have already got this cat in our DB, please," +
                     "check the information");
         }

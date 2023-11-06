@@ -10,10 +10,10 @@ import javax.persistence.Table;
 @Table(name = "dog")
 public class Dog extends Pet{
     public Dog(long id, long chatId, String type, String name, String gender,
-               int age, String sterile, String feature, String featureAdd,UsersContactInformation user_id){
-        super(id,chatId,type,name,gender,age,sterile,feature,featureAdd,user_id);
+               int age, String sterile, String feature, String featureAdd){
+        super(id,chatId,type,name,gender,age,sterile,feature,featureAdd);
     }
-    public Dog(){
+//    public Dog(int i, int i1, String doggy, String dog, String man, int i2, String sterile, String yes, String god){
 
-    }
+//    }
 }

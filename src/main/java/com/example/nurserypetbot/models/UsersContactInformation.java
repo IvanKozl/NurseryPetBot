@@ -1,10 +1,8 @@
 package com.example.nurserypetbot.models;
-import com.example.nurserypetbot.enums.PetShelter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -56,6 +54,18 @@ public class UsersContactInformation {
     @OneToMany(mappedBy = "usersContactInformation")
     @JsonIgnore
     private List<Report> reports;
+
+    public UsersContactInformation(Long id, long chatId, String name, String surname, int age, long phoneNumber, String email, LocalDate trialPeriod, String petShelterType) {
+        this.id = id;
+        this.chatId = chatId;
+        this.name = name;
+        this.surname = surname;
+        this.age = age;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.trialPeriod = trialPeriod;
+        this.petShelterType = petShelterType;
+    }
 }
 
 

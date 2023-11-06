@@ -11,8 +11,10 @@ import java.util.Optional;
 public interface ReportRepository extends JpaRepository<Report, Long> {
     Optional<Report> findByDateTimeAndChatId(LocalDate date, long chatId);
     Optional<Report> findByChatId(int number);
-    @NotNull
+
     List<Report> findAll();
 
     Optional<Report> getByUsersContactInformationId(long id);
+
+    List<Report> findAllByUsersContactInformationId(long userId);
 }

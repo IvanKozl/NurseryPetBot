@@ -16,4 +16,5 @@ public interface UsersContactInformationService {
 
     List<UsersContactInformation> getAllUsersWithActualTrialPeriod();
 
+    UsersContactInformation readByChatId(long chatId);
 }

@@ -17,13 +17,13 @@ public class ParserReport {
     }
 
     public  Report tryToParseReport(Message message) {
+
         LocalDate currentDate = LocalDate.now();
         Report report = reportRepository.findByDateTimeAndChatId(currentDate, message.chat().id()).orElse(new Report());
         Pattern pattern = Pattern.compile
                 ("([рацион]+\\s.+)(\\s)([самочувствие]+\\s.+)(\\s)([поведение]+(\\s).+)");
 
-        String text = message.text().toLowerCase();
-        Matcher matcher = pattern.matcher(text);
+        Matcher matcher = pattern.matcher(message.text());
 
         if (matcher.matches()) {
             report.setFood(matcher.group(1));

@@ -141,17 +141,42 @@ public class UsersContactInformationServiceImpl implements UsersContactInformati
         }
     }
 
+    /**
+     * Reading user's contact information using method
+     * {@link UsersContactInformationRepository#findById(Object)}
+     * @param user_id
+     * @return UsersContactInformation
+     */
     @Override
     public UsersContactInformation read(long user_id) {
         return userContactInformationRepository.findById(user_id).orElseThrow();
     }
 
+    /**
+     * Reading user's contact information using method
+     * {@link UsersContactInformationRepository#findByChatId(long)}
+     * @param chatId
+     * @return UsersContactInformation
+     */
+    @Override
+    public UsersContactInformation readByChatId(long chatId) {
+        return userContactInformationRepository.findByChatId(chatId).orElseThrow();
+    }
+
+    /**
+     * Updating user's contact information
+     * @param usersContactInformation
+     * @return UsersContactInformation
+     */
     @Override
     public UsersContactInformation update(UsersContactInformation usersContactInformation) {
         return userContactInformationRepository.save(usersContactInformation);
-
     }
 
+    /**
+     * Finding users with actual trial period
+     * @return List<UsersContactInformation>
+     */
     @Override
     public List<UsersContactInformation> getAllUsersWithActualTrialPeriod() {
         var result = userContactInformationRepository.findAll();

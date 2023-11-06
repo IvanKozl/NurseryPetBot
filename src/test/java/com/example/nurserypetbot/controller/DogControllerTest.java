@@ -17,7 +17,6 @@ import java.util.Optional;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = {DogController.class})
@@ -36,10 +35,10 @@ public class DogControllerTest {
     DogRepository dogRepository;
 
     Dog dog = new Dog(1L, 1L, "dog", "Bob",
-            "male", 4, "yes","no", "don't like parrots" );
+            "male", 4, "yes", "no", "don't like parrots");
 
     @Test
-    void create__returnStatus200AndSavedToDb() throws Exception{
+    void create__returnStatus200AndSavedToDb() throws Exception {
         when(dogRepository.save(dog)).thenReturn(dog);
         mockMvc.perform(post("/dog")
                         .content(objectMapper.writeValueAsString(dog))
@@ -48,6 +47,7 @@ public class DogControllerTest {
                 .andExpect(status().isOk());
 
     }
+
     @Test
     void read__returnStatus200() throws Exception {
         dogRepository.save(dog);
@@ -59,8 +59,9 @@ public class DogControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
+
     @Test
-    void update__returnStatus200() throws Exception{
+    void update__returnStatus200() throws Exception {
         when(dogRepository.findById(dog.getId()))
                 .thenReturn(Optional.of(dog));
         when(dogRepository.save(dog))
@@ -71,8 +72,9 @@ public class DogControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                ;
+        ;
     }
+
     @Test
     void delete__returnStatus200AndDeletedInformation() throws Exception {
         when(dogRepository.findById(dog.getId()))
