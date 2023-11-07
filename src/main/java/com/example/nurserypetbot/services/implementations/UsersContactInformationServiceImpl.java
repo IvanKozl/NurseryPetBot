@@ -9,6 +9,7 @@ import com.example.nurserypetbot.repository.*;
 import com.example.nurserypetbot.services.interfaces.UsersContactInformationService;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Message;
+import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SendPhoto;
 import org.slf4j.Logger;
@@ -27,20 +28,19 @@ public class UsersContactInformationServiceImpl implements UsersContactInformati
     private Logger logger = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
     private final UsersContactInformationRepository userContactInformationRepository;
 
-    private final DogUsersContactInformationRepository dogUsersContactInformationRepository;
-
-    private final CatUsersContactInformationRepository catUsersContactInformationRepository;
+//    private final DogUsersContactInformationRepository dogUsersContactInformationRepository;
+//
+//    private final CatUsersContactInformationRepository catUsersContactInformationRepository;
     private final ReportRepository reportRepository;
     private final PhotoRepository photoRepository;
+    private final InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
+
 
     public UsersContactInformationServiceImpl(TelegramBot telegramBot,
-                                              UsersContactInformationRepository userContactInformationRepository, CatUsersContactInformationRepository catUsersContactInformationRepository,
-                                              DogUsersContactInformationRepository dogUsersContactInformationRepository,
+                                              UsersContactInformationRepository userContactInformationRepository,
                                               ReportRepository reportRepository, PhotoRepository photoRepository) {
         this.telegramBot = telegramBot;
         this.userContactInformationRepository = userContactInformationRepository;
-        this.dogUsersContactInformationRepository = dogUsersContactInformationRepository;
-        this.catUsersContactInformationRepository = catUsersContactInformationRepository;
         this.reportRepository = reportRepository;
         this.photoRepository = photoRepository;
     }
@@ -67,7 +67,7 @@ public class UsersContactInformationServiceImpl implements UsersContactInformati
         SendMessage result;
 
         try {
-            usersContactInformation = ParserUserContactInfo.tryToParseUsersInformation(message.text().toUpperCase());
+            usersContactInformation = ParserUserContactInfo.tryToParseUsersInformation(message.text());
             usersContactInformation.setChatId(chatId);
         } catch (Exception ex) {
             telegramBot.execute(new SendMessage(chatId, "Неправильный формат. Пожалуйста повторите ввод информации, согласно вышеуказанному образцу."));
@@ -76,31 +76,29 @@ public class UsersContactInformationServiceImpl implements UsersContactInformati
 
         if (message.text().toUpperCase().startsWith("CAT")) {
             try {
-                catUsersContactInformationRepository.save(usersContactInformation);
+                userContactInformationRepository.save(usersContactInformation);
             } catch (Exception exception) {
                 telegramBot.execute(new SendMessage(chatId,
-                        "This phone number or email address is already in our DB," +
-                                "or you forget some information :("));
+                        "Этот номер телефона или email уже зарегистрированы в нашей базе данных. " ));
                 return;
             }
-            result = new SendMessage(chatId, String.format("OK, your information successfully added"));
+            result = new SendMessage(chatId, String.format("Ок, Ваша информация успешно добавлена!"));
             telegramBot.execute(result);
+
         } else if (message.text().toUpperCase().startsWith("DOG")) {
             try {
-                dogUsersContactInformationRepository.save(usersContactInformation);
+                userContactInformationRepository.save(usersContactInformation);
             } catch (Exception exception) {
                 telegramBot.execute(new SendMessage(chatId,
-                        "This phone number or email address is already in our DB," +
-                                "or you forget some information :("));
+                        "Этот номер телефона или email уже зарегистрированы в нашей базе данных. "));
                 return;
             }
 
-            result = new SendMessage(chatId, String.format("ОК, ваша информация успешно добавлена"));
+            result = new SendMessage(chatId, String.format("Ок, Ваша информация успешно добавлена! "));
             telegramBot.execute(result);
         }
 
     }
-
     /**
      * Сравнение входящий сообщений с {@link com.example.nurserypetbot.enums.Responses}
      * и отправка ответных сообщений с текстом из enum-констант.
@@ -115,7 +113,7 @@ public class UsersContactInformationServiceImpl implements UsersContactInformati
         SendPhoto locationCats = new SendPhoto(chatId, "https://disk.yandex.ru/i/LAxMchg5O9Qdtg");
         SendPhoto locationSecurity = new SendPhoto(chatId, "https://disk.yandex.ru/i/t8Gg1fX9fxbO_Q");
         SendPhoto locationDogs = new SendPhoto(chatId, "https://disk.yandex.ru/i/p1kxCruJs8NR0w");
-        String str = string.toUpperCase().replaceAll("([^a-zA-Zа-яА-Я]+)", "");
+        String str = string.replaceAll("([^a-zA-Zа-яА-Я]+)", "").toUpperCase();
         EnumSet<Responses> allMenuCommands = EnumSet.allOf(Responses.class);
         if (str.equals(Responses.values()[5].toString())) {
             SendMessage message = new SendMessage(chatId, (Responses.valueOf(str)).getResponseText());
@@ -140,7 +138,6 @@ public class UsersContactInformationServiceImpl implements UsersContactInformati
             throw new IllegalArgumentException("wrong argument!!!");
         }
     }
-
     /**
      * Reading user's contact information using method
      * {@link UsersContactInformationRepository#findById(Object)}
@@ -152,7 +149,6 @@ public class UsersContactInformationServiceImpl implements UsersContactInformati
     public UsersContactInformation read(long user_id) {
         return userContactInformationRepository.findById(user_id).orElseThrow();
     }
-
     /**
      * Reading user's contact information using method
      * {@link UsersContactInformationRepository#findByChatId(long)}
@@ -187,8 +183,6 @@ public class UsersContactInformationServiceImpl implements UsersContactInformati
         return result.stream().filter(u -> u.getTrialPeriod() != null)
                 .collect(Collectors.toList());
     }
-
-
 }
 
 

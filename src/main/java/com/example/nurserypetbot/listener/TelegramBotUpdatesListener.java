@@ -64,7 +64,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                     logger.info( "Отчет сохранен  в БД");
                 } else {
                     try {
-                        service.sendResponse(update.message().chat().id(), update.message().text());
+                        service.sendResponse(update.message().chat().id(), update.message().text().toUpperCase());
                     } catch (Exception e) {
                         SendMessage result = new SendMessage(update.message().chat().id(), "Неправильная команда, повторите!!!");
                         telegramBot.execute(result);
@@ -76,13 +76,11 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 try {
                     photoService.processPhoto(update.message());
                     logger.info( "ФОТО ДОБАВЛЕНО");
-
                 } catch (Exception e) {
                     SendMessage result = new SendMessage(update.message().chat().id(), "Фото не добавлено!!!");
                     telegramBot.execute(result);
                 }
             }
-
         });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
 

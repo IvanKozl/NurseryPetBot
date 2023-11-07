@@ -24,7 +24,7 @@ public class ParserReport {
         Pattern pattern = Pattern.compile
                 ("([рацион]+\\s.+)(\\s)([самочувствие]+\\s.+)(\\s)([поведение]+(\\s).+)");
 
-        Matcher matcher = pattern.matcher(message.text());
+        Matcher matcher = pattern.matcher(message.text().toLowerCase());
 
         if (matcher.matches()) {
             report.setFood(matcher.group(1));

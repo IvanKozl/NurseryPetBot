@@ -50,10 +50,9 @@ public class UserControllerTest {
     @Test
     void readAllReportsOfUser__returnListOfReports() {
         UsersContactInformation usersContactInformation =
-                new UsersContactInformation(0L, 2L, "Ivan", "Ivanov", 18, 89097796609L, "abc12334@mail.ru",LocalDate.now(), "CAT");
+                new UsersContactInformation(2L, "Ivan", "Ivanov", 18, 89097796609L, "abc12334@mail.ru",LocalDate.now(), "CAT");
         Report report =
-                new Report(0L, 2L,
-                        "food good", "feel well", "behavior perfect", LocalDate.now());
+                new Report(2L, "food good", "feel well", "behavior perfect", LocalDate.now());
 
 
         var savedUser = userContactInformationRepository.save(usersContactInformation);
@@ -73,7 +72,7 @@ public class UserControllerTest {
     @Test
     void setTrialPeriodForUser__returnUpdatedUserInformation() {
         UsersContactInformation usersContactInformation =
-                new UsersContactInformation(0L, 2L, "Serg", "Ivanov", 18, 89234090909L, "abw123@mail.ru",LocalDate.now(), "CAT");
+                new UsersContactInformation(2L, "Serg", "Ivanov", 18, 89234090909L, "abw123@mail.ru",LocalDate.now(), "CAT");
 
         userContactInformationRepository.save(usersContactInformation);
 
@@ -91,7 +90,7 @@ public class UserControllerTest {
     @Test
     void extendTrialPeriod__returnUpdatedInformation() {
         UsersContactInformation usersContactInformation =
-                new UsersContactInformation(0L, 2L, "Merg", "Ivanov", 18, 890956769L, "abc23@mail.ru", LocalDate.now(),"CAT");
+                new UsersContactInformation(2L, "Merg", "Ivanov", 18, 890956769L, "abc23@mail.ru", LocalDate.now(),"CAT");
 
         userContactInformationRepository.save(usersContactInformation);
 
@@ -101,7 +100,7 @@ public class UserControllerTest {
 
         usersContactInformation.setTrialPeriod(usersContactInformation.getTrialPeriod().plusDays(14));
 
-        userContactInformationRepository.save(usersContactInformation);
+//        userContactInformationRepository.save(usersContactInformation);
 
         ResponseEntity<UsersContactInformation> response =
                 restTemplate.exchange(url + port + "/user/extend/" + usersContactInformation.getId(),

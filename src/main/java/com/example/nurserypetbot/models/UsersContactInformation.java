@@ -57,8 +57,7 @@ public class UsersContactInformation {
     @JsonIgnore
     private List<Report> reports;
 
-    public UsersContactInformation(Long id, long chatId, String name, String surname, int age, long phoneNumber, String email, LocalDate trialPeriod, String petShelterType) {
-        this.id = id;
+    public UsersContactInformation(long chatId, String name, String surname, int age, long phoneNumber, String email, LocalDate trialPeriod, String petShelterType) {
         this.chatId = chatId;
         this.name = name;
         this.surname = surname;

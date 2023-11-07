@@ -47,19 +47,21 @@ public class PhotoServiceImpl implements PhotoService {
 
         LocalDate currentDate = LocalDate.now();
         Report report = reportRepository.findByDateTimeAndChatId(currentDate, message.chat().id()).orElse(new Report());
+
         report.setChatId(message.chat().id());
+        report.setDateTime(LocalDate.now());
+        UsersContactInformation ownerUnderTrial = usersContactInformationService.readByChatId(message.chat().id());
 
-
-        List<UsersContactInformation> newOwnerList = usersContactInformationService.getAllUsersWithActualTrialPeriod();
-        UsersContactInformation ownerUnderTrial = new UsersContactInformation();
-        for (var newOwner : newOwnerList) {
-            if (newOwner.getChatId() == message.chat().id()) {
-                ownerUnderTrial = newOwner;
-            }
+        PhotoSize[] photoSizes = message.photo();
+        PhotoSize biggestPhoto = photoSizes[0];
+        for (PhotoSize photo : photoSizes) {
+          if (photo.width() > biggestPhoto.width()) {
+        biggestPhoto = photo;
+          }
         }
-        PhotoSize firstIncPhoto = message.photo()[0];
-        String fileId = firstIncPhoto.fileId();
-        String fileUniqId = firstIncPhoto.fileUniqueId();
+
+        String fileId = biggestPhoto.fileId();
+        String fileUniqId = biggestPhoto.fileUniqueId();
 
         if (!fileId.isEmpty() && !fileUniqId.isEmpty()) {
             report.setFotoCheck(true);

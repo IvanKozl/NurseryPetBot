@@ -37,8 +37,8 @@ public class Pet {
     @JoinColumn(name = "user_id")
     private UsersContactInformation usersContactInformation;
 
-    public Pet(Long id, long chatId, String type, String name, String gender, int age, String sterile, String feature, String featureAdd) {
-        this.id = id;
+    public Pet(long chatId, String type, String name, String gender, int age, String sterile, String feature, String featureAdd) {
+
         this.chatId = chatId;
         this.type = type;
         this.name = name;

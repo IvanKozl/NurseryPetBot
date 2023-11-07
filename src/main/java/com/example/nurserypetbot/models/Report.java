@@ -40,8 +40,7 @@ public class Report {
     @JsonIgnore
     private UsersContactInformation usersContactInformation;
 
-    public Report(Long id, long chatId, String food, String feel, String behavior, LocalDate dateTime) {
-        this.id = id;
+    public Report(long chatId, String food, String feel, String behavior, LocalDate dateTime) {
         this.chatId = chatId;
         this.food = food;
         this.feel = feel;
