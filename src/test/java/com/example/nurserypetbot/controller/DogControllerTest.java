@@ -3,13 +3,11 @@ package com.example.nurserypetbot.controller;
 import com.example.nurserypetbot.controllers.DogController;
 import com.example.nurserypetbot.models.Dog;
 import com.example.nurserypetbot.repository.DogRepository;
-import com.example.nurserypetbot.services.implementations.DogServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 

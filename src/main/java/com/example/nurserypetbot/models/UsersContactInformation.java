@@ -7,8 +7,6 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@Getter
-@Setter
 @EqualsAndHashCode(exclude = "id")
 @Builder
 @NoArgsConstructor
@@ -66,6 +64,105 @@ public class UsersContactInformation {
         this.email = email;
         this.trialPeriod = trialPeriod;
         this.petShelterType = petShelterType;
+    }
+    public UsersContactInformation(){
+
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public long getChatId() {
+        return chatId;
+    }
+
+    public void setChatId(long chatId) {
+        this.chatId = chatId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public long getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(long phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public LocalDate getTrialPeriod() {
+        return trialPeriod;
+    }
+
+    public void setTrialPeriod(LocalDate trialPeriod) {
+        this.trialPeriod = trialPeriod;
+    }
+
+    public String getPetShelterType() {
+        return petShelterType;
+    }
+
+    public void setPetShelterType(String petShelterType) {
+        this.petShelterType = petShelterType;
+    }
+
+    public List<Cat> getCats() {
+        return cats;
+    }
+
+    public void setCats(List<Cat> cats) {
+        this.cats = cats;
+    }
+
+    public List<Dog> getDogs() {
+        return dogs;
+    }
+
+    public void setDogs(List<Dog> dogs) {
+        this.dogs = dogs;
+    }
+
+    public List<Report> getReports() {
+        return reports;
+    }
+
+    public void setReports(List<Report> reports) {
+        this.reports = reports;
     }
 }
 
