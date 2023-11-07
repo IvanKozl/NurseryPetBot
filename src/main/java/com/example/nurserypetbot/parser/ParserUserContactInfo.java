@@ -1,7 +1,5 @@
 package com.example.nurserypetbot.parser;
 
-import com.example.nurserypetbot.enums.PetShelter;
-import com.example.nurserypetbot.enums.Responses;
 import com.example.nurserypetbot.models.UsersContactInformation;
 
 import java.util.regex.Matcher;
