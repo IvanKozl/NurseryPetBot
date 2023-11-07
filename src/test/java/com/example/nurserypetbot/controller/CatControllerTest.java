@@ -1,9 +1,7 @@
 package com.example.nurserypetbot.controller;
 
 import com.example.nurserypetbot.controllers.CatController;
-import com.example.nurserypetbot.controllers.DogController;
 import com.example.nurserypetbot.models.Cat;
-import com.example.nurserypetbot.models.Dog;
 import com.example.nurserypetbot.repository.CatRepository;
 import com.example.nurserypetbot.services.implementations.CatServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,10 +23,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class CatControllerTest {
     @Autowired
     MockMvc mockMvc;
-    @Autowired
-    CatController catController;
-    @SpyBean
-    CatServiceImpl catService;
 
     @Autowired
     ObjectMapper objectMapper;

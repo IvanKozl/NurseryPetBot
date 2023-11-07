@@ -24,11 +24,6 @@ public class DogControllerTest {
     @Autowired
     MockMvc mockMvc;
     @Autowired
-    DogController dogController;
-    @SpyBean
-    DogServiceImpl dogService;
-
-    @Autowired
     ObjectMapper objectMapper;
 
     @MockBean
@@ -53,7 +48,6 @@ public class DogControllerTest {
         dogRepository.save(dog);
         when(dogRepository.findById(dog.getId()))
                 .thenReturn(Optional.of(dog));
-
         mockMvc.perform(get("/dog/" + dog.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
