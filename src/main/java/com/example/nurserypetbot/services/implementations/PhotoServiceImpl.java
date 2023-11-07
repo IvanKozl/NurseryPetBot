@@ -14,13 +14,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
 public class PhotoServiceImpl implements PhotoService {
     private UsersContactInformationServiceImpl usersContactInformationService;
-    private UsersContactInformationRepository usersContactInformationRepository;
     private ReportRepository reportRepository;
     private TelegramBot telegramBot;
     private final Logger logger = LoggerFactory.getLogger(PhotoServiceImpl.class);

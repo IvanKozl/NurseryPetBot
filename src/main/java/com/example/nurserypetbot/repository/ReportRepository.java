@@ -1,7 +1,6 @@
 package com.example.nurserypetbot.repository;
 
 import com.example.nurserypetbot.models.Report;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;

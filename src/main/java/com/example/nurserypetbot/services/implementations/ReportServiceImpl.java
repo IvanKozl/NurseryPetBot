@@ -106,14 +106,4 @@ public class ReportServiceImpl implements ReportService {
         }
     }
 
-//    @Override
-//    @Scheduled(cron = "0 0/1 * * * *")
-//    public void sendRemember() {
-//        var users = usersContactInformationService.getAllUsersWithActualTrialPeriod();
-//        for(var user : users){
-//            SendMessage message = new SendMessage(user.getChatId(), "Not forget to send a report");
-//            telegramBot.execute(message);
-//        }
-//    }
-
 }

@@ -8,8 +8,6 @@ import com.example.nurserypetbot.services.interfaces.UsersContactInformationServ
 import com.example.nurserypetbot.repository.UsersContactInformationRepository;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
-import liquibase.pro.packaged.O;
-import liquibase.pro.packaged.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;

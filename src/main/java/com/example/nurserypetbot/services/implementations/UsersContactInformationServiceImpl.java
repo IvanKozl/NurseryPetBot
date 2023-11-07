@@ -27,10 +27,6 @@ public class UsersContactInformationServiceImpl implements UsersContactInformati
     private final TelegramBot telegramBot;
     private Logger logger = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
     private final UsersContactInformationRepository userContactInformationRepository;
-
-//    private final DogUsersContactInformationRepository dogUsersContactInformationRepository;
-//
-//    private final CatUsersContactInformationRepository catUsersContactInformationRepository;
     private final ReportRepository reportRepository;
     private final PhotoRepository photoRepository;
     private final InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
