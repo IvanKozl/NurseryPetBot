@@ -30,8 +30,8 @@ public class DogControllerTest {
     @MockBean
     DogRepository dogRepository;
 
-    Dog dog = new Dog(1L, "dog", "Bob",
-            "male", 4, "yes", "no", "don't like parrots");
+    Dog dog = new Dog(1L, 195L,"dog", "ege",
+            "male", 3, "yes", "no", "don't like parrots");
     Dog dog1 = new Dog(1L,11L, "dog", "Bob",
             "male", 4, "yes", "no", "don't like parrots");
 

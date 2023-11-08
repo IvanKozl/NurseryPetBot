@@ -28,7 +28,7 @@ public class CatControllerTest {
     @MockBean
     CatRepository catRepository;
 
-    Cat cat = new Cat(54L, "cat", "Mark",
+    Cat cat = new Cat(54L, 54L,"cat", "Mark",
             "male", 6, "yes","no", "don't like dogs" );
     @Test
     void create__returnStatus200AndSavedToDb() throws Exception {

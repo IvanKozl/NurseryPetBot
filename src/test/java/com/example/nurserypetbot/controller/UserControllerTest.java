@@ -101,7 +101,7 @@ public class UserControllerTest {
 
         usersContactInformation.setTrialPeriod(usersContactInformation.getTrialPeriod().plusDays(extend));
 
-//        userContactInformationRepository.save(usersContactInformation);
+        userContactInformationRepository.save(usersContactInformation);
 
         ResponseEntity<UsersContactInformation> response =
                 restTemplate.exchange(url + port + "/user/extend/" + usersContactInformation.getId()+ ","+ extend,

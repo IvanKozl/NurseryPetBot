@@ -30,8 +30,8 @@ public class CatServiceImplTest {
     @Mock
     private CatRepository catRepository;
 
-    Cat cat = new Cat(1L, "cat", "kiitti", "female", 2, "sterile", "yes", "good");
-    Cat cat2 = new Cat(3L, "cat", "iitti", "male", 2, "sterile", "yes", "good");
+    Cat cat = new Cat(1L, 98L,"cat", "kiitti", "female", 2, "sterile", "yes", "good");
+    Cat cat2 = new Cat(3L, 474L,"cat", "iitti", "male", 2, "sterile", "yes", "good");
 
     @Test
     public void createCat_whenCatNotExists_expectSavedCat() {

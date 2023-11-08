@@ -23,7 +23,7 @@ public class DogServiceImplTest {
     @Mock
     private DogRepository dogRepository;
 
-    Dog dog = new Dog(1L, "dog", "Doggy", "M",2, "sterile", "yes", "god");
+    Dog dog = new Dog(1L, 7L,"dog", "Doggy", "M",2, "sterile", "yes", "god");
 
     @Test
     public void createDog_whenDogNotExists_expectSavedDog() {
