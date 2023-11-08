@@ -34,7 +34,9 @@ public class DogControllerTest {
     @MockBean
     DogRepository dogRepository;
 
-    Dog dog = new Dog(1L, 1L, "dog", "Bob",
+    Dog dog = new Dog(1L, "dog", "Bob",
+            "male", 4, "yes", "no", "don't like parrots");
+    Dog dog1 = new Dog(1L,11L, "dog", "Bob",
             "male", 4, "yes", "no", "don't like parrots");
 
     @Test
@@ -50,11 +52,10 @@ public class DogControllerTest {
 
     @Test
     void read__returnStatus200() throws Exception {
-        dogRepository.save(dog);
-        when(dogRepository.findById(dog.getId()))
-                .thenReturn(Optional.of(dog));
-
-        mockMvc.perform(get("/dog/" + dog.getId())
+        dogRepository.save(dog1);
+        when(dogRepository.findById(dog1.getId()))
+                .thenReturn(Optional.of(dog1));
+        mockMvc.perform(get("/dog" + dog1.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());

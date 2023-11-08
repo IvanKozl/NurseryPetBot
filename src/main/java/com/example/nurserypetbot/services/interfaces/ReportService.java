@@ -10,11 +10,6 @@ public interface ReportService {
 
     void addReport(Message message);
 
-
-    //  Сделать "мягкую" напоминалку, с использованием ЕНАМ.
-//    @Scheduled(cron = "0 00 10 * * *")
-//    void sendRemember();
-
     LocalDate findDateAndTimeOfReport(long id);
 
     void createTrialPeriod(long userId);

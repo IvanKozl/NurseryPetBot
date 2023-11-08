@@ -1,8 +1,8 @@
 package com.example.nurserypetbot.services.implementations;
-
 import com.example.nurserypetbot.exceptions.CatException;
 import com.example.nurserypetbot.models.Cat;
 import com.example.nurserypetbot.repository.CatRepository;
+import com.example.nurserypetbot.repository.UsersContactInformationRepository;
 import com.example.nurserypetbot.services.interfaces.CatService;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +11,7 @@ import java.util.Optional;
 @Service
 public class CatServiceImpl implements CatService {
     private final CatRepository catRepository;
+    UsersContactInformationRepository usersContactInformationRepository;
 
     public CatServiceImpl(CatRepository catRepository) {
         this.catRepository = catRepository;
@@ -23,6 +24,7 @@ public class CatServiceImpl implements CatService {
                     "check the information");
         }
         Cat savedCat = catRepository.save(cat);
+
         return savedCat;
     }
 

@@ -1,10 +1,9 @@
 package com.example.nurserypetbot.controller;
 
-import com.example.nurserypetbot.enums.PetShelter;
 import com.example.nurserypetbot.models.Report;
 import com.example.nurserypetbot.models.UsersContactInformation;
 import com.example.nurserypetbot.repository.ReportRepository;
-import com.example.nurserypetbot.repository.UserContactInformationRepository;
+import com.example.nurserypetbot.repository.UsersContactInformationRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -32,7 +30,7 @@ public class UserControllerTest {
     int port;
 
     @Autowired
-    UserContactInformationRepository userContactInformationRepository;
+    UsersContactInformationRepository userContactInformationRepository;
 
     @Autowired
     ReportRepository reportRepository;
@@ -71,24 +69,27 @@ public class UserControllerTest {
 
     @Test
     void setTrialPeriodForUser__returnUpdatedUserInformation() {
+        long extend = 30;
         UsersContactInformation usersContactInformation =
                 new UsersContactInformation(2L, "Serg", "Ivanov", 18, 89234090909L, "abw123@mail.ru",LocalDate.now(), "CAT");
 
         userContactInformationRepository.save(usersContactInformation);
 
-        usersContactInformation.setTrialPeriod(LocalDate.now().plusDays(30));
+        usersContactInformation.setTrialPeriod(LocalDate.now().plusDays(extend));
 
         var savedUser = userContactInformationRepository.save(usersContactInformation);
+
         ResponseEntity<UsersContactInformation> response =
-                restTemplate.exchange(url + port + "/user/trail/" + usersContactInformation.getId(),
+                restTemplate.exchange(url + port + "/user/trial/" + usersContactInformation.getId(),
                         HttpMethod.PUT,
-                        new HttpEntity<UsersContactInformation>(savedUser),
+                        new HttpEntity<>(savedUser),
                         UsersContactInformation.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
     void extendTrialPeriod__returnUpdatedInformation() {
+        long extend = 14;
         UsersContactInformation usersContactInformation =
                 new UsersContactInformation(2L, "Merg", "Ivanov", 18, 890956769L, "abc23@mail.ru", LocalDate.now(),"CAT");
 
@@ -98,14 +99,14 @@ public class UserControllerTest {
 
         userContactInformationRepository.save(usersContactInformation);
 
-        usersContactInformation.setTrialPeriod(usersContactInformation.getTrialPeriod().plusDays(14));
+        usersContactInformation.setTrialPeriod(usersContactInformation.getTrialPeriod().plusDays(extend));
 
 //        userContactInformationRepository.save(usersContactInformation);
 
         ResponseEntity<UsersContactInformation> response =
-                restTemplate.exchange(url + port + "/user/extend/" + usersContactInformation.getId(),
+                restTemplate.exchange(url + port + "/user/extend/" + usersContactInformation.getId()+ ","+ extend,
                         HttpMethod.PUT,
-                        new HttpEntity<UsersContactInformation>(usersContactInformation),
+                        new HttpEntity<>(usersContactInformation),
                         UsersContactInformation.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }

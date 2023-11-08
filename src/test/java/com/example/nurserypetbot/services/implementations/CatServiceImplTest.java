@@ -1,14 +1,18 @@
 package com.example.nurserypetbot.services.implementations;
 
 import com.example.nurserypetbot.models.Cat;
+import com.example.nurserypetbot.models.UsersContactInformation;
 import com.example.nurserypetbot.repository.CatRepository;
+import com.example.nurserypetbot.repository.UsersContactInformationRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,21 +25,27 @@ public class CatServiceImplTest {
 
     @InjectMocks
     private CatServiceImpl catService;
-
+    @Mock
+    UsersContactInformationRepository usersContactInformationRepository;
     @Mock
     private CatRepository catRepository;
 
-    Cat cat = new Cat(1, 2, "kiitti", "kat", "rft", 2, "sterile", "yes", "god");
+    Cat cat = new Cat(1L, "cat", "kiitti", "female", 2, "sterile", "yes", "good");
+    Cat cat2 = new Cat(3L, "cat", "iitti", "male", 2, "sterile", "yes", "good");
 
     @Test
     public void createCat_whenCatNotExists_expectSavedCat() {
-        when(catRepository.findByNameAndAge(cat.getName(), cat.getAge())).thenReturn(Optional.empty());
+//        when(catRepository.findByNameAndAge(cat.getName(), cat.getAge())).thenReturn(Optional.empty());
         when(catRepository.save(cat)).thenReturn(cat);
+        when(catRepository.save(cat2)).thenReturn(cat2);
         Cat savedCat = catService.create(cat);
+        Cat savedCat2 = catService.create(cat2);
         assertNotNull(savedCat);
+        assertNotNull(savedCat2);
         assertEquals(cat.getName(), savedCat.getName());
         assertEquals(cat.getAge(), savedCat.getAge());
         verify(catRepository, Mockito.times(1)).findByNameAndAge(cat.getName(), cat.getAge());
+        verify(catRepository, Mockito.times(1)).findByNameAndAge(cat2.getName(), cat2.getAge());
         verify(catRepository, Mockito.times(1)).save(cat);
     }
 

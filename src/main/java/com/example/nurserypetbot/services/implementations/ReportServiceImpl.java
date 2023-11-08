@@ -4,7 +4,6 @@ import com.example.nurserypetbot.models.Report;
 import com.example.nurserypetbot.parser.ParserReport;
 import com.example.nurserypetbot.repository.ReportRepository;
 import com.example.nurserypetbot.services.interfaces.ReportService;
-import com.example.nurserypetbot.services.interfaces.UsersContactInformationService;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.request.SendMessage;
@@ -19,10 +18,9 @@ public class ReportServiceImpl implements ReportService {
     private final ParserReport parserReport;
     private final ReportRepository reportRepository;
     private final TelegramBot telegramBot;
-    private final UsersContactInformationService usersContactInformationService;
+    private final UsersContactInformationServiceImpl usersContactInformationService;
 
-    public ReportServiceImpl(ParserReport parserReport, ReportRepository reportRepository, TelegramBot telegramBot,
-                             UsersContactInformationService usersContactInformationService) {
+    public ReportServiceImpl(ParserReport parserReport, ReportRepository reportRepository, TelegramBot telegramBot, UsersContactInformationServiceImpl usersContactInformationService) {
         this.parserReport = parserReport;
         this.reportRepository = reportRepository;
         this.telegramBot = telegramBot;
@@ -37,8 +35,6 @@ public class ReportServiceImpl implements ReportService {
      * Addition report information in repository
      * <br>
      * {@code reportRepository.save(report);}
-     *
-     * @param message
      */
     @Override
     public void addReport(Message message) {
@@ -62,21 +58,15 @@ public class ReportServiceImpl implements ReportService {
 
     /**
      * Find date and time of report using {@link LocalDate}
-     *
-     * @param id
-     * @return
      */
     @Override
     public LocalDate findDateAndTimeOfReport(long id) {
         Report report = new Report();
-        LocalDate dateTime = report.getDateTime();
-        return dateTime;
+        return report.getDateTime();
     }
 
     /**
      * Create trial period for user using
-     *
-     * @param userId
      */
     @Override
     public void createTrialPeriod(long userId) {
@@ -88,9 +78,7 @@ public class ReportServiceImpl implements ReportService {
     /**
      * Отправляет предупреждение всем владельцам животного c испытательным сроком,
      * <br>
-     * если до 21.00 ежедневный отчет был не отправлен
-     *
-     * @param
+     * если до 21.00 ежедневный отчет был не отправлен.
      */
     @Override
     @Scheduled(cron = "0 0 21 * * *")
@@ -105,15 +93,5 @@ public class ReportServiceImpl implements ReportService {
             }
         }
     }
-
-//    @Override
-//    @Scheduled(cron = "0 0/1 * * * *")
-//    public void sendRemember() {
-//        var users = usersContactInformationService.getAllUsersWithActualTrialPeriod();
-//        for(var user : users){
-//            SendMessage message = new SendMessage(user.getChatId(), "Not forget to send a report");
-//            telegramBot.execute(message);
-//        }
-//    }
 
 }

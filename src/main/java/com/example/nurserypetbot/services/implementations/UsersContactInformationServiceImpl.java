@@ -1,7 +1,6 @@
 package com.example.nurserypetbot.services.implementations;
 
 import com.example.nurserypetbot.enums.Responses;
-import com.example.nurserypetbot.listener.TelegramBotUpdatesListener;
 import com.example.nurserypetbot.models.UsersContactInformation;
 
 import com.example.nurserypetbot.parser.ParserUserContactInfo;
@@ -9,11 +8,8 @@ import com.example.nurserypetbot.repository.*;
 import com.example.nurserypetbot.services.interfaces.UsersContactInformationService;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Message;
-import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SendPhoto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.EnumSet;
@@ -25,24 +21,11 @@ import java.util.stream.Collectors;
 public class UsersContactInformationServiceImpl implements UsersContactInformationService {
 
     private final TelegramBot telegramBot;
-    private Logger logger = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
     private final UsersContactInformationRepository userContactInformationRepository;
 
-//    private final DogUsersContactInformationRepository dogUsersContactInformationRepository;
-//
-//    private final CatUsersContactInformationRepository catUsersContactInformationRepository;
-    private final ReportRepository reportRepository;
-    private final PhotoRepository photoRepository;
-    private final InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
-
-
-    public UsersContactInformationServiceImpl(TelegramBot telegramBot,
-                                              UsersContactInformationRepository userContactInformationRepository,
-                                              ReportRepository reportRepository, PhotoRepository photoRepository) {
+    public UsersContactInformationServiceImpl(TelegramBot telegramBot, UsersContactInformationRepository userContactInformationRepository) {
         this.telegramBot = telegramBot;
         this.userContactInformationRepository = userContactInformationRepository;
-        this.reportRepository = reportRepository;
-        this.photoRepository = photoRepository;
     }
 
     /**
@@ -174,7 +157,6 @@ public class UsersContactInformationServiceImpl implements UsersContactInformati
 
     /**
      * Finding users with actual trial period
-     *
      * @return List<UsersContactInformation>
      */
     @Override

@@ -7,10 +7,10 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@Getter
-@Setter
 @EqualsAndHashCode(exclude = "id")
 @Builder
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users_contact_information")
@@ -67,6 +67,7 @@ public class UsersContactInformation {
         this.trialPeriod = trialPeriod;
         this.petShelterType = petShelterType;
     }
+
 }
 
 

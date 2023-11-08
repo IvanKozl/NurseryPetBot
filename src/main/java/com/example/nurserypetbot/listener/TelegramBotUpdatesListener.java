@@ -1,4 +1,5 @@
 package com.example.nurserypetbot.listener;
+
 import com.example.nurserypetbot.enums.Responses;
 import com.example.nurserypetbot.parser.ParserUserContactInfo;
 import com.example.nurserypetbot.services.implementations.PhotoServiceImpl;
@@ -13,6 +14,7 @@ import com.pengrad.telegrambot.request.SendMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.PostConstruct;
 import java.util.List;
 
@@ -55,13 +57,13 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 //
 
             logger.info("Processing update: {}", update);
-            if( update.message().text() != null) {
+            if (update.message().text() != null) {
                 if (update.message().text().matches(ParserUserContactInfo.getParserInfoString())) {
                     service.addNewUsersInformation(update.message());
-                    logger.info( "Добавили инфо потенциального владельца");
-                }  else if (update.message().text().toLowerCase().matches("([рацион]+\\s.+)(\\s)([самочувствие]+\\s.+)(\\s)([поведение]+(\\s).+)") ) {
+                    logger.info("Добавили инфо потенциального владельца");
+                } else if (update.message().text().toLowerCase().matches("([рацион]+\\s.+)(\\s)([самочувствие]+\\s.+)(\\s)([поведение]+(\\s).+)")) {
                     reportService.addReport(update.message());
-                    logger.info( "Отчет сохранен  в БД");
+                    logger.info("Отчет сохранен  в БД");
                 } else {
                     try {
                         service.sendResponse(update.message().chat().id(), update.message().text().toUpperCase());
@@ -75,7 +77,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
             if (update.message().photo() != null && update.message().photo().length > 0) {
                 try {
                     photoService.processPhoto(update.message());
-                    logger.info( "ФОТО ДОБАВЛЕНО");
+                    logger.info("ФОТО ДОБАВЛЕНО");
                 } catch (Exception e) {
                     SendMessage result = new SendMessage(update.message().chat().id(), "Фото не добавлено!!!");
                     telegramBot.execute(result);
