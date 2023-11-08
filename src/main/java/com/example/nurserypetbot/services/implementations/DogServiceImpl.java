@@ -22,13 +22,12 @@ public class DogServiceImpl implements DogService {
             throw new DogException("We have already got this dog in our DB, please," +
                     "check the information");
         }
-        Dog savedDog = dogRepository.save(dog);
-        return savedDog;
+        return dogRepository.save(dog);
     }
 
     @Override
     public Dog read(long id) {
-        Optional<Dog> dog = dogRepository.findById(id);
+        Optional<Dog> dog = dogRepository.findByChatId(id);
 
         if (dog.isEmpty()) {
             throw new DogException("Dog not found");
@@ -41,8 +40,7 @@ public class DogServiceImpl implements DogService {
         if (dogRepository.findById(dog.getId()).isEmpty()) {
             throw new DogException("Dog not found");
         }
-        Dog updatedDog = dogRepository.save(dog);
-        return updatedDog;
+        return dogRepository.save(dog);
     }
 
     @Override

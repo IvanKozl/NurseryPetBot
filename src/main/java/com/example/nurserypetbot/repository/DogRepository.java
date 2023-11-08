@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface DogRepository extends JpaRepository<Dog, Long> {
     Optional<Dog> findByNameAndAge(String name, int age);
 
+    Optional<Dog> findByChatId(long chatId);
 }

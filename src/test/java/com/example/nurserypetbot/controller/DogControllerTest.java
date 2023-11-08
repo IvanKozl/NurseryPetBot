@@ -23,10 +23,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class DogControllerTest {
     @Autowired
     MockMvc mockMvc;
-    @Autowired
-    DogController dogController;
-    @SpyBean
-    DogServiceImpl dogService;
 
     @Autowired
     ObjectMapper objectMapper;
@@ -52,12 +48,9 @@ public class DogControllerTest {
 
     @Test
     void read__returnStatus200() throws Exception {
-        dogRepository.save(dog1);
-        when(dogRepository.findById(dog1.getId()))
-                .thenReturn(Optional.of(dog1));
-        mockMvc.perform(get("/dog" + dog1.getId())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+        when(dogRepository.findByChatId(dog.getChatId())).thenReturn(Optional.of(dog));
+
+        mockMvc.perform(get("/dog" + dog.getChatId()))
                 .andExpect(status().isOk());
     }
 
@@ -78,10 +71,11 @@ public class DogControllerTest {
 
     @Test
     void delete__returnStatus200AndDeletedInformation() throws Exception {
-        when(dogRepository.findById(dog.getId()))
-                .thenReturn(Optional.of(dog));
-
-        mockMvc.perform(delete("/dog/" + dog.getId())
+        when(dogRepository.findByChatId(dog1.getChatId()))
+                .thenReturn(Optional.of(dog1));
+        when(dogRepository.save(dog1))
+                .thenReturn(dog1);
+        mockMvc.perform(delete("/dog" + dog1.getChatId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
