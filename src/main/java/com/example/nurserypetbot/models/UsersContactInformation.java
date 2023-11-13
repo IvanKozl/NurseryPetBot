@@ -1,14 +1,25 @@
 package com.example.nurserypetbot.models;
 
-import javax.persistence.*;
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
+import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.List;
+
+@EqualsAndHashCode(exclude = "id")
+@Builder
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "users_contact_information")
 @Entity
 public class UsersContactInformation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
 
     @Column(name = "chat_id")
     private long chatId;
@@ -28,96 +39,33 @@ public class UsersContactInformation {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "pet")
-    private String pet;
+    @Column(name = "trial_period")
+    private LocalDate trialPeriod;
 
-    public UsersContactInformation() {
-    }
+    @Column(name = "pet_shelter_type")
+    private String petShelterType;
 
-    public long getId() {
-        return id;
-    }
+    @OneToMany(mappedBy = "usersContactInformation")
+    @JsonIgnore
+    private List<Cat> cats;
 
-    public void setId(long id) {
-        this.id = id;
-    }
+    @OneToMany(mappedBy = "usersContactInformation")
+    @JsonIgnore
+    private List<Dog> dogs;
 
-    public long getChatId() {
-        return chatId;
-    }
+    @OneToMany(mappedBy = "usersContactInformation")
+    @JsonIgnore
+    private List<Report> reports;
 
-    public void setChatId(long chatId) {
+    public UsersContactInformation(long chatId, String name, String surname, int age, long phoneNumber, String email, LocalDate trialPeriod, String petShelterType) {
         this.chatId = chatId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
         this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
         this.surname = surname;
-    }
-
-    public long getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
         this.age = age;
-    }
-
-    public long getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(long phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPet() {
-        return pet;
-    }
-
-    public void setPet(String pet) {
-        this.pet = pet;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        UsersContactInformation usersContactInformation = (UsersContactInformation) o;
-        return age == usersContactInformation.age && phoneNumber == usersContactInformation.phoneNumber
-                && chatId == usersContactInformation.chatId
-                && Objects.equals(name, usersContactInformation.name)
-                && Objects.equals(surname, usersContactInformation.surname)
-                && Objects.equals(email, usersContactInformation.email)
-                && Objects.equals(pet, usersContactInformation.pet);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(chatId, name, surname, age, phoneNumber, email, pet);
+        this.trialPeriod = trialPeriod;
+        this.petShelterType = petShelterType;
     }
 
 }
