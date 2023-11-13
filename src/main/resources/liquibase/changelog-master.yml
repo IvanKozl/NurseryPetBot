@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      relativeToChangeLogFile: true
+      file: script/bot.sql
+  - include:
+      relativeToChangeLogFile: true
+      file: script/usersContacts.sql
